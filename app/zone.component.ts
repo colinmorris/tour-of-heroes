@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-import { GameZone } from './zone';
+import { Zone } from './zone';
 
 @Component({
     selector: 'zone',
@@ -13,6 +13,6 @@ import { GameZone } from './zone';
 
 export class ZoneComponent {
 
-    @Input() zone : GameZone;
+    @Input() zone : Zone;
 
 }

@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 
 import { TickerService } from './ticker.service';
 
-import { GameZone } from './zone';
-import { GameZoneService } from './zone.service';
+import { Zone } from './zone';
+import { ZoneService } from './zone.service';
 import { ZoneComponent } from './zone.component';
 
 import { Skill, SkillType } from './skill';
@@ -25,27 +25,27 @@ import { PlayerService } from './player.service';
 })
 
 export class ZonesComponent implements OnInit {
-    zones : GameZone[] = ZONES;
-    activeGameZone: GameZone;
+    zones : Zone[] = ZONES;
+    activeZone: Zone;
     player : Player;
     
     constructor(private playerService: PlayerService,
-        private zoneService: GameZoneService,
+        private zoneService: ZoneService,
         private tickerService: TickerService
     ) {
         this.player = playerService.player;
     }
     
     ngOnInit() {
-        this.setActiveGameZone(this.zones[0]);
+        this.setActiveZone(this.zones[0]);
     }
     
-    setActiveGameZone(zone: GameZone) {
-        if (zone === this.activeGameZone) {
+    setActiveZone(zone: Zone) {
+        if (zone === this.activeZone) {
             console.log("Ignoring no-op zone change.");
             return;
         }
-        this.activeGameZone = zone;
+        this.activeZone = zone;
         let intervalId = setInterval(
             () => {
                 this.takeAction();
@@ -56,7 +56,7 @@ export class ZonesComponent implements OnInit {
 
     takeAction() {
         // choose which skill to train
-        let skillDelta = this.zoneService.chooseSkillUp(this.activeGameZone);
+        let skillDelta = this.zoneService.chooseSkillUp(this.activeZone);
         // add skill points
         this.player.trainSkill(skillDelta[0], skillDelta[1]);
         // record the event
@@ -65,7 +65,7 @@ export class ZonesComponent implements OnInit {
     }
 }
 
-const ZONES: GameZone[] = [
-    new GameZone('Turnip Fields', 'mm turnips', 'farm', [1,0,0,0]),
-    new GameZone('The Woods', 'Trees yay', 'chop', [0,0.1,0.9,0]),
+const ZONES: Zone[] = [
+    new Zone('Turnip Fields', 'mm turnips', 'farm', [1,0,0,0]),
+    new Zone('The Woods', 'Trees yay', 'chop', [0,0.1,0.9,0]),
 ];

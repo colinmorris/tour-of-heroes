@@ -1,6 +1,6 @@
 import { SkillType } from './skill';
 
-export class GameZone {
+export class Zone {
     constructor(
         public name: string,
         public description: string,

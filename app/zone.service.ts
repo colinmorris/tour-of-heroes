@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
-import { GameZone } from './zone';
+import { Zone } from './zone';
 import { SkillType } from './skill';
 
 @Injectable()
-export class GameZoneService {
+export class ZoneService {
 
     // TODO: method to return all game zones
     
-    skillProbs(zone: GameZone) : number[] {
+    skillProbs(zone: Zone) : number[] {
         let probs = new Array<number>(SkillType.MAX);
         let totalWeight = 0.0;
         for (let skill=0; skill<SkillType.MAX; skill++) {
@@ -19,7 +19,7 @@ export class GameZoneService {
         return probs;
     }
 
-    chooseSkillUp(zone: GameZone): [number, number] {
+    chooseSkillUp(zone: Zone): [number, number] {
         let probs = this.skillProbs(zone);
         let rand = Math.random();
         let weightSeen = 0.0;

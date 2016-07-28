@@ -3,7 +3,7 @@ import { Player } from './player';
 import { PlayerService } from './player.service';
 import { CharacterComponent } from './character.component';
 
-import { GameZoneService } from './zone.service';
+import { ZoneService } from './zone.service';
 import { ZonesComponent } from './zones.component';
 
 import { TickerService } from './ticker.service';
@@ -21,12 +21,12 @@ import { TickerComponent } from './ticker.component';
     <div class="reincarnate">
     </div>
   `,
-  providers: [GameZoneService, TickerService, PlayerService],
+  providers: [ZoneService, TickerService, PlayerService],
 })
 
 export class AppComponent implements OnInit {
 
-    constructor(private zoneService: GameZoneService, 
+    constructor(private zoneService: ZoneService, 
                 private tickerService: TickerService,
                 private playerService: PlayerService
                ) {}
