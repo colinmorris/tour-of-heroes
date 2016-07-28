@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { TickerService } from './ticker.service';
 
 import { Zone } from './zone';
-import { ZoneService } from './zone.service';
 import { ZoneComponent } from './zone.component';
 
 import { Skill, SkillType } from './skill';
@@ -30,7 +29,6 @@ export class ZonesComponent implements OnInit {
     player : Player;
     
     constructor(private playerService: PlayerService,
-        private zoneService: ZoneService,
         private tickerService: TickerService
     ) {
         this.player = playerService.player;
@@ -56,7 +54,7 @@ export class ZonesComponent implements OnInit {
 
     takeAction() {
         // choose which skill to train
-        let skillDelta = this.zoneService.chooseSkillUp(this.activeZone);
+        let skillDelta = this.activeZone.chooseSkillUp();
         // add skill points
         this.player.trainSkill(skillDelta[0], skillDelta[1]);
         // record the event
