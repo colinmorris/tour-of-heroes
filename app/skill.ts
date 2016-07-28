@@ -1,14 +1,50 @@
+import { GLOBALS } from './globals';
+
 export class Skill {
-    name : string;
-    level: number;
-    aptitude: number;
+    constructor(
+        public id: number,
+        public name: string,
+        // starting from 0
+        public level: number,
+        public aptitude: number,
+        public skillPoints: number
+    ){}
+
+    train(points: number) : number {
+        let newTotal = this.skillPoints + (points * this.aptitude);
+        let thresh = this.pointsForNextLevel();
+        let delta = 0;
+        while (newTotal >= thresh) {
+            this.level++;
+            delta++;
+            newTotal -= thresh;
+            thresh = this.pointsForNextLevel();
+        }
+        this.skillPoints = newTotal;
+        return delta;
+    }
+
+    pointsForNextLevel() : number {
+        return Skill.pointsForNextLevel(this.level);
+    }
+
+    static pointsForNextLevel(level: number) : number {
+        // 100, 200, 400, etc. probably too steep
+        return GLOBALS.skillLevelBaseCost * Math.pow(2, level);
+    }
+
+    percentProgress() : number {
+        return 100 * (this.skillPoints / this.pointsForNextLevel());
+    }
+
 }
 
 export enum SkillType {
-    Farming = 1,
+    Farming = 0,
     Combat,
     Woodcutting,
-    Dance
+    Dance,
+    MAX,
 }
 
 export const SKILLNAMES : string[] = [
