@@ -26,7 +26,7 @@ export class PlayerService implements OnInit {
         }
     }
 
-    private player : Player;
+    player : Player;
 
     ngOnInit() {
     }

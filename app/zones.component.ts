@@ -4,6 +4,7 @@ import { TickerService } from './ticker.service';
 
 import { GameZone } from './zone';
 import { GameZoneService } from './zone.service';
+import { ZoneComponent } from './zone.component';
 
 import { Skill, SkillType } from './skill';
 
@@ -13,12 +14,11 @@ import { PlayerService } from './player.service';
 
 @Component({
     selector: 'zones',
+    directives: [ZoneComponent],
     template: `
     <div class="zones">
         <div *ngFor="let zone of zones">
-            <h3>{{zone.name}}</h3>
-            <p>{{zone.description</p>
-            <button>{{zone.action}}</button>
+            <zone [zone]="zone"></zone>
         </div>
     </div>
     `
@@ -27,6 +27,7 @@ import { PlayerService } from './player.service';
 export class ZonesComponent implements OnInit {
     zones : GameZone[] = ZONES;
     activeGameZone: GameZone;
+    player : Player;
     
     constructor(private playerService: PlayerService,
         private zoneService: GameZoneService,
@@ -59,7 +60,8 @@ export class ZonesComponent implements OnInit {
         // add skill points
         this.player.trainSkill(skillDelta[0], skillDelta[1]);
         // record the event
-        this.tickerService.log("Increased skill " + SkillType[skillDelta[0]] + " by " + skillDelta[1] + " points.");
+        // spammy
+        //this.tickerService.log("Increased skill " + SkillType[skillDelta[0]] + " by " + skillDelta[1] + " points.");
     }
 }
 
