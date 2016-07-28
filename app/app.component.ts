@@ -25,16 +25,6 @@ import { TickerComponent } from './ticker.component';
 
 export class AppComponent implements OnInit {
 
-    constructor(
-                private tickerService: TickerService,
-                private playerService: PlayerService
-               ) {}
-
-    player : Player;
-
-    ngOnInit() {
-        this.player = this.playerService.player;
-    }
 }
 
 
