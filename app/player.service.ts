@@ -11,7 +11,7 @@ export class PlayerService implements OnInit {
         // Apparently OnInit is supposed to be better, but it seems to lead
         // to weird race conditions in this case.
         let saved = localStorage.getItem(GLOBALS.localStorageToken);
-        if (saved) {
+        if (saved && GLOBALS.loadSaves) {
             console.log("Loading saved character data");
             this.player = Player.deserialize(saved); 
             this.player.tickerService = this.tickerService;

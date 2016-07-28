@@ -5,7 +5,7 @@ import { Zone } from './zone';
 @Component({
     selector: 'zone',
     template: `
-    <h3>{{zone.name}}</h3>
+    <h3>{{zone.name}} {{active ? "(ACTIVE)" : ""}}</h3>
     <p>{{zone.description}}</p>
     <button>{{zone.action}}</button>
     `
@@ -14,5 +14,6 @@ import { Zone } from './zone';
 export class ZoneComponent {
 
     @Input() zone : Zone;
+    @Input() active : boolean;
 
 }

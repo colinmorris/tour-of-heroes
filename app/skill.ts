@@ -39,11 +39,16 @@ export class Skill {
 
 }
 
+// TODO: At some point, probably want to refactor this into actual class
+// just to hold ancilliary data like descriptions etc.
 export enum SkillType {
     Farming = 0,
     Combat,
     Woodcutting,
     Dance,
+    Intellect,
+    Charm,
+    Stealth,
     MAX,
 }
 

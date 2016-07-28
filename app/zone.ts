@@ -1,47 +1,35 @@
 import { SkillType } from './skill';
+import { ZoneAction } from './zoneaction';
+
+import { GLOBALS } from './globals';
 
 export class Zone {
-    constructor(
-        public name: string,
-        public description: string,
-        public action: string,
-        public skillTrainingWeights: number[]
-    ) {}
+    actions: ZoneAction[];
+    name: string;
+    description: string;
+    baseDelay: number;
 
-    // Unlock req'ts...
-    
-    skillProbs() : number[] {
-        let probs = new Array<number>(SkillType.MAX);
-        let totalWeight = 0.0;
-        for (let skill=0; skill<SkillType.MAX; skill++) {
-            totalWeight += this.skillTrainingWeights[skill];
+    static fromJSON(j: any) : Zone {
+        let z : Zone = new Zone();
+        z.name = j.name;
+        z.description = j.description;
+        z.actions = new Array<ZoneAction>();
+        z.baseDelay = j.baseDelay ? j.baseDelay : GLOBALS.defaultBaseZoneDelay;
+        for (let a of j.actions) {
+            let delay:number = z.baseDelay * (a.delayx ? a.delayx : 1);
+            z.actions.push(new ZoneAction(
+                a.vb, a.obj, a.opts, a.skills, a.weight, delay
+            ));
         }
-        for (let skill=0; skill<SkillType.MAX; skill++) {
-            probs[skill] = this.skillTrainingWeights[skill] / totalWeight;
-        }
-        return probs;
+        return z;
     }
 
-    chooseSkillUp(): [number, number] {
-        let probs = this.skillProbs();
-        let rand = Math.random();
-        let weightSeen = 0.0;
-        let chosenSkill : number;
-        for (let skill=0; skill<SkillType.MAX; skill++) {
-            weightSeen += probs[skill];
-            if (weightSeen > rand) {
-                chosenSkill = skill;
-                break;
-            }
-        }
-        // The points awarded to zone skill are equal to its value weighted by
-        // its inverse probability. E.g. if our values are {A: .2, B: 1.8}, then
-        // each skill gets 2 points when selected. The net effect is that .2/1.8 are
-        // the expected gain for each skill per action.
-        // TODO: This code is actually more involved than it needs to be, since the
-        // points are gonna be the same for every skill every time. sort of didn't 
-        // realize that until now
-        return [chosenSkill, this.skillTrainingWeights[chosenSkill]/probs[chosenSkill]];
+
+    // Unlock req'ts...
+
+    getAction() : ZoneAction {
+        // TODO
+        return this.actions[0];
     }
 }
 

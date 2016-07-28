@@ -3,7 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { TickerService } from './ticker.service';
 
 import { Zone } from './zone';
+import { ZoneAction } from './zoneaction';
 import { ZoneComponent } from './zone.component';
+import { ZONES } from './zones.data';
 
 import { Skill, SkillType } from './skill';
 
@@ -17,7 +19,7 @@ import { PlayerService } from './player.service';
     template: `
     <div class="zones">
         <div *ngFor="let zone of zones">
-            <zone [zone]="zone"></zone>
+            <zone [zone]="zone" [active]="zone == activeZone"></zone>
         </div>
     </div>
     `
@@ -27,6 +29,9 @@ export class ZonesComponent implements OnInit {
     zones : Zone[] = ZONES;
     activeZone: Zone;
     player : Player;
+
+    private actionTimer : number;
+    private currentAction : ZoneAction;
     
     constructor(private playerService: PlayerService,
         private tickerService: TickerService
@@ -37,33 +42,35 @@ export class ZonesComponent implements OnInit {
     ngOnInit() {
         this.setActiveZone(this.zones[0]);
     }
+
+    killCurrentAction() {
+        // TODO
+    }
     
     setActiveZone(zone: Zone) {
         if (zone === this.activeZone) {
             console.log("Ignoring no-op zone change.");
             return;
         }
+        if (this.actionTimer) {
+            this.killCurrentAction();
+        }
         this.activeZone = zone;
-        let intervalId = setInterval(
-            () => {
-                this.takeAction();
-            },
-            GLOBALS.timestep_ms
-        );
+        this.queueAction();
     }
 
-    takeAction() {
-        // choose which skill to train
-        let skillDelta = this.activeZone.chooseSkillUp();
-        // add skill points
-        this.player.trainSkill(skillDelta[0], skillDelta[1]);
-        // record the event
-        // spammy
-        //this.tickerService.log("Increased skill " + SkillType[skillDelta[0]] + " by " + skillDelta[1] + " points.");
+    queueAction() {
+        this.currentAction = this.activeZone.getAction();
+        // TODO: Timer type shenanigans
+        this.actionTimer = window.setTimeout(
+            () => {
+                this.currentAction.effect(this.player);
+                this.currentAction.broadcast(this.tickerService);
+                this.queueAction();
+
+            },
+            this.currentAction.delay(this.player)
+        );
     }
 }
 
-const ZONES: Zone[] = [
-    new Zone('Turnip Fields', 'mm turnips', 'farm', [1,0,0,0]),
-    new Zone('The Woods', 'Trees yay', 'chop', [0,0.1,0.9,0]),
-];
