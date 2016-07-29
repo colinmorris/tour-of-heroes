@@ -10,7 +10,7 @@ let ZONEDATA = [
         the land - turnips are a pretty forgiving crop.`,
     actions: [
         {vb: "pull", obj:"a turnip", skills: {[S.Farming]: 1}, weight: .9},
-        {vb: "pull", obj:"a HUGE turnip", skills: {[S.Farming]: 10}, weight: .02, delayx:2},
+        {vb: "pull", obj:"a HUGE turnip", skills: {[S.Farming]: 10}, weight: .02, delayx:.1},
     ],
 },
 {
@@ -20,6 +20,14 @@ let ZONEDATA = [
     actions: [
         {vb: "chop", obj:"a young __X", opts:["oak", "spruce", "pine"], skills: {[S.Woodcutting]: 1}, weight: .8},
         {vb: "ax", obj:"a __X", opts:["rat", "rabid deer", "badger", "spider"], skills: {[S.Combat]: 1}, weight: .2},
+    ],
+},
+{
+    name: 'County Farm',
+    description: 'For champion farmers only',
+    actions: [
+        {vb: "win", obj: "first place in pumpkin compeition", 
+            skills: {[S.Farming]: 4}, weight:1 },
     ],
 },
 ]

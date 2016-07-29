@@ -83,3 +83,13 @@ export function truthySkills( sm: SkillMap<any>, callback: (s: SkillType, v:any)
     }
 }
 
+export function getTruthySkills( sm: SkillMap<any>) : SkillType[] {
+    let skills: SkillType[] = new Array<SkillType>();
+    for (let skillId=0; skillId < SkillType.MAX; skillId++) {
+        let value = sm[skillId];
+        if (value) {
+            skills.push(skillId);
+        }
+    }
+    return skills;
+}

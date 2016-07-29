@@ -1,7 +1,7 @@
 import { Player } from './player';
 import { TickerService } from './ticker.service';
 import { GLOBALS } from './globals';
-import { truthySkills, SkillType, SkillMap } from './skill';
+import { getTruthySkills, truthySkills, SkillType, SkillMap } from './skill';
 
 const ACTION_METAVAR: string = "__X";
 
@@ -30,6 +30,11 @@ export class ZoneActionModel {
         public vb: string,
         public obj: string,
         public opts: string[],
+        /** skillDeltas = how many (base) skill points will I gain in each skill upon
+         * completing this action? This also determines the difficulty of this action
+         * (the higher the SP gain, the higher the player's skill levels need to be to
+         * perform this action without a penalty to action speed)
+         */
         public skillDeltas: SkillDeltas,
         public weight: number,
         public minDelay: number
@@ -56,6 +61,23 @@ export class ZoneActionModel {
         }
         return pred;
     }
+
+    delay(player: Player) : number {
+        // If player.skills[s] >= (this.skillDeltas[s]-1) for all s, we apply no
+        // 'inexperience' penalty. Any skills below that threshold are punished (super-linearly)
+        // (why -1? deltas start at 1, but skill levels start at 0)
+        
+        let inexperiencePenalty:number = 1.0;
+        for (let s: SkillType of getTruthySkills(this.skillDeltas)) {
+            // TODO: it's possible these should be weighted for cases where skillDeltas.length > 1
+            let shortfall = Math.max(0, this.skillDeltas[s] - (player.skills[s].level+1));
+            inexperiencePenalty *= Math.pow(GLOBALS.inexperiencePenaltyBase, shortfall);
+        }
+        if (inexperiencePenalty > 1) {
+            console.log("Penalizing by " + inexperiencePenalty);
+        }
+        return this.minDelay * inexperiencePenalty;
+    }
         
 }
 
@@ -77,7 +99,7 @@ export class ZoneAction {
     }
 
     start(onCompletion: ()=>void) {
-        this.duration = this.delay();
+        this.duration = this.action.delay(this.player);
         this.startTime = new Date().getTime();
         this.timer = window.setTimeout(
             () => {
@@ -103,11 +125,6 @@ export class ZoneAction {
     percentProgress() : number {
         let now = new Date().getTime();
         return 100 * (now - this.startTime)/this.duration;
-    }
-
-    delay() : number {
-        // TODO
-        return this.action.minDelay;
     }
 
     effect() {
