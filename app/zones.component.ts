@@ -6,6 +6,7 @@ import { Zone } from './zone';
 import { ZoneAction } from './zoneaction';
 import { ZoneComponent } from './zone.component';
 import { ZONES } from './zones.data';
+import { ActiveZoneService } from './activezone.service';
 
 import { Skill, SkillType } from './skill';
 
@@ -19,10 +20,14 @@ import { PlayerService } from './player.service';
     template: `
     <div class="zones">
         <div *ngFor="let zone of zones">
-            <zone [zone]="zone" [active]="zone == activeZone"></zone>
+            <zone 
+                [zone]="zone" 
+                >
+            </zone>
         </div>
     </div>
-    `
+    `,
+    providers: [ActiveZoneService]
 })
 
 export class ZonesComponent implements OnInit {
@@ -44,7 +49,7 @@ export class ZonesComponent implements OnInit {
     }
 
     killCurrentAction() {
-        // TODO
+        window.clearTimeout(this.actionTimer);
     }
     
     setActiveZone(zone: Zone) {

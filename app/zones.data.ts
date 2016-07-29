@@ -24,7 +24,8 @@ let ZONEDATA = [
 },
 ]
 
+let id = 0;
 for (let obj of ZONEDATA) {
-    ZONES.push(Zone.fromJSON(obj));
+    ZONES.push(Zone.fromJSON(obj, id++));
 }
         

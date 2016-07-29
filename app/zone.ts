@@ -4,13 +4,16 @@ import { ZoneAction } from './zoneaction';
 import { GLOBALS } from './globals';
 
 export class Zone {
+    zid: number;
     actions: ZoneAction[];
     name: string;
     description: string;
     baseDelay: number;
 
-    static fromJSON(j: any) : Zone {
+    // TODO: this method is dumb
+    static fromJSON(j: any, id:number) : Zone {
         let z : Zone = new Zone();
+        z.zid = id;
         z.name = j.name;
         z.description = j.description;
         z.actions = new Array<ZoneAction>();
@@ -23,7 +26,6 @@ export class Zone {
         }
         return z;
     }
-
 
     // Unlock req'ts...
 
