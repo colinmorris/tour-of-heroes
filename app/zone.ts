@@ -1,11 +1,12 @@
 import { SkillType } from './skill';
-import { ZoneAction } from './zoneaction';
+import { ZoneAction, ZoneActionModel } from './zoneaction';
+import { Player } from './player';
 
 import { GLOBALS } from './globals';
 
 export class Zone {
     zid: number;
-    actions: ZoneAction[];
+    actions: ZoneActionModel[];
     name: string;
     description: string;
     baseDelay: number;
@@ -16,11 +17,11 @@ export class Zone {
         z.zid = id;
         z.name = j.name;
         z.description = j.description;
-        z.actions = new Array<ZoneAction>();
+        z.actions = new Array<ZoneActionModel>();
         z.baseDelay = j.baseDelay ? j.baseDelay : GLOBALS.defaultBaseZoneDelay;
         for (let a of j.actions) {
             let delay:number = z.baseDelay * (a.delayx ? a.delayx : 1);
-            z.actions.push(new ZoneAction(
+            z.actions.push(new ZoneActionModel(
                 a.vb, a.obj, a.opts, a.skills, a.weight, delay
             ));
         }
@@ -29,9 +30,10 @@ export class Zone {
 
     // Unlock req'ts...
 
-    getAction() : ZoneAction {
+    getAction(player: Player) : ZoneAction {
         // TODO
-        return this.actions[0];
+        let actionType: ZoneActionModel = this.actions[0];
+        return new ZoneAction(actionType, player);
     }
 }
 

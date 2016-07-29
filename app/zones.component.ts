@@ -32,10 +32,8 @@ import { PlayerService } from './player.service';
 
 export class ZonesComponent implements OnInit {
     zones : Zone[] = ZONES;
-    activeZone: Zone;
     player : Player;
 
-    private actionTimer : number;
     private currentAction : ZoneAction;
     
     constructor(private playerService: PlayerService,
@@ -45,37 +43,7 @@ export class ZonesComponent implements OnInit {
     }
     
     ngOnInit() {
-        this.setActiveZone(this.zones[0]);
     }
 
-    killCurrentAction() {
-        window.clearTimeout(this.actionTimer);
-    }
-    
-    setActiveZone(zone: Zone) {
-        if (zone === this.activeZone) {
-            console.log("Ignoring no-op zone change.");
-            return;
-        }
-        if (this.actionTimer) {
-            this.killCurrentAction();
-        }
-        this.activeZone = zone;
-        this.queueAction();
-    }
-
-    queueAction() {
-        this.currentAction = this.activeZone.getAction();
-        // TODO: Timer type shenanigans
-        this.actionTimer = window.setTimeout(
-            () => {
-                this.currentAction.effect(this.player);
-                this.currentAction.broadcast(this.tickerService);
-                this.queueAction();
-
-            },
-            this.currentAction.delay(this.player)
-        );
-    }
 }
 
