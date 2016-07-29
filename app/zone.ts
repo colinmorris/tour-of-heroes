@@ -1,4 +1,4 @@
-import { SkillType } from './skill';
+import { SkillMap, SkillType, JSONtoSkillMap } from './skill';
 import { ZoneAction, ZoneActionModel } from './zoneaction';
 import { Player } from './player';
 
@@ -10,6 +10,8 @@ export class Zone {
     name: string;
     description: string;
     baseDelay: number;
+    // convenience
+    private totalWeight: number = 0;
 
     // TODO: this method is dumb
     static fromJSON(j: any, id:number) : Zone {
@@ -22,8 +24,11 @@ export class Zone {
         for (let a of j.actions) {
             let delay:number = z.baseDelay * (a.delayx ? a.delayx : 1);
             z.actions.push(new ZoneActionModel(
-                a.vb, a.obj, a.opts, a.skills, a.weight, delay
+                a.vb, a.obj, a.opts, 
+                JSONtoSkillMap<number>(a.skills), 
+                a.weight, delay
             ));
+            z.totalWeight += a.weight;
         }
         return z;
     }
@@ -31,9 +36,15 @@ export class Zone {
     // Unlock req'ts...
 
     getAction(player: Player) : ZoneAction {
-        // TODO
-        let actionType: ZoneActionModel = this.actions[0];
-        return new ZoneAction(actionType, player);
+        let dice: number = Math.random() * this.totalWeight;
+        let sofar = 0;
+        for (let zam: ZoneActionModel of this.actions) {
+            sofar += zam.weight;
+            if (sofar > dice) {
+                return new ZoneAction(zam, player);
+            }
+        }
+        console.assert(false, "Shouldnt have reached here.");
     }
 }
 

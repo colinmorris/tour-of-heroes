@@ -52,9 +52,34 @@ export enum SkillType {
     MAX,
 }
 
-export const SKILLNAMES : string[] = [
-    "Farming",
-    "Combat",
-    "Woodcutting",
-    "Dance"
-]
+export type SkillMap<T> = Array<T>;
+
+export function JSONtoSkillMap<T>(j: Object) : SkillMap<T> {
+    let tees : T[] = new Array<T>(SkillType.MAX);
+    for (let skillId=0; skillId < SkillType.MAX; skillId++) {
+        if (j.hasOwnProperty(skillId)) {
+            tees[skillId] = j[skillId];
+        } else {
+            // tees[skillId] = undefined; // probably redundant?
+        }
+    }
+    return tees;
+}
+
+export function skillMapFromFactory<T>(initFactory: (number) => T) : SkillMap<T> {
+    let tees : T[] = new Array<T>(SkillType.MAX);
+    for (let skillId=0; skillId < SkillType.MAX; skillId++) {
+        tees[skillId] = initFactory(skillId);
+    }
+    return tees;
+}
+
+export function truthySkills( sm: SkillMap<any>, callback: (s: SkillType, v:any) => void) {
+    for (let skillId=0; skillId < SkillType.MAX; skillId++) {
+        let value = sm[skillId];
+        if (value) {
+            callback(skillId, value);
+        }
+    }
+}
+

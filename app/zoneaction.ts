@@ -1,6 +1,7 @@
 import { Player } from './player';
 import { TickerService } from './ticker.service';
 import { GLOBALS } from './globals';
+import { truthySkills, SkillType, SkillMap } from './skill';
 
 const ACTION_METAVAR: string = "__X";
 
@@ -15,15 +16,28 @@ class ZoneActionDescription {
     past: string;
 }
 
+
+export type SkillDeltas = SkillMap<number>;
+
+class ZoneActionEffect {
+    constructor(
+        public skillDeltas: SkillDeltas
+    ){}
+}
+
 export class ZoneActionModel {
     constructor(
         public vb: string,
         public obj: string,
         public opts: string[],
-        public skills: Object,
+        public skillDeltas: SkillDeltas,
         public weight: number,
         public minDelay: number
     ) {}
+
+    getEffect(player: Player) : ZoneActionEffect {
+        return new ZoneActionEffect(this.skillDeltas);
+    }
     
     // Not idempotent because of randomness
     chooseDescription() : ZoneActionDescription {
@@ -49,10 +63,12 @@ export class ZoneAction {
     timer: number;
     startTime: number;
     duration: number;
+    completed: boolean = false;
 
     checkTimer: number;
     pctProgress: number = 0;
     description: ZoneActionDescription;
+    delta: SkillDeltas;
     constructor(
         public action: ZoneActionModel,
         public player: Player
@@ -66,6 +82,7 @@ export class ZoneAction {
         this.timer = window.setTimeout(
             () => {
                 this.effect();
+                this.completed = true;
                 onCompletion();
             },
             this.duration
@@ -94,8 +111,13 @@ export class ZoneAction {
     }
 
     effect() {
-        // TODO
-        this.player.level ++;
+        let ef: ZoneActionEffect = this.action.getEffect(this.player);
+        this.delta = ef.skillDeltas;
+        truthySkills(ef.skillDeltas, 
+            (skill: SkillType, delta: number) => {
+                this.player.trainSkill(skill, delta);
+            }
+        );
     }
 
     broadcast(ticker: TickerService) {

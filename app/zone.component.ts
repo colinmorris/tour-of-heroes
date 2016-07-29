@@ -6,8 +6,8 @@ import { ActiveZoneService } from './activezone.service';
 import { Player } from './player';
 import { PlayerService } from './player.service';
 import { TickerService } from './ticker.service';
-
-import {TimerWrapper} from '@angular/core/src/facade/async';
+import { SkillDeltas } from './zoneaction';
+import { truthySkills, SkillType } from './skill';
 
 /* Responsible for maintaining its own "active" status and, when active, creating
  * and killing ZoneActions. The internal logic of those actions (their timing and 
@@ -20,7 +20,7 @@ import {TimerWrapper} from '@angular/core/src/facade/async';
     template: `
     <h3>{{zone.name}} {{active ? "(ACTIVE)" : ""}}</h3>
     <p>{{zone.description}}</p>
-    <div *ngIf="active">
+    <div *ngIf="currentAction">
 
         <div class="progress">
             <span class="ongoing">{{currentAction.description.present}}</span>
@@ -28,8 +28,8 @@ import {TimerWrapper} from '@angular/core/src/facade/async';
             </div>
         </div>
 
-        <div class="miniticker">
-            <span *ngIf="lastAction"> {{lastAction.description.past}} </span>
+        <div class="previously" *ngIf="lastAction && lastAction.completed">
+            {{lastAction.description.past}} {{formatDelta(lastAction.delta)}}
         </div>
 
     </div>
@@ -54,6 +54,17 @@ export class ZoneComponent implements OnInit {
     ) {
         this.player = playerService.player;
     }
+
+    formatDelta(delta: SkillDeltas) : string {
+        let s = "(";
+        truthySkills(delta, 
+            (skill: SkillType, amt: number) => {
+                s += SkillType[skill] + "+" + amt + ", ";
+         });
+         s += ")";
+         return s;
+    }
+
 
     get active() { return this._active; }
     set active(newActive: boolean) {
@@ -90,6 +101,7 @@ export class ZoneComponent implements OnInit {
 
     sleep() {
         this.currentAction.kill();
+        this.currentAction = undefined;
     }
 
     select() {

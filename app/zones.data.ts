@@ -9,8 +9,8 @@ let ZONEDATA = [
     description: `A good place for apprentice farmers to learn the ways of
         the land - turnips are a pretty forgiving crop.`,
     actions: [
-        {vb: "pull", obj:"a turnip", skill: {[S.Farming]: 1}, weight: .9},
-        {vb: "pull", obj:"a HUGE turnip", skill: {[S.Farming]: 10}, weight: .02, delayx:2},
+        {vb: "pull", obj:"a turnip", skills: {[S.Farming]: 1}, weight: .9},
+        {vb: "pull", obj:"a HUGE turnip", skills: {[S.Farming]: 10}, weight: .02, delayx:2},
     ],
 },
 {

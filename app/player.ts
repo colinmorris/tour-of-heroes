@@ -1,8 +1,9 @@
-import { Skill, SkillType } from './skill';
+import { skillMapFromFactory, SkillMap, Skill, SkillType } from './skill';
 import { TickerService } from './ticker.service';
 import { GLOBALS } from './globals';
 
 export class Player {
+    skills: SkillMap<Skill>;
     constructor(
         public name: string,
         // Starts from 1 (unlike skills)
@@ -10,16 +11,13 @@ export class Player {
         public klass: string,
         public tickerService: TickerService
     ) {
-        let skills = new Array<Skill>(SkillType.MAX);
-        for (let s=0; s < SkillType.MAX; s++) {
-            skills[s] = new Skill(s, SkillType[s], 0, 1.0, 0);
-        }
-        this.skills = skills;
+        this.skills = skillMapFromFactory<Skill>(
+            (s: number) => { return new Skill(s, SkillType[s], 0, 1.0, 0); }
+        );
         this.totalSkillLevels = 0;
         this.tickerService = tickerService;
     }
 
-    skills: Skill[];
     private totalSkillLevels: number;
     // class
 
@@ -27,6 +25,7 @@ export class Player {
         // TODO FIXME
         // This feels like it should be less awkward
         let obj = JSON.parse(saveString);
+        /**
         let p = new Player(
             obj.name,
             obj.level,
@@ -38,9 +37,11 @@ export class Player {
             p.skills[s] = new Skill(fake.id, fake.name, fake.level, fake.aptitude, fake.skillPoints);
         }
         return p;
+        */
+       return undefined;
     }
 
-    trainSkill(skill: number, skillPoints: number) {
+    trainSkill(skill: SkillType, skillPoints: number) {
         let delta = this.skills[skill].train(skillPoints);
         if (delta > 0) {
             let msg = "Increased " + SkillType[skill] + " to level " + this.skills[skill].level;
