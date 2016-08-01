@@ -10,7 +10,7 @@ import { Player } from './player';
     template: `
         <div class="player-info">
 
-        <h2>{{player.name}}, the level {{player.level}} {{player.klass}}</h2>
+        <h2>{{player.name}}, the level {{player.level}} {{player.klass.name}}</h2>
             Level progress: 
             <progress-bar [numerator]="player.totalSkillLevels" [denominator]="player.skillLevelsForNextLevel()"></progress-bar>
 

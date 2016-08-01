@@ -25,7 +25,7 @@ export class Zone {
             let delay:number = z.baseDelay * (a.delayx ? a.delayx : 1);
             z.actions.push(new ZoneActionModel(
                 a.vb, a.obj, a.opts, 
-                JSONtoSkillMap<number>(a.skills), 
+                JSONtoSkillMap(a.skills), 
                 a.weight, delay
             ));
             z.totalWeight += a.weight;
@@ -38,7 +38,7 @@ export class Zone {
     getAction(player: Player) : ZoneAction {
         let dice: number = Math.random() * this.totalWeight;
         let sofar = 0;
-        for (let zam: ZoneActionModel of this.actions) {
+        for (let zam of this.actions) {
             sofar += zam.weight;
             if (sofar > dice) {
                 return new ZoneAction(zam, player);

@@ -52,9 +52,11 @@ export enum SkillType {
     MAX,
 }
 
-export type SkillMap<T> = Array<T>;
+export type SkillMapOf<T> = Array<T>;
+export type SkillMap = SkillMapOf<number>; 
 
-export function JSONtoSkillMap<T>(j: Object) : SkillMap<T> {
+function JSONtoSkillMapFactory<T>() : (Object) => SkillMapOf<T> {
+    return (j: Object) => {
     let tees : T[] = new Array<T>(SkillType.MAX);
     for (let skillId=0; skillId < SkillType.MAX; skillId++) {
         if (j.hasOwnProperty(skillId)) {
@@ -64,9 +66,15 @@ export function JSONtoSkillMap<T>(j: Object) : SkillMap<T> {
         }
     }
     return tees;
+    }
+}
+function JSONtoSkillMapOf<T>(j: Object) : SkillMapOf<T> {
+    return JSONtoSkillMapFactory<T>()(j);
 }
 
-export function skillMapFromFactory<T>(initFactory: (number) => T) : SkillMap<T> {
+export let JSONtoSkillMap: (Object) => SkillMap = JSONtoSkillMapFactory<number>();
+
+export function skillMapFromFactory<T>(initFactory: (number) => T) : SkillMapOf<T> {
     let tees : T[] = new Array<T>(SkillType.MAX);
     for (let skillId=0; skillId < SkillType.MAX; skillId++) {
         tees[skillId] = initFactory(skillId);
@@ -74,7 +82,23 @@ export function skillMapFromFactory<T>(initFactory: (number) => T) : SkillMap<T>
     return tees;
 }
 
-export function truthySkills( sm: SkillMap<any>, callback: (s: SkillType, v:any) => void) {
+export function uniformSkillMap<T>(repeatedValue : T) : SkillMapOf<T> { 
+    return skillMapFromFactory<T>( (s:number) => { return repeatedValue; } );
+}
+
+export function mostlyUniformSkillMap<T>(repeatedValue: T, exceptions: Object) {
+    let tees : T[] = new Array<T>(SkillType.MAX);
+    for (let skillId=0; skillId < SkillType.MAX; skillId++) {
+        if (exceptions.hasOwnProperty(skillId)) {
+            tees[skillId] = exceptions[skillId];
+        } else {
+            tees[skillId] = repeatedValue;
+        }
+    }
+    return tees;
+}
+
+export function truthySkills( sm: SkillMapOf<any>, callback: (s: SkillType, v:any) => void) {
     for (let skillId=0; skillId < SkillType.MAX; skillId++) {
         let value = sm[skillId];
         if (value) {
@@ -83,7 +107,7 @@ export function truthySkills( sm: SkillMap<any>, callback: (s: SkillType, v:any)
     }
 }
 
-export function getTruthySkills( sm: SkillMap<any>) : SkillType[] {
+export function getTruthySkills( sm: SkillMapOf<any>) : SkillType[] {
     let skills: SkillType[] = new Array<SkillType>();
     for (let skillId=0; skillId < SkillType.MAX; skillId++) {
         let value = sm[skillId];

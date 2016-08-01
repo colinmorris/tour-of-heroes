@@ -1,14 +1,19 @@
-import { skillMapFromFactory, SkillMap, Skill, SkillType } from './skill';
+import { skillMapFromFactory, SkillMapOf, Skill, SkillType } from './skill';
 import { TickerService } from './ticker.service';
 import { GLOBALS } from './globals';
+import { Klass } from './klass';
+import { Perk } from './perk';
 
 export class Player {
-    skills: SkillMap<Skill>;
+    skills: SkillMapOf<Skill>;
+    perks: Perk[];
+    // TODO: this whole constructor is pretty dumb 
     constructor(
         public name: string,
         // Starts from 1 (unlike skills)
         public level: number,
-        public klass: string,
+        public klass: Klass,
+        // TODO: this is dumb. This shouldn't be here.
         public tickerService: TickerService
     ) {
         this.skills = skillMapFromFactory<Skill>(
@@ -19,7 +24,15 @@ export class Player {
     }
 
     private totalSkillLevels: number;
-    // class
+
+    canReincarnate() : boolean { return true; }
+
+    // This needs to have some preeeetty drastic global effects. For example, should
+    // kill the current action, reset the 'map'... anything else? Need to set up some
+    // way of communicating this to components.
+    reincarnate(newKlass: Klass) {
+
+    }
 
     static deserialize(saveString) : Player {
         // TODO FIXME

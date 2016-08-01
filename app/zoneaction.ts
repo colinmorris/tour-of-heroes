@@ -17,11 +17,9 @@ class ZoneActionDescription {
 }
 
 
-export type SkillDeltas = SkillMap<number>;
-
 class ZoneActionEffect {
     constructor(
-        public skillDeltas: SkillDeltas
+        public skillDeltas: SkillMap
     ){}
 }
 
@@ -35,7 +33,7 @@ export class ZoneActionModel {
          * (the higher the SP gain, the higher the player's skill levels need to be to
          * perform this action without a penalty to action speed)
          */
-        public skillDeltas: SkillDeltas,
+        public skillDeltas: SkillMap,
         public weight: number,
         public minDelay: number
     ) {}
@@ -68,7 +66,7 @@ export class ZoneActionModel {
         // (why -1? deltas start at 1, but skill levels start at 0)
         
         let inexperiencePenalty:number = 1.0;
-        for (let s: SkillType of getTruthySkills(this.skillDeltas)) {
+        for (let s of getTruthySkills(this.skillDeltas)) {
             // TODO: it's possible these should be weighted for cases where skillDeltas.length > 1
             let shortfall = Math.max(0, this.skillDeltas[s] - (player.skills[s].level+1));
             inexperiencePenalty *= Math.pow(GLOBALS.inexperiencePenaltyBase, shortfall);
@@ -90,7 +88,7 @@ export class ZoneAction {
     checkTimer: number;
     pctProgress: number = 0;
     description: ZoneActionDescription;
-    delta: SkillDeltas;
+    delta: SkillMap;
     constructor(
         public action: ZoneActionModel,
         public player: Player

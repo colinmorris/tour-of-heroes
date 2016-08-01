@@ -1,6 +1,7 @@
 import { Injectable, OnInit } from '@angular/core';
 import { GLOBALS } from './globals';
 import { Player } from './player';
+import { KLASSES } from './klass.data';
 
 import { TickerService } from './ticker.service';
 
@@ -20,7 +21,7 @@ export class PlayerService implements OnInit {
             this.player = new Player(
                 'Coolin',
                 1,
-                'Peasant',
+                KLASSES[0], // peasant
                 this.tickerService
             );
         }

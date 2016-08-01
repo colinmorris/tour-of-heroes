@@ -6,8 +6,7 @@ import { ActiveZoneService } from './activezone.service';
 import { Player } from './player';
 import { PlayerService } from './player.service';
 import { TickerService } from './ticker.service';
-import { SkillDeltas } from './zoneaction';
-import { truthySkills, SkillType } from './skill';
+import { SkillMap, SkillMapOf, truthySkills, SkillType } from './skill';
 
 /* Responsible for maintaining its own "active" status and, when active, creating
  * and killing ZoneActions. The internal logic of those actions (their timing and 
@@ -55,7 +54,7 @@ export class ZoneComponent implements OnInit {
         this.player = playerService.player;
     }
 
-    formatDelta(delta: SkillDeltas) : string {
+    formatDelta(delta: SkillMap) : string {
         let s = "(";
         truthySkills(delta, 
             (skill: SkillType, amt: number) => {
