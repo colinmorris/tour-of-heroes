@@ -15,7 +15,7 @@ export const GLOBALS = {
     // code is therefore pretty prone to breaking out of version compat issues
     loadSaves: false,
 
-    actionBarUpdateInterval: 200,
+    actionBarUpdateInterval: 50,
 
     // Every 5 levels of difference leads to a doubling of time.
     inexperiencePenaltyBase: 1.1487,

@@ -16,13 +16,21 @@ import { SkillMap, SkillMapOf, truthySkills, SkillType } from './skill';
     selector: 'zone',
     // TODO: Css junk - figure out how to put "ongoing" text stationary in the middle
     // of the progress div
+
+    // Without tweak to transition-duration, it's very jerky
+    styles: [`
+        .progress-bar {
+            transition-duration: .1s;
+        }`],
     template: `
     <h3>{{zone.name}} {{active ? "(ACTIVE)" : ""}}</h3>
     <p>{{zone.description}}</p>
     <div *ngIf="currentAction">
 
         <div class="progress">
-            <span class="ongoing">{{currentAction.description.present}}</span>
+            <span class="ongoing">
+                {{currentAction.description.present}} 
+            </span>
             <div class="progress-bar" [style.width.%]="currentAction.pctProgress">
             </div>
         </div>
