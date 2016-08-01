@@ -1,32 +1,25 @@
 import { Component } from '@angular/core';
-import { Player } from './player';
-import { PlayerService } from './player.service';
-import { CharacterComponent } from './character.component';
+import { HomeComponent } from './home.component';
 
-import { ZonesComponent } from './zones.component';
+import { PlayerService } from './player.service';
 
 import { TickerService } from './ticker.service';
 import { TickerComponent } from './ticker.component';
 
+import { ActiveZoneService } from './activezone.service';
+
 @Component({
     selector: 'my-app',
-    directives: [TickerComponent, CharacterComponent, ZonesComponent],
+    directives: [TickerComponent, HomeComponent],
     template: `
-    <div class="row">
-        <div class="col-xs-6">
-            <player-pane></player-pane>
-        </div>
-        <div class="col-xs-6">
-            <zones></zones>
-        </div>
-    </div>
+    <home></home>
     <div class="row">
         <ticker></ticker>
         <button (click)="playerService.saveState()">Save</button>
         <button (click)="playerService.clearSave()">Reset Save</button>
     </div>
   `,
-  providers: [TickerService, PlayerService],
+  providers: [TickerService, PlayerService, ActiveZoneService]
 })
 
 export class AppComponent {

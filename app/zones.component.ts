@@ -6,7 +6,6 @@ import { Zone } from './zone';
 import { ZoneAction } from './zoneaction';
 import { ZoneComponent } from './zone.component';
 import { ZONES } from './zones.data';
-import { ActiveZoneService } from './activezone.service';
 
 import { Skill, SkillType } from './skill';
 
@@ -26,8 +25,7 @@ import { PlayerService } from './player.service';
             </zone>
         </div>
     </div>
-    `,
-    providers: [ActiveZoneService]
+    `
 })
 
 export class ZonesComponent implements OnInit {

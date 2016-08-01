@@ -1,5 +1,4 @@
 import { skillMapFromFactory, SkillMapOf, Skill, SkillType } from './skill';
-import { TickerService } from './ticker.service';
 import { GLOBALS } from './globals';
 import { Klass } from './klass';
 import { Perk } from './perk';
@@ -13,14 +12,11 @@ export class Player {
         // Starts from 1 (unlike skills)
         public level: number,
         public klass: Klass,
-        // TODO: this is dumb. This shouldn't be here.
-        public tickerService: TickerService
     ) {
         this.skills = skillMapFromFactory<Skill>(
             (s: number) => { return new Skill(s, SkillType[s], 0, 1.0, 0); }
         );
         this.totalSkillLevels = 0;
-        this.tickerService = tickerService;
     }
 
     private totalSkillLevels: number;
@@ -58,12 +54,12 @@ export class Player {
         let delta = this.skills[skill].train(skillPoints);
         if (delta > 0) {
             let msg = "Increased " + SkillType[skill] + " to level " + this.skills[skill].level;
-            this.tickerService.logImportant(msg);
+            //this.tickerService.logImportant(msg);
             let newTotal = this.totalSkillLevels + delta;
             let thresh = this.skillLevelsForNextLevel();
             while (newTotal >= thresh) {
                 this.level++;
-                this.tickerService.logImportant(this.name + " reached level " + this.level + "!");
+                //this.tickerService.logImportant(this.name + " reached level " + this.level + "!");
                 newTotal -= thresh;
                 thresh = this.skillLevelsForNextLevel();
             }
@@ -87,7 +83,7 @@ export class Player {
         // Basically every attribute should be saved except for the ticker service
         // because it's got cyclical references and who needs it
         let twin = Object.assign({}, this);
-        delete twin.tickerService;
+        //delete twin.tickerService;
         return JSON.stringify(twin);
         
     }
