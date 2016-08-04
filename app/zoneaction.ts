@@ -1,5 +1,5 @@
-import { Player } from './player';
 import { TickerService } from './ticker.service';
+import { GameService } from './game.service';
 import { GLOBALS } from './globals';
 import { getTruthySkills, truthySkills, SkillType, SkillMap } from './skill';
 
@@ -38,7 +38,7 @@ export class ZoneActionModel {
         public minDelay: number
     ) {}
 
-    getEffect(player: Player) : ZoneActionEffect {
+    getEffect(game: GameService) : ZoneActionEffect {
         return new ZoneActionEffect(this.skillDeltas);
     }
     
@@ -60,7 +60,7 @@ export class ZoneActionModel {
         return pred;
     }
 
-    delay(player: Player) : number {
+    delay(game: GameService) : number {
         // If player.skills[s] >= (this.skillDeltas[s]-1) for all s, we apply no
         // 'inexperience' penalty. Any skills below that threshold are punished (super-linearly)
         // (why -1? deltas start at 1, but skill levels start at 0)
@@ -68,7 +68,7 @@ export class ZoneActionModel {
         let inexperiencePenalty:number = 1.0;
         for (let s of getTruthySkills(this.skillDeltas)) {
             // TODO: it's possible these should be weighted for cases where skillDeltas.length > 1
-            let shortfall = Math.max(0, this.skillDeltas[s] - (player.skills[s].level+1));
+            let shortfall = Math.max(0, this.skillDeltas[s] - (game.chara.skills[s].level+1));
             inexperiencePenalty *= Math.pow(GLOBALS.inexperiencePenaltyBase, shortfall);
         }
         if (inexperiencePenalty > 1) {
@@ -91,13 +91,16 @@ export class ZoneAction {
     delta: SkillMap;
     constructor(
         public action: ZoneActionModel,
-        public player: Player
+        public game: GameService
     ){
         this.description = action.chooseDescription();
     }
 
+    // Set this action into, um, action. Starts a timer and puts the action's
+    // effect into, er, effect after it's done (i.e. raising the player's skill
+    // levels and so on). Also calls the given callback when the timer runs out.
     start(onCompletion: ()=>void) {
-        this.duration = this.action.delay(this.player);
+        this.duration = this.action.delay(this.game);
         this.startTime = new Date().getTime();
         this.timer = window.setTimeout(
             () => {
@@ -126,11 +129,11 @@ export class ZoneAction {
     }
 
     effect() {
-        let ef: ZoneActionEffect = this.action.getEffect(this.player);
+        let ef: ZoneActionEffect = this.action.getEffect(this.game);
         this.delta = ef.skillDeltas;
         truthySkills(ef.skillDeltas, 
             (skill: SkillType, delta: number) => {
-                this.player.character.trainSkill(skill, delta);
+                this.game.trainSkill(skill, delta);
             }
         );
     }

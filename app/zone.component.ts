@@ -3,8 +3,7 @@ import { OnInit, SimpleChange, Component, Input, EventEmitter, Output } from '@a
 import { Zone } from './zone';
 import { ZoneAction } from './zoneaction';
 import { ActiveZoneService } from './activezone.service';
-import { Player } from './player';
-import { PlayerService } from './player.service';
+import { GameService } from './game.service';
 import { TickerService } from './ticker.service';
 import { SkillMap, SkillMapOf, truthySkills, SkillType } from './skill';
 
@@ -52,16 +51,13 @@ export class ZoneComponent implements OnInit {
 
     @Input() zone : Zone;
     private _active: boolean = false;
-    player: Player;
     currentAction: ZoneAction;
     lastAction: ZoneAction;
     constructor(
         private activeZoneService: ActiveZoneService,
-        private playerService: PlayerService,
+        private gameService: GameService,
         private tickerService: TickerService
-    ) {
-        this.player = playerService.player;
-    }
+    ) { }
     ngOnInit() {
         this.activeZoneService.activeZoneChannel.subscribe({
             next: zid => {
@@ -99,7 +95,7 @@ export class ZoneComponent implements OnInit {
 
     queueAction() {
         this.lastAction = this.currentAction;
-        this.currentAction = this.zone.getAction(this.player);
+        this.currentAction = this.zone.getAction(this.gameService);
         this.currentAction.start(
             () => { 
                 this.currentAction.broadcast(this.tickerService);

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { PlayerService } from './player.service';
+import { GameService } from './game.service';
 
 import { TickerService } from './ticker.service';
 import { TickerComponent } from './ticker.component';
@@ -23,15 +23,17 @@ import { KlassesComponent } from './klasses.component';
     <klass-viewer [hidden]="view != 'klasses'">
     <div class="row">
         <ticker></ticker>
-        <button (click)="playerService.saveState()">Save</button>
-        <button (click)="playerService.clearSave()">Reset Save</button>
+        <button (click)="gameService.saveState()">Save</button>
+        <button (click)="gameService.clearSave()">Reset Save</button>
     </div>
   `,
-  providers: [TickerService, PlayerService, ActiveZoneService]
+  providers: [TickerService, GameService, ActiveZoneService]
 })
 
 export class AppComponent {
     view: string = "home";
+
+    constructor(private gameService: GameService) {}
 }
 
 

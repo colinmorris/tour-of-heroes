@@ -28,47 +28,47 @@
 // with weird/game-changing/buildaround effects, and skill perks should tend to
 // be more boring (e.g. static bonuses to skill/aptitude)
 
-import { Player } from './player';
-import { PlayerService } from './player.service';
+import { GameService } from './game.service';
+import { Character } from './character';
 
 
 export interface Perk {
     name: string;
-    setup(ps: PlayerService);
+    setup(game: GameService);
     teardown();
 }
 
 abstract class LevelPerk implements Perk {
     name: string;
     subscription;
-    setup(ps: PlayerService) {
-        this.subscription = ps.levelSubject.subscribe(
+    setup(game: GameService) {
+        this.subscription = game.levelSubject.subscribe(
             (next) => {
-                this.levelChange(next, ps.player);
+                this.levelChange(next, game.chara);
             });
     }
     teardown() {
         this.subscription.unsubscribe();
     }
 
-    abstract levelChange(next: number, player: Player);
+    abstract levelChange(next: number, chara: Character);
 }
 
 class PeasantPerk extends LevelPerk {
     active : boolean = false;
     name = "peasant";
-    levelChange(level: number, player: Player) {
+    levelChange(level: number, chara: Character) {
         console.log(`Observed level go to ${level}`);
         if (!this.active && level < 5) {
-            this.activate(player);
+            this.activate(chara);
         } else if (this.active && level >= 5) {
-            this.deactivate(player);
+            this.deactivate(chara);
         }
     }
 
-    activate(player: Player) {
+    activate(chara: Character) {
         this.active = true;
-        for (let skill of player.character.skills) {
+        for (let skill of chara.skills) {
             // TODO: this is assuming that...
             // a) this perk should only double 'base' aptitude (not buffed)
             // b) base aptitude can't change within a lifetime
@@ -76,8 +76,8 @@ class PeasantPerk extends LevelPerk {
         }
     }
 
-    deactivate(player: Player) {
-        for (let skill of player.character.skills) {
+    deactivate(chara: Character) {
+        for (let skill of chara.skills) {
             skill.removeBonus("aptitude", this.name);
         }
     }

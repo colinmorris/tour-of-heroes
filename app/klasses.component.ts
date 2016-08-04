@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 
 import { ActiveZoneService } from './activezone.service';
-import { PlayerService } from './player.service';
-import { Player } from './player';
+import { GameService } from './game.service';
 
 import { KLASSES } from './klass.data';
 import { Klass } from './klass';
@@ -22,19 +21,17 @@ import { Klass } from './klass';
 export class KlassesComponent {
 
     klasses: Klass[];
-    player: Player;
     selected: Klass;
     
-    constructor(private playerService: PlayerService,
+    constructor(private gameService: GameService,
                 private azService: ActiveZoneService       
                 ) {
         this.klasses = KLASSES;
-        this.player = playerService.player;
     }
 
     reincarnate() {
         this.azService.resetActiveZone();
         console.log("You reincarnated as a " + this.selected.name + ". yay");
-        this.player.reincarnate(this.selected);
+        this.gameService.reincarnate(this.selected);
     }
 }

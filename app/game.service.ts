@@ -1,9 +1,10 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { GLOBALS } from './globals';
-import { Player, Character } from './player';
+import { Character } from './character';
 import { KLASSES } from './klass.data';
 import { Klass } from './klass';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { SkillType } from './skill';
 
 /* This is basically the big-global-state-god-object-service (could probably
  * just as well be called 'GameService'). If you want to modify the Player
@@ -11,8 +12,8 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
  * probably enforce that by setting methods to private where appropriate.
  */
 @Injectable()
-export class PlayerService implements OnInit {
-    // TODO XXX YOUAREHERE hook this thing up
+export class GameService {
+    chara: Character;
     levelSubject: BehaviorSubject<number>;
 
     constructor() {
@@ -21,33 +22,43 @@ export class PlayerService implements OnInit {
         let saved = localStorage.getItem(GLOBALS.localStorageToken);
         if (saved && GLOBALS.loadSaves) {
             console.log("Loading saved character data");
-            this.player = Player.deserialize(saved); 
+            // blah blah
+            // this.chara = Player.deserialize(saved); 
         } else {
             let defaultKlass: Klass = KLASSES[0];
             console.log("Creating new character");
-            let newborn: Character = Character.newborn("Coolin", defaultKlass);
-            this.player = new Player(newborn);
+            let newborn: Character = Character.newborn("Coolin", defaultKlass, this);
+            this.chara = newborn;
         }
-        this.levelSubject = new BehaviorSubject<number>(this.player.character.level);
-        this.player.character.levelSubject = this.levelSubject;
+        // TODO: Figure this thing out
+        this.levelSubject = new BehaviorSubject<number>(this.chara.level);
         this.setupPerks();
     }
 
     setupPerks() {
-        for (let perk of this.player.character.perks) {
+        for (let perk of this.chara.perks) {
             console.log(`Setting up perk ${perk.name}`);
             perk.setup(this);
         }
     }
 
-    player : Player;
-
-    ngOnInit() {
+    reincarnate(klass: Klass) {
+        for (let perk of this.chara.perks) {
+            perk.teardown();
+        }
+        this.chara = Character.newborn(this.chara.name, klass, this);
     }
 
+    trainSkill(skill: SkillType, points: number) {
+        this.chara.trainSkill(skill, points);
+    }
+
+
+
+    // ---- SAVING STUFF - to fix later ----
     saveState() {
         localStorage.setItem(GLOBALS.localStorageToken,
-                             this.player.serialize()
+                             "foo" //this.player.serialize()
                             );
     }
 

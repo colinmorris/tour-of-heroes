@@ -10,8 +10,6 @@ import { ZONES } from './zones.data';
 import { Skill, SkillType } from './skill';
 
 import { GLOBALS } from './globals';
-import { Player } from './player';
-import { PlayerService } from './player.service';
 
 @Component({
     selector: 'zones',
@@ -33,12 +31,10 @@ export class ZonesComponent implements OnInit {
     get zones() : Zone[] {
         return ZONES[this.superzone];
     }
-    player : Player;
 
-    constructor(private playerService: PlayerService,
+    constructor(
         private tickerService: TickerService
     ) {
-        this.player = playerService.player;
     }
     
     ngOnInit() {

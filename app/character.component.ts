@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 
 import { ProgressBarComponent } from './progressbar.component';
-import { PlayerService } from './player.service';
-import { Player, Character } from './player';
+import { GameService } from './game.service';
+import { Character } from './character';
 import { Skill } from './skill';
 
 @Component({
@@ -27,12 +27,10 @@ import { Skill } from './skill';
 })
 
 export class CharacterComponent {
-    player : Player;
     character: Character;
 
-    constructor(private playerService : PlayerService) {
-        this.player = playerService.player;
-        this.character = this.player.character;
+    constructor(private gameService : GameService) {
+        this.character = gameService.chara;
     }
 
     aptitudeString(skill: Skill) {

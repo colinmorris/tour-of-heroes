@@ -1,6 +1,6 @@
 import { SkillMap, SkillType, JSONtoSkillMap } from './skill';
 import { ZoneAction, ZoneActionModel } from './zoneaction';
-import { Player } from './player';
+import { GameService } from './game.service';
 
 import { GLOBALS } from './globals';
 
@@ -38,13 +38,13 @@ export class Zone {
 
     // Unlock req'ts...
 
-    getAction(player: Player) : ZoneAction {
+    getAction(gameService: GameService) : ZoneAction {
         let dice: number = Math.random() * this.totalWeight;
         let sofar = 0;
         for (let zam of this.actions) {
             sofar += zam.weight;
             if (sofar > dice) {
-                return new ZoneAction(zam, player);
+                return new ZoneAction(zam, gameService);
             }
         }
         console.assert(false, "Shouldnt have reached here.");
