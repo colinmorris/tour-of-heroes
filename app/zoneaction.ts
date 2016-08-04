@@ -72,7 +72,7 @@ export class ZoneActionModel {
             inexperiencePenalty *= Math.pow(GLOBALS.inexperiencePenaltyBase, shortfall);
         }
         if (inexperiencePenalty > 1) {
-            console.log("Penalizing by " + inexperiencePenalty);
+            //console.log("Penalizing by " + inexperiencePenalty);
         }
         return this.minDelay * inexperiencePenalty;
     }
@@ -130,7 +130,7 @@ export class ZoneAction {
         this.delta = ef.skillDeltas;
         truthySkills(ef.skillDeltas, 
             (skill: SkillType, delta: number) => {
-                this.player.trainSkill(skill, delta);
+                this.player.character.trainSkill(skill, delta);
             }
         );
     }

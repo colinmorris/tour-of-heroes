@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { HomeComponent } from './home.component';
 
 import { PlayerService } from './player.service';
 
@@ -8,11 +7,20 @@ import { TickerComponent } from './ticker.component';
 
 import { ActiveZoneService } from './activezone.service';
 
+import { HomeComponent } from './home.component';
+import { KlassesComponent } from './klasses.component';
+
+
 @Component({
     selector: 'my-app',
-    directives: [TickerComponent, HomeComponent],
+    directives: [HomeComponent, KlassesComponent, TickerComponent],
     template: `
-    <home></home>
+    <nav>
+        <a (click)="view='home'">Home</a>
+        <a (click)="view='klasses'">Classes</a>
+    </nav>
+    <home [hidden]="view != 'home'"></home>
+    <klass-viewer [hidden]="view != 'klasses'">
     <div class="row">
         <ticker></ticker>
         <button (click)="playerService.saveState()">Save</button>
@@ -23,7 +31,7 @@ import { ActiveZoneService } from './activezone.service';
 })
 
 export class AppComponent {
-
+    view: string = "home";
 }
 
 

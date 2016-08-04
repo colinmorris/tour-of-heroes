@@ -39,6 +39,7 @@ import { SkillMap, SkillMapOf, truthySkills, SkillType } from './skill';
             {{lastAction.description.past}} {{formatDelta(lastAction.delta)}}
         </div>
 
+        <button (click)="active = false">Stop</button>
     </div>
 
     <div *ngIf="!active">
@@ -60,6 +61,13 @@ export class ZoneComponent implements OnInit {
         private tickerService: TickerService
     ) {
         this.player = playerService.player;
+    }
+    ngOnInit() {
+        this.activeZoneService.activeZoneChannel.subscribe({
+            next: zid => {
+                this.active = (this.zone.zid == zid);
+            }
+        });
     }
 
     formatDelta(delta: SkillMap) : string {
@@ -84,12 +92,6 @@ export class ZoneComponent implements OnInit {
         } else {
             this.sleep();
         }
-    }
-    ngOnInit() {
-        this.activeZoneService.activeZoneChannel.subscribe(
-            zid => {
-                this.active = (this.zone.zid == zid);
-            });
     }
     wake() {
         this.queueAction();

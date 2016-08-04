@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { CharacterComponent } from './character.component';
 import { ZonesComponent } from './zones.component';
+import { SUPERZONES } from './zones.data';
 
 @Component({
     selector: 'home',
@@ -12,11 +13,24 @@ import { ZonesComponent } from './zones.component';
             <player-pane></player-pane>
         </div>
         <div class="col-xs-6">
-            <zones></zones>
+            <nav>
+                <a *ngFor="let super of superzones" (click)="superzone=super">{{super}}</a>
+            </nav>
+            <zones *ngFor="let super of superzones" [superzone]="super" [hidden]="super != superzone"></zones>
         </div>
     </div>
   `
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit, OnDestroy {
 
+    superzone: string = 'fields';
+    superzones: string[] = SUPERZONES;
+    constructor(
+    ) {}
+
+    ngOnInit() {
+    }
+
+    ngOnDestroy() {
+    }
 }

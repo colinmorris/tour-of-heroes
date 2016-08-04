@@ -6,6 +6,7 @@ import { GLOBALS } from './globals';
 
 export class Zone {
     zid: number;
+    superzone: string;
     actions: ZoneActionModel[];
     name: string;
     description: string;
@@ -14,8 +15,9 @@ export class Zone {
     private totalWeight: number = 0;
 
     // TODO: this method is dumb
-    static fromJSON(j: any, id:number) : Zone {
+    static fromJSON(j: any, id:number, superzone: string) : Zone {
         let z : Zone = new Zone();
+        z.superzone = superzone;
         z.zid = id;
         z.name = j.name;
         z.description = j.description;
@@ -23,6 +25,7 @@ export class Zone {
         z.baseDelay = j.baseDelay ? j.baseDelay : GLOBALS.defaultBaseZoneDelay;
         for (let a of j.actions) {
             let delay:number = z.baseDelay * (a.delayx ? a.delayx : 1);
+            //console.log(`Reduced delay of ${a.vb} from ${z.baseDelay} to ${delay}`);
             z.actions.push(new ZoneActionModel(
                 a.vb, a.obj, a.opts, 
                 JSONtoSkillMap(a.skills), 

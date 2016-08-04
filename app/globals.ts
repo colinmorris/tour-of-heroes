@@ -9,7 +9,7 @@ export const GLOBALS = {
     backgroundSaveFrequency_ms: 1000 * 60,
 
     // The default minimum delay of actions across zones in ms
-    defaultBaseZoneDelay: 9000,
+    defaultBaseZoneDelay: 500,
 
     // Disabling this for now. Stuff is changing too fast and the serialization
     // code is therefore pretty prone to breaking out of version compat issues
@@ -18,5 +18,5 @@ export const GLOBALS = {
     actionBarUpdateInterval: 50,
 
     // Every 5 levels of difference leads to a doubling of time.
-    inexperiencePenaltyBase: 1.1487,
+    inexperiencePenaltyBase: 1.0, //1487,
 }

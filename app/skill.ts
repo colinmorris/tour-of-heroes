@@ -1,6 +1,13 @@
 import { GLOBALS } from './globals';
 
+interface Bonus {
+    amt: number;
+    name: string;
+}
+
 export class Skill {
+    aptitudeBonuses: Bonus[] = [];
+    levelBonuses: Bonus[] = [];
     constructor(
         public id: number,
         public name: string,
@@ -9,6 +16,42 @@ export class Skill {
         public aptitude: number,
         public skillPoints: number
     ){}
+
+    get effectiveAptitude() {
+        return this.aptitude + this.bonusAptitude;
+    }
+    get bonusAptitude() {
+        return this.aptitudeBonuses.reduce(
+            (prev: number, curr: Bonus) => {
+                return prev+curr.amt;
+            },
+            0);
+    }
+    // TODO
+    get effectiveSkill(){ 
+        return 0;
+    }
+    get bonusSkill(){
+        return 0;
+    }
+
+    addBonus(to: string, name: string, amt: number) {
+        console.log(`Applying ${name} buff`);
+        let destArray = to == "level" ? this.levelBonuses : this.aptitudeBonuses;
+        destArray.push( {amt: amt, name: name} );
+    }
+
+    removeBonus(which: string, name: string) {
+        console.log(`Removing ${name} buff`);
+        let destArray = which == "level" ? this.levelBonuses : this.aptitudeBonuses;
+        let match = destArray.findIndex( (element) => { return element.name == name; });
+        if (match != -1) {
+            destArray.splice(match, 1);
+        } else {
+            console.warn(`Couldn't find bonus with name ${name}`);
+        }
+    }
+
 
     train(points: number) : number {
         let newTotal = this.skillPoints + (points * this.aptitude);
@@ -45,10 +88,14 @@ export enum SkillType {
     Farming = 0,
     Combat,
     Woodcutting,
+
     Dance,
-    Intellect,
     Charm,
     Stealth,
+    
+    Riding,
+    Intellect,
+    Piety,
     MAX,
 }
 

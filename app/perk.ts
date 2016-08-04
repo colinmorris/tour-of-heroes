@@ -19,7 +19,71 @@
 //
 // Also, another type would be the providing of temporary (prob random) buffs,
 // which could have the effect of any of the benefits in the first list.
+//
+// Maybe perks should be grouped according to where/when they're active, and
+// for each group, we set up a listener for changes (e.g. zone changes) at 
+// which point we check whether the perk should fire
+//
+// Maybe a guideline should be that class perks should be the 'crazy' ones
+// with weird/game-changing/buildaround effects, and skill perks should tend to
+// be more boring (e.g. static bonuses to skill/aptitude)
 
-export class Perk {
+import { Player } from './player';
+import { PlayerService } from './player.service';
+
+
+export interface Perk {
+    name: string;
+    setup(ps: PlayerService);
+    teardown();
+}
+
+abstract class LevelPerk implements Perk {
+    name: string;
+    subscription;
+    setup(ps: PlayerService) {
+        this.subscription = ps.levelSubject.subscribe(
+            (next) => {
+                this.levelChange(next, ps.player);
+            });
+    }
+    teardown() {
+        this.subscription.unsubscribe();
+    }
+
+    abstract levelChange(next: number, player: Player);
+}
+
+class PeasantPerk extends LevelPerk {
+    active : boolean = false;
+    name = "peasant";
+    levelChange(level: number, player: Player) {
+        console.log(`Observed level go to ${level}`);
+        if (!this.active && level < 5) {
+            this.activate(player);
+        } else if (this.active && level >= 5) {
+            this.deactivate(player);
+        }
+    }
+
+    activate(player: Player) {
+        this.active = true;
+        for (let skill of player.character.skills) {
+            // TODO: this is assuming that...
+            // a) this perk should only double 'base' aptitude (not buffed)
+            // b) base aptitude can't change within a lifetime
+            skill.addBonus("aptitude", this.name, skill.aptitude);
+        }
+    }
+
+    deactivate(player: Player) {
+        for (let skill of player.character.skills) {
+            skill.removeBonus("aptitude", this.name);
+        }
+    }
 
 }
+
+export const CLASS_PERKS = {
+    'Peasant': PeasantPerk,
+};

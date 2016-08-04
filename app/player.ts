@@ -1,34 +1,102 @@
 import { skillMapFromFactory, SkillMapOf, Skill, SkillType } from './skill';
 import { GLOBALS } from './globals';
 import { Klass } from './klass';
-import { Perk } from './perk';
+import { Perk, CLASS_PERKS } from './perk';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
-export class Player {
-    skills: SkillMapOf<Skill>;
-    perks: Perk[];
-    // TODO: this whole constructor is pretty dumb 
+export class Character {
+    levelSubject: BehaviorSubject<number>;
     constructor(
         public name: string,
         // Starts from 1 (unlike skills)
         public level: number,
         public klass: Klass,
+        public skills: SkillMapOf<Skill>,
+        public perks: Perk[]
     ) {
-        this.skills = skillMapFromFactory<Skill>(
-            (s: number) => { return new Skill(s, SkillType[s], 0, 1.0, 0); }
-        );
         this.totalSkillLevels = 0;
     }
 
+    static newbornSkills(klass: Klass) {
+        return skillMapFromFactory<Skill>(
+            (s: SkillType) => {
+                return new Skill(s, SkillType[s], 0, klass.aptitudes[s], 0);
+            }
+        );
+    }
+
+    static newborn(name: string, klass: Klass) {
+        let perks: Perk[] = [];
+        if (CLASS_PERKS[klass.name]) {
+            perks.push(new CLASS_PERKS[klass.name]());
+        } else {
+            console.warn(`Couldn't find a perk for class ${klass.name}.`);
+        }
+        return new Character(name, 1, klass, 
+                             Character.newbornSkills(klass),
+                             perks
+                            );
+    }
+
     private totalSkillLevels: number;
+    
+    trainSkill(skill: SkillType, skillPoints: number) {
+        let delta = this.skills[skill].train(skillPoints);
+        if (delta > 0) {
+            let msg = "Increased " + SkillType[skill] + " to level " + this.skills[skill].level;
+            //this.tickerService.logImportant(msg);
+            let newTotal = this.totalSkillLevels + delta;
+            let thresh = this.skillLevelsForNextLevel();
+            while (newTotal >= thresh) {
+                this.level++;
+                //this.tickerService.logImportant(this.name + " reached level " + this.level + "!");
+                newTotal -= thresh;
+                thresh = this.skillLevelsForNextLevel();
+                this.levelSubject.next(this.level);
+            }
+            this.totalSkillLevels = newTotal;
+        }
+    }
+
+    skillLevelsForNextLevel() : number {
+        return Character.skillLevelsForNextLevel(this.level);
+    }
+
+    static skillLevelsForNextLevel(level: number) : number {
+        return GLOBALS.playerLevelIncrement * level;
+    }
+
+    percentProgress() : number {
+        return 100 * (this.totalSkillLevels / this.skillLevelsForNextLevel());
+    }
+
+}
+
+// TODO: Separation of concerns btwn "Player" and "Character" not really well
+// defined at this point. Not rly clear why "Player" needs to exist.
+export class Player {
+    constructor(
+        public character: Character
+        ) {
+        }
 
     canReincarnate() : boolean { return true; }
 
-    // This needs to have some preeeetty drastic global effects. For example, should
-    // kill the current action, reset the 'map'... anything else? Need to set up some
-    // way of communicating this to components.
     reincarnate(newKlass: Klass) {
-
+        for (let perk of this.character.perks) {
+            perk.teardown();
+        }
+        this.character = Character.newborn(this.character.name, newKlass);
     }
+
+    get skills() : SkillMapOf<Skill> {
+        return this.character.skills;
+    }
+
+
+
+
+
 
     static deserialize(saveString) : Player {
         // TODO FIXME
@@ -50,34 +118,6 @@ export class Player {
        return undefined;
     }
 
-    trainSkill(skill: SkillType, skillPoints: number) {
-        let delta = this.skills[skill].train(skillPoints);
-        if (delta > 0) {
-            let msg = "Increased " + SkillType[skill] + " to level " + this.skills[skill].level;
-            //this.tickerService.logImportant(msg);
-            let newTotal = this.totalSkillLevels + delta;
-            let thresh = this.skillLevelsForNextLevel();
-            while (newTotal >= thresh) {
-                this.level++;
-                //this.tickerService.logImportant(this.name + " reached level " + this.level + "!");
-                newTotal -= thresh;
-                thresh = this.skillLevelsForNextLevel();
-            }
-            this.totalSkillLevels = newTotal;
-        }
-    }
-
-    skillLevelsForNextLevel() : number {
-        return Player.skillLevelsForNextLevel(this.level);
-    }
-
-    static skillLevelsForNextLevel(level: number) : number {
-        return GLOBALS.playerLevelIncrement * level;
-    }
-
-    percentProgress() : number {
-        return 100 * (this.totalSkillLevels / this.skillLevelsForNextLevel());
-    }
 
     serialize() : string { 
         // Basically every attribute should be saved except for the ticker service

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Input, Component, OnInit } from '@angular/core';
 
 import { TickerService } from './ticker.service';
 
@@ -29,11 +29,12 @@ import { PlayerService } from './player.service';
 })
 
 export class ZonesComponent implements OnInit {
-    zones : Zone[] = ZONES;
+    @Input() superzone : string;
+    get zones() : Zone[] {
+        return ZONES[this.superzone];
+    }
     player : Player;
 
-    private currentAction : ZoneAction;
-    
     constructor(private playerService: PlayerService,
         private tickerService: TickerService
     ) {
