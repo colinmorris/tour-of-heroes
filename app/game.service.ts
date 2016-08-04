@@ -4,7 +4,9 @@ import { Character } from './character';
 import { KLASSES } from './klass.data';
 import { Klass } from './klass';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { SkillType } from './skill';
+import { Subject } from 'rxjs/Subject';
+import { SkillType, SkillMap } from './skill';
+import { LifetimeStats } from './stats';
 
 /* This is basically the big-global-state-god-object-service (could probably
  * just as well be called 'GameService'). If you want to modify the Player
@@ -15,8 +17,13 @@ import { SkillType } from './skill';
 export class GameService {
     chara: Character;
     levelSubject: BehaviorSubject<number>;
+    // Skill type, skill level
+    skillSubject: Subject<[SkillType,number]>;
 
-    constructor() {
+    stats: LifetimeStats;
+
+    constructor(
+    ) {
         // Apparently OnInit is supposed to be better, but it seems to lead
         // to weird race conditions in this case.
         let saved = localStorage.getItem(GLOBALS.localStorageToken);
@@ -30,8 +37,9 @@ export class GameService {
             let newborn: Character = Character.newborn("Coolin", defaultKlass, this);
             this.chara = newborn;
         }
-        // TODO: Figure this thing out
+        this.skillSubject = new Subject<[SkillType,number]>();
         this.levelSubject = new BehaviorSubject<number>(this.chara.level);
+        this.stats = new LifetimeStats(this);
         this.setupPerks();
     }
 

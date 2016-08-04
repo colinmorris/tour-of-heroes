@@ -52,7 +52,7 @@ export class Skill {
         }
     }
 
-
+    // Returns number of (integer) levels gained
     train(points: number) : number {
         let newTotal = this.skillPoints + (points * this.aptitude);
         let thresh = this.pointsForNextLevel();

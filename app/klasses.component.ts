@@ -5,14 +5,19 @@ import { GameService } from './game.service';
 
 import { KLASSES } from './klass.data';
 import { Klass } from './klass';
+import { KlassesService } from './klasses.service';
 
 @Component({
     selector: 'klass-viewer',
     directives: [],
+    styles: [`
+        .locked {
+            color: grey;
+        }`],
     template: `
     <ul>
         <li *ngFor="let klass of klasses">
-            <a (click)="selected=klass">{{ klass.name }}</a>
+            <a (click)="selected=klass" [class.locked]="!klass.unlocked">{{ klass.name }}</a>
         </li>
     </ul>
     <button [disabled]="!selected" (click)="reincarnate()">Reincarnate!</button>
@@ -24,7 +29,8 @@ export class KlassesComponent {
     selected: Klass;
     
     constructor(private gameService: GameService,
-                private azService: ActiveZoneService       
+                private azService: ActiveZoneService,
+                private ks: KlassesService
                 ) {
         this.klasses = KLASSES;
     }

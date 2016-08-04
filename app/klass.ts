@@ -3,11 +3,11 @@ import { SkillMap } from './skill';
 
 // 1 -> unlocked, but can take values from (0,1) to show relative progress
 // Actually meh
-export type Unlocked = boolean | number;
-export type UnlockReq = (stats: LifetimeStats) => Unlocked;
+type Unlocked = boolean; 
+type UnlockReq = (stats: LifetimeStats) => Unlocked;
 
 export class Klass { 
-
+    unlocked: Unlocked = false;
     constructor(
         public name: string,
         public aptitudes: SkillMap,

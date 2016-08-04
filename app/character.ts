@@ -45,6 +45,9 @@ export class Character {
     trainSkill(skill: SkillType, skillPoints: number) {
         let delta = this.skills[skill].train(skillPoints);
         if (delta > 0) {
+            // Announce the new skill level
+            this.game.skillSubject.next([skill, this.skills[skill].level]);
+
             let msg = "Increased " + SkillType[skill] + " to level " + this.skills[skill].level;
             //this.tickerService.logImportant(msg);
             let newTotal = this.totalSkillLevels + delta;

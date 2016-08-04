@@ -18,4 +18,8 @@ export class TickerService {
         let msg = new TickerMessage(message, TickerMessagePriority.Important);
         this.subject.next(msg);
     }
+
+    logUnlock(message: string) {
+        this.logImportant(message);
+    }
 }
