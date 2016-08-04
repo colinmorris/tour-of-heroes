@@ -30,12 +30,60 @@
 
 import { GameService } from './game.service';
 import { Character } from './character';
-
+import { truthySkills, SkillType, SkillMap, mostlyUniformSkillMap } from './skill';
+import { Zone } from './zone';
+import { ZoneAction, Outcome } from './zoneaction';
 
 export interface Perk {
     name: string;
     setup(game: GameService);
     teardown();
+}
+
+export interface Kicker extends Outcome {
+    description: string;
+    skillDelta: SkillMap;
+}
+
+export abstract class KickerPerk implements Perk {
+    name: string;
+
+    setup(game: GameService) {}
+    teardown() {}
+
+    abstract getKicker(zone: Zone, action: ZoneAction) : Kicker;
+
+    // Literally no idea where to put this logic
+    static getKickers(chara: Character, zone: Zone, action: ZoneAction) : Kicker[] {
+        let kickers : Kicker[] = new Array<Kicker>();
+        for (let perk of chara.perks) {
+            if (!(perk instanceof KickerPerk)) {
+                continue;
+            }
+            let kicker: Kicker = (<KickerPerk>perk).getKicker(zone, action);
+            if (kicker) {
+                kickers.push(kicker);
+            }
+        }
+        return kickers;
+    }
+}
+
+class StudentPerk extends KickerPerk {
+    // 10% chance to also train intellect when training any other skill
+    name = "Student perk";
+    prob = .1;
+    getKicker(zone: Zone, action: ZoneAction) : Kicker {
+        // No kicker if this action trained Intellect (even if trained other skills too)
+        if (action.outcome[SkillType.Intellect]) {
+            return undefined;
+        }
+        if (Math.random() < this.prob) {
+            return {description: "You learn something from this", 
+                skillDelta: mostlyUniformSkillMap<number>(0, {[SkillType.Intellect]: 1})
+            };
+        }
+    }
 }
 
 abstract class LevelPerk implements Perk {
@@ -86,4 +134,5 @@ class PeasantPerk extends LevelPerk {
 
 export const CLASS_PERKS = {
     'Peasant': PeasantPerk,
+    'Student': StudentPerk
 };

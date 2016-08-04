@@ -2,6 +2,7 @@ import { TickerService } from './ticker.service';
 import { GameService } from './game.service';
 import { GLOBALS } from './globals';
 import { getTruthySkills, truthySkills, SkillType, SkillMap } from './skill';
+import { Character } from './character';
 
 const ACTION_METAVAR: string = "__X";
 
@@ -16,11 +17,9 @@ class ZoneActionDescription {
     past: string;
 }
 
-
-class ZoneActionEffect {
-    constructor(
-        public skillDeltas: SkillMap
-    ){}
+export interface Outcome {
+    skillDelta: SkillMap;
+    // Item drops...
 }
 
 export class ZoneActionModel {
@@ -38,8 +37,8 @@ export class ZoneActionModel {
         public minDelay: number
     ) {}
 
-    getEffect(game: GameService) : ZoneActionEffect {
-        return new ZoneActionEffect(this.skillDeltas);
+    getEffect(game: GameService) : Outcome {
+        return {skillDelta: this.skillDeltas};
     }
     
     // Not idempotent because of randomness
@@ -79,6 +78,7 @@ export class ZoneActionModel {
         
 }
 
+
 export class ZoneAction {
     timer: number;
     startTime: number;
@@ -88,7 +88,7 @@ export class ZoneAction {
     checkTimer: number;
     pctProgress: number = 0;
     description: ZoneActionDescription;
-    delta: SkillMap;
+    outcome: Outcome;
     constructor(
         public action: ZoneActionModel,
         public game: GameService
@@ -104,7 +104,7 @@ export class ZoneAction {
         this.startTime = new Date().getTime();
         this.timer = window.setTimeout(
             () => {
-                this.effect();
+                this.outcome = this.action.getEffect(this.game);
                 this.completed = true;
                 onCompletion();
             },
@@ -126,16 +126,6 @@ export class ZoneAction {
     percentProgress() : number {
         let now = new Date().getTime();
         return 100 * (now - this.startTime)/this.duration;
-    }
-
-    effect() {
-        let ef: ZoneActionEffect = this.action.getEffect(this.game);
-        this.delta = ef.skillDeltas;
-        truthySkills(ef.skillDeltas, 
-            (skill: SkillType, delta: number) => {
-                this.game.trainSkill(skill, delta);
-            }
-        );
     }
 
     broadcast(ticker: TickerService) {

@@ -27,10 +27,11 @@ import { Skill } from './skill';
 })
 
 export class CharacterComponent {
-    character: Character;
+    get character() : Character {
+        return this.game.chara;
+    }
 
-    constructor(private gameService : GameService) {
-        this.character = gameService.chara;
+    constructor(private game : GameService) {
     }
 
     aptitudeString(skill: Skill) {

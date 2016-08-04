@@ -19,6 +19,9 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 export class LifetimeStats {
     // Does this work? Is this a reasonable thing to do? IDK.
     subject: BehaviorSubject<LifetimeStats>;
+    private _actionsThisLifetime:number = 0;
+    // Max actions taken across lifetimes
+    actionsTaken = 0;
     constructor(
         private game: GameService
     ){ 
@@ -40,6 +43,15 @@ export class LifetimeStats {
     maxSkillLevel: SkillMap;
     // Max player level attained per class
     maxPlayerLevel: {string: number};
+
+    set actionsTakenThisLifetime(nactions: number) {
+        this._actionsThisLifetime = nactions;
+        if (nactions > this.actionsTaken) {
+            this.actionsTaken = nactions;
+            this.subject.next(this);
+        }
+    }
+    get actionsTakenThisLifetime() { return this._actionsThisLifetime; }
 
     onLevelChange(level: number) {
         let klass: string = this.game.chara.klass.name;

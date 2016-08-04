@@ -1,11 +1,12 @@
 import { OnInit, SimpleChange, Component, Input, EventEmitter, Output } from '@angular/core';
 
 import { Zone } from './zone';
-import { ZoneAction } from './zoneaction';
+import { Outcome, ZoneAction } from './zoneaction';
 import { ActiveZoneService } from './activezone.service';
 import { GameService } from './game.service';
 import { TickerService } from './ticker.service';
 import { SkillMap, SkillMapOf, truthySkills, SkillType } from './skill';
+import { KickerPerk, Kicker } from './perk';
 
 /* Responsible for maintaining its own "active" status and, when active, creating
  * and killing ZoneActions. The internal logic of those actions (their timing and 
@@ -35,7 +36,8 @@ import { SkillMap, SkillMapOf, truthySkills, SkillType } from './skill';
         </div>
 
         <div class="previously" *ngIf="lastAction && lastAction.completed">
-            {{lastAction.description.past}} {{formatDelta(lastAction.delta)}}
+            <span>{{lastAction.description.past}} {{formatOutcome(lastAction.outcome)}}</span>
+            <span *ngFor="let bonus of kickers">...{{bonus.description}} {{formatOutcome(bonus)}}</span>
         </div>
 
         <button (click)="active = false">Stop</button>
@@ -53,9 +55,10 @@ export class ZoneComponent implements OnInit {
     private _active: boolean = false;
     currentAction: ZoneAction;
     lastAction: ZoneAction;
+    kickers: Kicker[] = [];
     constructor(
         private activeZoneService: ActiveZoneService,
-        private gameService: GameService,
+        private game: GameService,
         private tickerService: TickerService
     ) { }
     ngOnInit() {
@@ -66,9 +69,9 @@ export class ZoneComponent implements OnInit {
         });
     }
 
-    formatDelta(delta: SkillMap) : string {
+    formatOutcome(outcome: Outcome) : string {
         let s = "(";
-        truthySkills(delta, 
+        truthySkills(outcome.skillDelta, 
             (skill: SkillType, amt: number) => {
                 s += SkillType[skill] + "+" + amt + ", ";
          });
@@ -95,11 +98,16 @@ export class ZoneComponent implements OnInit {
 
     queueAction() {
         this.lastAction = this.currentAction;
-        this.currentAction = this.zone.getAction(this.gameService);
+        this.currentAction = this.zone.getAction(this.game);
         this.currentAction.start(
-            () => { 
-                this.currentAction.broadcast(this.tickerService);
+            () => {
+                this.kickers = KickerPerk.getKickers(this.game.chara, this.zone, this.currentAction); 
+                let outcomes: Outcome[] = (<Outcome[]>this.kickers).concat(this.currentAction.outcome);
+                this.game.applyOutcomes(outcomes);
+                //KickerPerk.applyKickers(this.kickers, this.game);
+                //this.currentAction.broadcast(this.tickerService);
                 this.queueAction(); 
+                this.game.stats.actionsTakenThisLifetime++;
             }
         );
     }

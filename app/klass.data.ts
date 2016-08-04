@@ -8,7 +8,7 @@ let klassData = [
     {
         name: 'Peasant',
         aptitudes: uniformSkillMap(.5),
-        criteria: (s: LifetimeStats) => { return 1.0; },
+        criteria: (s: LifetimeStats) => { return true; },
     },
     {
         name: 'Farmer',
@@ -18,6 +18,11 @@ let klassData = [
                             [SkillType.Woodcutting]: .9
                         }),
         criteria: (s: LifetimeStats) => { return s.maxSkillLevel[SkillType.Farming] >= 10 },
+    },
+    {
+        name: 'Student',
+        aptitudes: mostlyUniformSkillMap(.7, {[SkillType.Intellect]: 1.1}),
+        criteria: (s: LifetimeStats) => { return s.actionsTaken >= 10 },
     },
 ]
 

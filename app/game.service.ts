@@ -5,8 +5,9 @@ import { KLASSES } from './klass.data';
 import { Klass } from './klass';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
-import { SkillType, SkillMap } from './skill';
+import { truthySkills, SkillType, SkillMap } from './skill';
 import { LifetimeStats } from './stats';
+import { Outcome } from './zoneaction';
 
 /* This is basically the big-global-state-god-object-service (could probably
  * just as well be called 'GameService'). If you want to modify the Player
@@ -43,6 +44,20 @@ export class GameService {
         this.setupPerks();
     }
 
+    applyOutcome(outcome: Outcome) {
+        truthySkills(outcome.skillDelta,
+                 (skill: SkillType, delta: number) => {
+                     this.trainSkill(skill, delta);
+                    });
+    // TODO: item stuff once implemented
+    }
+
+    applyOutcomes(outcomes: Outcome[]) {
+        for (let outcome of outcomes) {
+            this.applyOutcome(outcome);
+        }
+    }
+
     setupPerks() {
         for (let perk of this.chara.perks) {
             console.log(`Setting up perk ${perk.name}`);
@@ -57,11 +72,10 @@ export class GameService {
         this.chara = Character.newborn(this.chara.name, klass, this);
     }
 
+    // TODO: pointless?
     trainSkill(skill: SkillType, points: number) {
         this.chara.trainSkill(skill, points);
     }
-
-
 
     // ---- SAVING STUFF - to fix later ----
     saveState() {

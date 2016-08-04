@@ -16,6 +16,9 @@ import { GameService } from './game.service';
         <ul>
             <li *ngFor="let skill of stats.maxSkillLevel"> {{skill}}</li>
         </ul>
+
+        Actions taken this lifetime: {{stats.actionsTakenThisLifetime}}
+            (max across lives: {{stats.actionsTaken}})
         `
 })
 export class StatsComponent {
