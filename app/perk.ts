@@ -33,6 +33,7 @@ import { Character } from './character';
 import { truthySkills, SkillType, SkillMap, mostlyUniformSkillMap } from './skill';
 import { Zone } from './zone';
 import { ZoneAction, Outcome } from './zoneaction';
+import { Item } from './item';
 
 export interface Perk {
     name: string;
@@ -43,6 +44,7 @@ export interface Perk {
 export interface Kicker extends Outcome {
     description: string;
     skillDelta: SkillMap;
+    item?: Item;
 }
 
 export abstract class KickerPerk implements Perk {

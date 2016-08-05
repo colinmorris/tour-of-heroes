@@ -3,6 +3,7 @@ import { GameService } from './game.service';
 import { GLOBALS } from './globals';
 import { getTruthySkills, truthySkills, SkillType, SkillMap } from './skill';
 import { Character } from './character';
+import { Item } from './item';
 
 const ACTION_METAVAR: string = "__X";
 
@@ -19,7 +20,7 @@ class ZoneActionDescription {
 
 export interface Outcome {
     skillDelta: SkillMap;
-    // Item drops...
+    item?: Item;
 }
 
 export class ZoneActionModel {

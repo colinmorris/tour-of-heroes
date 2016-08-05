@@ -101,7 +101,7 @@ export class ZoneComponent implements OnInit {
         this.currentAction = this.zone.getAction(this.game);
         this.currentAction.start(
             () => {
-                this.kickers = KickerPerk.getKickers(this.game.chara, this.zone, this.currentAction); 
+                this.kickers = this.game.getKickers(this.zone, this.currentAction); 
                 let outcomes: Outcome[] = (<Outcome[]>this.kickers).concat(this.currentAction.outcome);
                 this.game.applyOutcomes(outcomes);
                 //KickerPerk.applyKickers(this.kickers, this.game);

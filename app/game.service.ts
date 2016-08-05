@@ -7,7 +7,11 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
 import { truthySkills, SkillType, SkillMap } from './skill';
 import { LifetimeStats } from './stats';
-import { Outcome } from './zoneaction';
+import { ZoneAction, Outcome } from './zoneaction';
+import { Zone } from './zone';
+import { Kicker, KickerPerk } from './perk';
+import { Inventory } from './inventory';
+import { randomDrop } from './item';
 
 /* This is basically the big-global-state-god-object-service (could probably
  * just as well be called 'GameService'). If you want to modify the Player
@@ -22,12 +26,14 @@ export class GameService {
     skillSubject: Subject<[SkillType,number]>;
 
     stats: LifetimeStats;
+    inventory: Inventory;
 
     constructor(
     ) {
         // Apparently OnInit is supposed to be better, but it seems to lead
         // to weird race conditions in this case.
         let saved = localStorage.getItem(GLOBALS.localStorageToken);
+        this.inventory = new Inventory();
         if (saved && GLOBALS.loadSaves) {
             console.log("Loading saved character data");
             // blah blah
@@ -44,12 +50,24 @@ export class GameService {
         this.setupPerks();
     }
 
+    getKickers(zone: Zone, action: ZoneAction) : Kicker[] {
+        let perkKickers: Kicker[] = KickerPerk.getKickers(this.chara, zone, action);
+        if (Math.random() < GLOBALS.dropRate) {
+            // random drop
+            let dropKick : Kicker = randomDrop();
+            perkKickers.push(dropKick);
+        }
+        return perkKickers;
+    }
+
     applyOutcome(outcome: Outcome) {
         truthySkills(outcome.skillDelta,
                  (skill: SkillType, delta: number) => {
                      this.trainSkill(skill, delta);
                     });
-    // TODO: item stuff once implemented
+        if (outcome.item) {
+            this.inventory.addItem(outcome.item);
+        }
     }
 
     applyOutcomes(outcomes: Outcome[]) {

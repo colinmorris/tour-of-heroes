@@ -4,10 +4,11 @@ import { ProgressBarComponent } from './progressbar.component';
 import { GameService } from './game.service';
 import { Character } from './character';
 import { Skill } from './skill';
+import { InventoryComponent } from './inventory.component';
 
 @Component({
     selector: 'player-pane',
-    directives: [ProgressBarComponent],
+    directives: [ProgressBarComponent, InventoryComponent],
     template: `
         <div class="player-info">
 
@@ -22,6 +23,8 @@ import { Skill } from './skill';
                     <progress-bar [numerator]="skill.skillPoints" [denominator]="skill.pointsForNextLevel()"></progress-bar>
                 </li>
             </ul>
+
+            <inventory></inventory>
         </div>
 `,
 })

@@ -19,4 +19,8 @@ export const GLOBALS = {
 
     // Every 5 levels of difference leads to a doubling of time.
     inexperiencePenaltyBase: 1.0, //1487,
+    
+    inventoryCapacity: 5,
+
+    dropRate: .1
 }
