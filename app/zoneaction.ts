@@ -1,9 +1,10 @@
 import { TickerService } from './ticker.service';
 import { GameService } from './game.service';
 import { GLOBALS } from './globals';
-import { getTruthySkills, truthySkills, SkillType, SkillMap } from './skill';
+import { JSONtoSkillMap, getTruthySkills, truthySkills, SkillType, SkillMap } from './skill';
 import { Character } from './character';
 import { Item } from './item';
+import { Action } from './zones.data';
 
 const ACTION_METAVAR: string = "__X";
 
@@ -37,6 +38,16 @@ export class ZoneActionModel {
         public weight: number,
         public minDelay: number
     ) {}
+
+    static fromJSON(j: Action, delay: number) {
+        return new ZoneActionModel(
+            j.vb,
+            j.obj,
+            j.opts,
+            JSONtoSkillMap(j.skills),
+            j.weight,
+            delay);
+    }
 
     getEffect(game: GameService) : Outcome {
         return {skillDelta: this.skillDeltas};

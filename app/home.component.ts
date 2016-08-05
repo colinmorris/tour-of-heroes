@@ -9,10 +9,10 @@ import { SUPERZONES } from './zones.data';
     directives: [CharacterComponent, ZonesComponent],
     template: `
     <div class="row">
-        <div class="col-xs-6">
+        <div class="col-xs-3">
             <player-pane></player-pane>
         </div>
-        <div class="col-xs-6">
+        <div class="col-xs-9">
             <nav>
                 <a *ngFor="let super of superzones" (click)="superzone=super">{{super}}</a>
             </nav>

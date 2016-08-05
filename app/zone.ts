@@ -1,6 +1,7 @@
 import { SkillMap, SkillType, JSONtoSkillMap } from './skill';
 import { ZoneAction, ZoneActionModel } from './zoneaction';
 import { GameService } from './game.service';
+import { ZoneData } from './zones.data';
 
 import { GLOBALS } from './globals';
 
@@ -14,23 +15,19 @@ export class Zone {
     // convenience
     private totalWeight: number = 0;
 
-    // TODO: this method is dumb
-    static fromJSON(j: any, id:number, superzone: string) : Zone {
+    static fromJSON(j: ZoneData, id:number, superzone: string) : Zone {
         let z : Zone = new Zone();
         z.superzone = superzone;
         z.zid = id;
         z.name = j.name;
         z.description = j.description;
-        z.actions = new Array<ZoneActionModel>();
         z.baseDelay = j.baseDelay ? j.baseDelay : GLOBALS.defaultBaseZoneDelay;
+        
+        z.actions = new Array<ZoneActionModel>();
         for (let a of j.actions) {
             let delay:number = z.baseDelay * (a.delayx ? a.delayx : 1);
-            //console.log(`Reduced delay of ${a.vb} from ${z.baseDelay} to ${delay}`);
-            z.actions.push(new ZoneActionModel(
-                a.vb, a.obj, a.opts, 
-                JSONtoSkillMap(a.skills), 
-                a.weight, delay
-            ));
+            let zam: ZoneActionModel = ZoneActionModel.fromJSON(a, delay);
+            z.actions.push(zam);
             z.totalWeight += a.weight;
         }
         return z;

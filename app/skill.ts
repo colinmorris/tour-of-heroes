@@ -87,9 +87,8 @@ export class Skill {
 export enum SkillType {
     Farming = 0,
     Combat,
-    Woodcutting,
+    Survival,
 
-    Dance,
     Charm,
     Stealth,
     

@@ -15,7 +15,7 @@ let klassData = [
         aptitudes: mostlyUniformSkillMap(.5, 
                         {
                             [SkillType.Farming]: 1.3,
-                            [SkillType.Woodcutting]: .9
+                            [SkillType.Survival]: .9
                         }),
         criteria: (s: LifetimeStats) => { return s.maxSkillLevel[SkillType.Farming] >= 10 },
     },

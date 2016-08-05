@@ -3,7 +3,7 @@ import { GameService } from './game.service';
 import { Kicker } from './perk';
 
 export function randomDrop() : Kicker {
-    let randSkill = SkillType.Dance;
+    let randSkill = SkillType.Farming;
     let item : Item = new Manual(randSkill);
     return {description: `You found a ${item.name}`, skillDelta: uniformSkillMap<number>(0),
         item: item};

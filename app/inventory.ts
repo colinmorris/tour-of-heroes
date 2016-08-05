@@ -20,7 +20,8 @@ export class Inventory {
     get indices() : number[] {
         // zzz this shouldn't be so hard
         let idxs = new Array<number>(this.capacity);
-        return idxs.fill().map( (val, idx) => { return idx; });
+        for (let i = 0; i < this.capacity; i++) { idxs[i] = i; }
+        return idxs;
     }
 
     addItem(item: Item) : boolean {

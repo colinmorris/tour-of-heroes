@@ -7,9 +7,32 @@ export const SUPERZONES: string[] = [];
 
 let CHEAT_POINTS = 5000;
 
+export interface ZoneData {
+    name: string;
+    description: string;
+    actions: Action[];
+    baseDelay?: number;
+}
+
+export interface Action {
+    vb: string;
+    obj: string;
+    opts?: string[];
+    skills: Object;
+    weight: number;
+    delayx?: number;
+}
+
+interface SuperZone {
+    name: string;
+    zones: ZoneData[];
+}
+
 // TODO: Define an interface for these so compiler can catch missing fields
-let ZONEDATA = {
-'fields':
+let ZONEDATA: SuperZone[] = [
+{
+name: 'fields',
+zones:
     [
 {
     name: 'Turnip Farm',
@@ -25,16 +48,8 @@ let ZONEDATA = {
     description: `A young-growth forest with small trees suitable for amateur
         lumberjacks. Small critters are known to occasionally attack.`,
     actions: [
-        {vb: "chop", obj:"a young __X", opts:["oak", "spruce", "pine"], skills: {[S.Woodcutting]: 2}, weight: .8},
+        {vb: "chop", obj:"a young __X", opts:["oak", "spruce", "pine"], skills: {[S.Survival]: 2}, weight: .8},
         {vb: "ax", obj:"a __X", opts:["rat", "rabid deer", "badger", "spider"], skills: {[S.Combat]: 2}, weight: .2},
-    ],
-},
-{
-    name: 'County Farm',
-    description: 'For champion farmers only',
-    actions: [
-        {vb: "win", obj: "first place in pumpkin compeition", 
-            skills: {[S.Farming]: 6}, weight:1 },
     ],
 },
 {
@@ -55,9 +70,11 @@ let ZONEDATA = {
             {[S.Farming]: CHEAT_POINTS, [S.Riding]: CHEAT_POINTS, [S.Charm]: CHEAT_POINTS, [S.Stealth]:CHEAT_POINTS}, weight:1.0, delayx:1.0},
         ]
 },
-],
-
-'city': [
+]
+},
+{
+name: 'city',
+zones: [
 {
     name: 'Library',
     description: 'A good place to get smarter and practice being quiet',
@@ -71,21 +88,23 @@ let ZONEDATA = {
     name: 'Tavern',
     description: 'Get sloshed',
     actions: [
-        {vb: "dance", obj: "a jig", skills: {[S.Dance]:2, [S.Charm]:2}, weight: .8},
+        {vb: "dance", obj: "a jig", skills: {[S.Charm]:2}, weight: .8},
         {vb: "fight", obj: "a drunken patron", skills: {[S.Combat]:4}, weight: .2},
     ]
 },
-],
+]
 }
+];
 
 let id = 0;
-for (let superzone in ZONEDATA) {
-    SUPERZONES.push(superzone);
-    ZONES[superzone] = [];
-    for (let obj of ZONEDATA[superzone]) {
-        let z: Zone = Zone.fromJSON(obj, id++, superzone);
+for (let superzone of ZONEDATA) {
+    SUPERZONES.push(superzone.name);
+    ZONES[superzone.name] = [];
+    for (let obj of superzone.zones) {
+        // TODO: Change this to use imported ZoneData interface.
+        let z: Zone = Zone.fromJSON(obj, id++, superzone.name);
         // ZZZZZZZ
-        ZONES[superzone].push(z);
+        ZONES[superzone.name].push(z);
         ZONESARR.push(z);
     }
 }

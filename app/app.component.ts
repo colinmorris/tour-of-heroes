@@ -26,11 +26,13 @@ import { StatsComponent } from './stats.component';
         <a (click)="view='klasses'">Classes</a>
         <a (click)="view='stats'">Stats</a>
     </nav>
+    <div class="row">
+        <ticker></ticker>
+    </div>
     <home [hidden]="view != 'home'"></home>
     <klass-viewer [hidden]="view != 'klasses'"></klass-viewer>
     <stats [hidden]="view != 'stats'"></stats>
     <div class="row">
-        <ticker></ticker>
         <button (click)="gameService.saveState()">Save</button>
         <button (click)="gameService.clearSave()">Reset Save</button>
     </div>
