@@ -1,10 +1,10 @@
 import { TickerService } from './ticker.service';
 import { GameService } from './game.service';
 import { GLOBALS } from './globals';
-import { JSONtoSkillMap, getTruthySkills, truthySkills, SkillType, SkillMap } from './skill';
+import { JSONtoSkillMap, getTruthySkills, truthySkills, SkillType, SkillMap } from './skill.data';
 import { Character } from './character';
 import { Item } from './item';
-import { Action } from './zones.data';
+import { Verb } from './verb';
 
 const ACTION_METAVAR: string = "__X";
 
@@ -26,28 +26,17 @@ export interface Outcome {
 
 export class ZoneActionModel {
     constructor(
-        public vb: string,
+        public vb: Verb,
         public obj: string,
         public opts: string[],
         /** skillDeltas = how many (base) skill points will I gain in each skill upon
-         * completing this action? This also determines the difficulty of this action
-         * (the higher the SP gain, the higher the player's skill levels need to be to
-         * perform this action without a penalty to action speed)
-         */
+         * completing this action? */
         public skillDeltas: SkillMap,
         public weight: number,
-        public minDelay: number
+        public minDelay: number,
+        // Your skill levels must be at least this high to avoid an 'inexperience penalty'
+        public mastery: number
     ) {}
-
-    static fromJSON(j: Action, delay: number) {
-        return new ZoneActionModel(
-            j.vb,
-            j.obj,
-            j.opts,
-            JSONtoSkillMap(j.skills),
-            j.weight,
-            delay);
-    }
 
     getEffect(game: GameService) : Outcome {
         return {skillDelta: this.skillDeltas};
@@ -57,8 +46,8 @@ export class ZoneActionModel {
     chooseDescription() : ZoneActionDescription {
         let predicate: string = this.descriptionPredicate();
         return {
-            present: this.vb  + "ing " + predicate,
-            past: this.vb + "ed " + predicate
+            present: this.vb.pres + ' ' + predicate,
+            past: this.vb.past + ' ' + predicate
         }
     }
 
@@ -72,14 +61,13 @@ export class ZoneActionModel {
     }
 
     delay(game: GameService) : number {
-        // If player.skills[s] >= (this.skillDeltas[s]-1) for all s, we apply no
+        // If player.skills[s] >= this.mastery for all s, we apply no
         // 'inexperience' penalty. Any skills below that threshold are punished (super-linearly)
-        // (why -1? deltas start at 1, but skill levels start at 0)
         
         let inexperiencePenalty:number = 1.0;
         for (let s of getTruthySkills(this.skillDeltas)) {
             // TODO: it's possible these should be weighted for cases where skillDeltas.length > 1
-            let shortfall = Math.max(0, this.skillDeltas[s] - (game.chara.skills[s].level+1));
+            let shortfall = Math.max(0, this.mastery - game.chara.skills[s].level);
             inexperiencePenalty *= Math.pow(GLOBALS.inexperiencePenaltyBase, shortfall);
         }
         if (inexperiencePenalty > 1) {

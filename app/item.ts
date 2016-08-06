@@ -1,4 +1,4 @@
-import { SkillType, uniformSkillMap } from './skill';
+import { SkillType, uniformSkillMap } from './skill.data';
 import { GameService } from './game.service';
 import { Kicker } from './perk';
 

@@ -18,7 +18,7 @@ export const GLOBALS = {
     actionBarUpdateInterval: 50,
 
     // Every 5 levels of difference leads to a doubling of time.
-    inexperiencePenaltyBase: 1.0, //1487,
+    inexperiencePenaltyBase: 1.1487,
     
     inventoryCapacity: 5,
 

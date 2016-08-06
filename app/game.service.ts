@@ -5,7 +5,7 @@ import { KLASSES } from './klass.data';
 import { Klass } from './klass';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
-import { truthySkills, SkillType, SkillMap } from './skill';
+import { truthySkills, SkillType, SkillMap } from './skill.data';
 import { LifetimeStats } from './stats';
 import { ZoneAction, Outcome } from './zoneaction';
 import { Zone } from './zone';

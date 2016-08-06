@@ -1,4 +1,5 @@
-import { skillMapFromFactory, SkillMapOf, Skill, SkillType } from './skill';
+import { skillMapFromFactory, SkillMapOf, SkillType } from './skill.data';
+import { Skill } from './skill';
 import { GLOBALS } from './globals';
 import { Klass } from './klass';
 import { Perk, CLASS_PERKS } from './perk';

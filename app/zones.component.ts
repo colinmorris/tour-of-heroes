@@ -7,7 +7,8 @@ import { ZoneAction } from './zoneaction';
 import { ZoneComponent } from './zone.component';
 import { ZONES } from './zones.data';
 
-import { Skill, SkillType } from './skill';
+import { SkillType } from './skill.data';
+import { Skill } from './skill';
 
 import { GLOBALS } from './globals';
 

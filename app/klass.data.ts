@@ -1,4 +1,4 @@
-import { mostlyUniformSkillMap, uniformSkillMap, SkillType } from './skill';
+import { mostlyUniformSkillMap, uniformSkillMap, SkillType } from './skill.data';
 import { LifetimeStats } from './stats';
 import { Klass } from './klass';
 

@@ -1,4 +1,4 @@
-import { SkillMap, SkillType, uniformSkillMap } from './skill';
+import { SkillMap, SkillType, uniformSkillMap } from './skill.data';
 import { GameService } from './game.service';
 import { KLASSES } from './klass.data';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';

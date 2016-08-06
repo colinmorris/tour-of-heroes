@@ -30,7 +30,7 @@
 
 import { GameService } from './game.service';
 import { Character } from './character';
-import { truthySkills, SkillType, SkillMap, mostlyUniformSkillMap } from './skill';
+import { truthySkills, SkillType, SkillMap, mostlyUniformSkillMap } from './skill.data';
 import { Zone } from './zone';
 import { ZoneAction, Outcome } from './zoneaction';
 import { Item } from './item';

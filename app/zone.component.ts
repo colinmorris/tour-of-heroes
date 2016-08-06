@@ -5,7 +5,7 @@ import { Outcome, ZoneAction } from './zoneaction';
 import { ActiveZoneService } from './activezone.service';
 import { GameService } from './game.service';
 import { TickerService } from './ticker.service';
-import { SkillMap, SkillMapOf, truthySkills, SkillType } from './skill';
+import { SkillMap, SkillMapOf, truthySkills, SkillType } from './skill.data';
 import { KickerPerk, Kicker } from './perk';
 
 /* Responsible for maintaining its own "active" status and, when active, creating

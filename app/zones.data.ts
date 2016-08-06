@@ -1,108 +1,139 @@
+import { multiplicativeOverride, Override, ZoneData, ActionData, SuperZone } from './zones.data.defns';
+import { ZONEDATA } from './zones.constants';
+import { GLOBALS } from './globals';
+
 import { Zone } from './zone';
-import { SkillType as S } from './skill';
+import { SkillType, SkillMap, JSONtoSkillMap, dictToSkillMap } from './skill.data';
+import { ZoneActionModel } from './zoneaction';
+import { Verb, verbLookup } from './verb';
 
 export const ZONES : Object = {}; //{string: Zone[]} = {};
 export const ZONESARR : Zone[] = [];
 export const SUPERZONES: string[] = [];
 
-let CHEAT_POINTS = 5000;
-
-export interface ZoneData {
-    name: string;
-    description: string;
-    actions: Action[];
-    baseDelay?: number;
+function setProbabilities(actions: ActionData[]) {
+    let freeWeight = 0;
+    let reservedWeight = 0;
+    for (let a of actions) {
+        if (a.prob) {
+            reservedWeight += a.prob;
+        } else if (a.weight) {
+            freeWeight += a.weight;
+        } else {
+            if (a.bonusLevel) {
+                a.weight = Math.pow(10, -a.bonusLevel);
+            } else {
+                a.weight = 1.0;
+            }
+            freeWeight += a.weight;
+        }
+    }
+    console.assert(reservedWeight < 1);
+    // How much to scale free weights by
+    let scaleFactor = (1-reservedWeight) / freeWeight;
+    for (let action of actions) {
+        if (!action.prob) {
+            action.prob = action.weight * scaleFactor;
+        }
+    }
 }
 
-export interface Action {
-    vb: string;
-    obj: string;
-    opts?: string[];
-    skills: Object;
-    weight: number;
-    delayx?: number;
+function zoneFromJSON(j: ZoneData, id: number, superzone: string) : Zone {
+    let z: Zone = new Zone();
+    z.superzone = superzone;
+    z.zid = id;
+    z.name = j.name;
+    z.description = j.description;
+    z.difficulty = j.difficulty;
+    z.actions = new Array<ZoneActionModel>();
+    console.assert(j.actions.length > 0);
+    // Postcondition: each action in j.actions will have a prob member, and they'll sum to 1
+    setProbabilities(j.actions);
+    for (let a of j.actions) {
+        let zam: ZoneActionModel = zamFromJSON(a, j);
+        z.actions.push(zam);
+    }
+    return z;
 }
 
-interface SuperZone {
-    name: string;
-    zones: ZoneData[];
+function zamFromJSON(j: ActionData, parentZone: ZoneData) : ZoneActionModel {
+    let skills: SkillType[] = j.skills instanceof Array ? <SkillType[]>j.skills : [<SkillType>j.skills];
+    let delay = parentZone.baseDelay ? parentZone.baseDelay : GLOBALS.defaultBaseZoneDelay;
+    // skill ratios
+    let skillRatios: {[skillName: string] : number} = j.skillRatios;
+    // If none is explicitly provided, default to equal apportionment
+    if (!skillRatios) {
+        skillRatios = {};
+        for (let skill of skills) {
+            skillRatios[SkillType[skill]] = 1/skills.length;
+        }
+    }
+    // The difficulty of this action will determine default values for mastery and skill points
+    let difficulty = parentZone.difficulty;
+    if (j.difficulty) {
+        if (j.difficulty instanceof Number) {
+            difficulty = <number>j.difficulty;
+        } else {
+            difficulty = (<Override>j.difficulty)(difficulty);
+        }
+    } else if (j.bonusLevel) {
+        difficulty = Math.min(10, difficulty+1);
+    }
+    // mastery
+    let mastery:number = masteryForDifficulty(difficulty);
+    if (j.mastery) {
+        mastery = j.mastery(mastery);
+    }
+    // skill deltas
+    let skillGains: {[skill:string]: number} = gainsForDifficulty(difficulty, skills, skillRatios);
+    if (j.bonusLevel && !j.gains) {
+        j.gains = multiplicativeOverride(Math.pow(10, j.bonusLevel));
+    }
+    if (j.gains) {
+        for (let skill in skillGains) {
+            skillGains[skill] = j.gains(skillGains[skill]);
+        }
+    }
+
+    return new ZoneActionModel(
+        verbLookup(j.vb),
+        j.obj,
+        j.opts,
+        dictToSkillMap(skillGains),
+        j.prob,
+        delay,
+        mastery
+    );
 }
 
-// TODO: Define an interface for these so compiler can catch missing fields
-let ZONEDATA: SuperZone[] = [
-{
-name: 'fields',
-zones:
-    [
-{
-    name: 'Turnip Farm',
-    description: `A good place for apprentice farmers to learn the ways of
-        the land - turnips are a pretty forgiving crop.`,
-    actions: [
-        {vb: "pull", obj:"a turnip", skills: {[S.Farming]: 2}, weight: .9},
-        {vb: "pull", obj:"a HUGE turnip", skills: {[S.Farming]: 10}, weight: .05, delayx:.1},
-    ],
-},
-{
-    name: 'Woody Woods',
-    description: `A young-growth forest with small trees suitable for amateur
-        lumberjacks. Small critters are known to occasionally attack.`,
-    actions: [
-        {vb: "chop", obj:"a young __X", opts:["oak", "spruce", "pine"], skills: {[S.Survival]: 2}, weight: .8},
-        {vb: "ax", obj:"a __X", opts:["rat", "rabid deer", "badger", "spider"], skills: {[S.Combat]: 2}, weight: .2},
-    ],
-},
-{
-    name: 'Stables',
-    description: 'A place with horses',
-    actions: [
-        {vb: "ride", obj: "a steed", skills: {[S.Riding]: 2}, weight: .5},
-        {vb: "bale", obj: "some hay", skills: {[S.Farming]: 5}, weight: .5}
-    ],
-},
-{
-    name: 'Cheatzone',
-    description: 'Cheatz',
-    actions: [
-        {vb: 'cheat', obj: 'the game', skills: 
-            // TODO: The fact that delayx needs to be set so ridiculously suggests that maybe zones/actions should be able
-            // to disentangle skill gains and skill thresholds/mastery levels
-            {[S.Farming]: CHEAT_POINTS, [S.Riding]: CHEAT_POINTS, [S.Charm]: CHEAT_POINTS, [S.Stealth]:CHEAT_POINTS}, weight:1.0, delayx:1.0},
-        ]
-},
-]
-},
-{
-name: 'city',
-zones: [
-{
-    name: 'Library',
-    description: 'A good place to get smarter and practice being quiet',
-    actions: [
-        {vb: "ponder", obj: "a quaint and curious volume of forgotten lore", skills: {[S.Intellect]: 10, [S.Stealth]: 1}, weight:.05, delayx:.2},
-        {vb: "read", obj:"__X", opts: ["tome", "book", "encyclopedia", "magazine"], 
-            skills: {[S.Intellect]:4, [S.Stealth]:1}, weight: .9}
-    ]
-},
-{
-    name: 'Tavern',
-    description: 'Get sloshed',
-    actions: [
-        {vb: "dance", obj: "a jig", skills: {[S.Charm]:2}, weight: .8},
-        {vb: "fight", obj: "a drunken patron", skills: {[S.Combat]:4}, weight: .2},
-    ]
-},
-]
+let DIFFICULTY_MASTERIES = [3, 5, 10, 15, 20, 25, 30, 40, 50, 65];
+function masteryForDifficulty(diff: number) : number {
+    console.assert(0 <= diff && diff < 10);
+    return DIFFICULTY_MASTERIES[diff];
 }
-];
+
+function gainsForDifficulty(diff: number, skills: SkillType[], skillRatios: {[skill:string] : number}) : {[skill:string]: number} {
+    console.assert(0 <= diff && diff < 10);
+    // The more skills an action involves, the more total skill points it should
+    // award (for a given difficulty). But the skill points awarded per skill should
+    // decrease monotonically as #skills increases.
+    //
+    // For now, let's say that the total skill gain is multiplied by .5 + (.5 * #skills)
+    let baseSP = 1 + Math.pow(diff, 2);
+    let totalSP = baseSP * (.5 + .5*(skills.length));
+    let gains: {[skill:string]: number} = {};
+    for (let skillName in skillRatios) {
+        gains[skillName] = totalSP * skillRatios[skillName];
+    }
+    return gains;
+}
 
 let id = 0;
 for (let superzone of ZONEDATA) {
     SUPERZONES.push(superzone.name);
     ZONES[superzone.name] = [];
     for (let obj of superzone.zones) {
-        // TODO: Change this to use imported ZoneData interface.
-        let z: Zone = Zone.fromJSON(obj, id++, superzone.name);
+        let z: Zone = zoneFromJSON(obj, id++, superzone.name);
         // ZZZZZZZ
         ZONES[superzone.name].push(z);
         ZONESARR.push(z);
