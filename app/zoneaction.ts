@@ -1,10 +1,9 @@
-import { TickerService } from './ticker.service';
-import { GameService } from './game.service';
 import { GLOBALS } from './globals';
 import { JSONtoSkillMap, getTruthySkills, truthySkills, SkillType, SkillMap } from './skill.data';
 import { Character } from './character';
 import { Item } from './item';
 import { Verb } from './verb';
+import { Zone } from './zone';
 
 const ACTION_METAVAR: string = "__X";
 
@@ -14,14 +13,20 @@ function randomChoice<T>(arr:Array<T>) : T {
     return arr[index];
 }
 
-class ZoneActionDescription {
+interface ZoneActionDescription {
     present: string;
     past: string;
 }
 
-export interface Outcome {
-    skillDelta: SkillMap;
+export interface ActionOutcomeEvent {
+    description: string;
+    skillPoints?: SkillMap;
     item?: Item;
+}
+
+export interface ActionOutcome {
+    main: ActionOutcomeEvent;
+    secondary: ActionOutcomeEvent[];
 }
 
 export class ZoneActionModel {
@@ -38,10 +43,6 @@ export class ZoneActionModel {
         public mastery: number
     ) {}
 
-    getEffect(game: GameService) : Outcome {
-        return {skillDelta: this.skillDeltas};
-    }
-    
     // Not idempotent because of randomness
     chooseDescription() : ZoneActionDescription {
         let predicate: string = this.descriptionPredicate();
@@ -60,14 +61,14 @@ export class ZoneActionModel {
         return pred;
     }
 
-    delay(game: GameService) : number {
+    delay(chara: Character) : number {
         // If player.skills[s] >= this.mastery for all s, we apply no
         // 'inexperience' penalty. Any skills below that threshold are punished (super-linearly)
-        
+
         let inexperiencePenalty:number = 1.0;
         for (let s of getTruthySkills(this.skillDeltas)) {
             // TODO: it's possible these should be weighted for cases where skillDeltas.length > 1
-            let shortfall = Math.max(0, this.mastery - game.chara.skills[s].level);
+            let shortfall = Math.max(0, this.mastery - chara.skills[s].level);
             inexperiencePenalty *= Math.pow(GLOBALS.inexperiencePenaltyBase, shortfall);
         }
         if (inexperiencePenalty > 1) {
@@ -75,23 +76,28 @@ export class ZoneActionModel {
         }
         return this.minDelay * inexperiencePenalty;
     }
-        
+
 }
 
+/*
+interface ZoneAction {
+    description: ZoneActionDescription;
+    pctProgress: number = 0;
+    kill();
+    start(onCompletion: ()=>void);
+} */
 
 export class ZoneAction {
-    timer: number;
-    startTime: number;
-    duration: number;
-    completed: boolean = false;
+    private timer: number;
+    private startTime: number;
+    private checkTimer: number;
 
-    checkTimer: number;
     pctProgress: number = 0;
     description: ZoneActionDescription;
-    outcome: Outcome;
     constructor(
         public action: ZoneActionModel,
-        public game: GameService
+        public duration: number,
+        public zone: Zone
     ){
         this.description = action.chooseDescription();
     }
@@ -100,12 +106,9 @@ export class ZoneAction {
     // effect into, er, effect after it's done (i.e. raising the player's skill
     // levels and so on). Also calls the given callback when the timer runs out.
     start(onCompletion: ()=>void) {
-        this.duration = this.action.delay(this.game);
         this.startTime = new Date().getTime();
         this.timer = window.setTimeout(
             () => {
-                this.outcome = this.action.getEffect(this.game);
-                this.completed = true;
                 onCompletion();
             },
             this.duration
@@ -114,7 +117,7 @@ export class ZoneAction {
             () => {
                 this.pctProgress = this.percentProgress();
             },
-            GLOBALS.actionBarUpdateInterval 
+            GLOBALS.actionBarUpdateInterval
         );
     }
 
@@ -123,13 +126,9 @@ export class ZoneAction {
         window.clearInterval(this.checkTimer);
     }
 
-    percentProgress() : number {
+    private percentProgress() : number {
         let now = new Date().getTime();
         return 100 * (now - this.startTime)/this.duration;
-    }
-
-    broadcast(ticker: TickerService) {
-        // TODO
     }
 
 }

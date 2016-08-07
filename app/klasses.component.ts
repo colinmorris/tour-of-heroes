@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 import { ActiveZoneService } from './activezone.service';
-import { GameService } from './game.service';
+import { PlayerService } from './player.service';
 
 import { KLASSES } from './klass.data';
 import { Klass } from './klass';
@@ -28,7 +28,7 @@ export class KlassesComponent {
     klasses: Klass[];
     selected: Klass;
     
-    constructor(private gameService: GameService,
+    constructor(private gameService: PlayerService,
                 private azService: ActiveZoneService,
                 private ks: KlassesService
                 ) {

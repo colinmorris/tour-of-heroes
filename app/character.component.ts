@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 import { ProgressBarComponent } from './progressbar.component';
-import { GameService } from './game.service';
+import { PlayerService } from './player.service';
 import { Character } from './character';
 import { Skill } from './skill';
 import { InventoryComponent } from './inventory.component';
@@ -13,7 +13,7 @@ import { InventoryComponent } from './inventory.component';
         <div class="player-info">
 
         <h2>{{character.name}}, the level {{character.level}} {{character.klass.name}}</h2>
-            Level progress: 
+            Level progress:
             <progress-bar [numerator]="character.totalSkillLevels" [denominator]="character.skillLevelsForNextLevel()"></progress-bar>
 
             <ul>
@@ -34,11 +34,11 @@ export class CharacterComponent {
         return this.game.chara;
     }
 
-    constructor(private game : GameService) {
+    constructor(private game : PlayerService) {
     }
 
     aptitudeString(skill: Skill) {
-        return `aptitude = ${ skill.effectiveAptitude } 
+        return `aptitude = ${ skill.effectiveAptitude }
         (${skill.aptitude} + ${skill.bonusAptitude})`;
     }
 }

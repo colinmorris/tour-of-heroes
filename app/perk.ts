@@ -21,48 +21,42 @@
 // which could have the effect of any of the benefits in the first list.
 //
 // Maybe perks should be grouped according to where/when they're active, and
-// for each group, we set up a listener for changes (e.g. zone changes) at 
+// for each group, we set up a listener for changes (e.g. zone changes) at
 // which point we check whether the perk should fire
 //
 // Maybe a guideline should be that class perks should be the 'crazy' ones
 // with weird/game-changing/buildaround effects, and skill perks should tend to
 // be more boring (e.g. static bonuses to skill/aptitude)
 
-import { GameService } from './game.service';
+import { PlayerService } from './player.service';
 import { Character } from './character';
 import { truthySkills, SkillType, SkillMap, mostlyUniformSkillMap } from './skill.data';
 import { Zone } from './zone';
-import { ZoneAction, Outcome } from './zoneaction';
+import { ZoneAction, ActionOutcomeEvent } from './zoneaction';
 import { Item } from './item';
 
 export interface Perk {
     name: string;
-    setup(game: GameService);
+    setup(game: PlayerService);
     teardown();
-}
-
-export interface Kicker extends Outcome {
-    description: string;
-    skillDelta: SkillMap;
-    item?: Item;
 }
 
 export abstract class KickerPerk implements Perk {
     name: string;
 
-    setup(game: GameService) {}
+    setup(game: PlayerService) {}
     teardown() {}
 
-    abstract getKicker(zone: Zone, action: ZoneAction) : Kicker;
+    abstract getKicker(zone: Zone, action: ZoneAction) : ActionOutcomeEvent;
 
     // Literally no idea where to put this logic
-    static getKickers(chara: Character, zone: Zone, action: ZoneAction) : Kicker[] {
-        let kickers : Kicker[] = new Array<Kicker>();
+    static getKickers(chara: Character, action: ZoneAction) : ActionOutcomeEvent[] {
+        let kickers : ActionOutcomeEvent[] = new Array<ActionOutcomeEvent>();
         for (let perk of chara.perks) {
             if (!(perk instanceof KickerPerk)) {
                 continue;
             }
-            let kicker: Kicker = (<KickerPerk>perk).getKicker(zone, action);
+            let kicker: ActionOutcomeEvent = (<KickerPerk>perk).getKicker(action.zone, action);
             if (kicker) {
                 kickers.push(kicker);
             }
@@ -75,14 +69,14 @@ class StudentPerk extends KickerPerk {
     // 10% chance to also train intellect when training any other skill
     name = "Student perk";
     prob = .1;
-    getKicker(zone: Zone, action: ZoneAction) : Kicker {
+    getKicker(zone: Zone, action: ZoneAction) : ActionOutcomeEvent {
         // No kicker if this action trained Intellect (even if trained other skills too)
-        if (action.outcome[SkillType.Intellect]) {
+        if (action.action.skillDeltas[SkillType.Intellect]) {
             return undefined;
         }
         if (Math.random() < this.prob) {
-            return {description: "You learn something from this", 
-                skillDelta: mostlyUniformSkillMap<number>(0, {[SkillType.Intellect]: 1})
+            return {description: "You learn something from this",
+                skillPoints: mostlyUniformSkillMap<number>(0, {[SkillType.Intellect]: 1})
             };
         }
     }
@@ -91,7 +85,7 @@ class StudentPerk extends KickerPerk {
 abstract class LevelPerk implements Perk {
     name: string;
     subscription;
-    setup(game: GameService) {
+    setup(game: PlayerService) {
         this.subscription = game.levelSubject.subscribe(
             (next) => {
                 this.levelChange(next, game.chara);

@@ -1,5 +1,4 @@
 import { SkillMap, SkillType, uniformSkillMap } from './skill.data';
-import { GameService } from './game.service';
 import { KLASSES } from './klass.data';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
@@ -11,7 +10,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
  * - plvl reached per class
  * - actions spent per zone
  * - actions spent per skill
- * - 
+ * -
  *
  * (Should maybe just fill this in opportunistically as actual unlockables are added?)
  */
@@ -23,21 +22,15 @@ export class LifetimeStats {
     // Max actions taken across lifetimes
     actionsTaken = 0;
     constructor(
-        private game: GameService
-    ){ 
+    ){
         this.maxPlayerLevel = <{string: number}>{};
         for (let klass of KLASSES) {
-            this.maxPlayerLevel[klass.name] = game.chara.klass.name == klass.name ? 1 : 0;
+            this.maxPlayerLevel[klass.name] = 0;
         }
 
         this.subject = new BehaviorSubject<LifetimeStats>(this);
-        game.levelSubject.subscribe(
-            (level:number) => { this.onLevelChange(level); }
-        );
         this.maxSkillLevel = uniformSkillMap<number>(0);
-        game.skillSubject.subscribe(
-            (tup:[SkillType,number]) => { this.onSkillLevelChange(tup); }
-        );
+
     }
     // Max level attained per skill
     maxSkillLevel: SkillMap;
@@ -53,8 +46,7 @@ export class LifetimeStats {
     }
     get actionsTakenThisLifetime() { return this._actionsThisLifetime; }
 
-    onLevelChange(level: number) {
-        let klass: string = this.game.chara.klass.name;
+    onLevelChange(level: number, klass: string) {
         if (level > this.maxPlayerLevel[klass]) {
             this.maxPlayerLevel[klass] = level;
             this.subject.next(this);

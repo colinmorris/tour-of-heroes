@@ -1,12 +1,15 @@
 import { Component } from '@angular/core';
 
-import { GameService } from './game.service';
+import { PlayerService } from './player.service';
 
 import { TickerService } from './ticker.service';
 import { TickerComponent } from './ticker.component';
 
 import { ActiveZoneService } from './activezone.service';
 import { KlassesService } from './klasses.service';
+import { ActionService } from './action.service';
+import { InventoryService } from './inventory.service';
+import { StatsService } from './stats.service';
 
 import { HomeComponent } from './home.component';
 import { KlassesComponent } from './klasses.component';
@@ -37,13 +40,10 @@ import { StatsComponent } from './stats.component';
         <button (click)="gameService.clearSave()">Reset Save</button>
     </div>
   `,
-  providers: [TickerService, GameService, ActiveZoneService, KlassesService]
+  providers: [TickerService, PlayerService, ActiveZoneService,
+      KlassesService, ActionService, InventoryService, StatsService]
 })
 
 export class AppComponent {
     view: string = "home";
-
-    constructor(private gameService: GameService) {}
 }
-
-

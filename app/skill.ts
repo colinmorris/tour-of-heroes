@@ -28,7 +28,7 @@ export class Skill {
             0);
     }
     // TODO
-    get effectiveSkill(){ 
+    get effectiveSkill(){
         return 0;
     }
     get bonusSkill(){
@@ -52,9 +52,12 @@ export class Skill {
         }
     }
 
-    // Returns number of (integer) levels gained
+    // Returns number of SP increased by
     train(points: number) : number {
-        let newTotal = this.skillPoints + (points * this.aptitude);
+        // FIXME: It's too easy to make the mistake of multiplying by aptitude
+        // instead of effectiveAptitude. Should switch the name.
+        let pointGain = points * this.effectiveAptitude;
+        let newTotal = this.skillPoints + pointGain;
         let thresh = this.pointsForNextLevel();
         let delta = 0;
         while (newTotal >= thresh) {
@@ -64,7 +67,7 @@ export class Skill {
             thresh = this.pointsForNextLevel();
         }
         this.skillPoints = newTotal;
-        return delta;
+        return pointGain;
     }
 
     pointsForNextLevel() : number {
@@ -91,7 +94,7 @@ export enum SkillType {
 
     Charm,
     Stealth,
-    
+
     Riding,
     Intellect,
     Piety,
@@ -99,7 +102,7 @@ export enum SkillType {
 }
 
 export type SkillMapOf<T> = Array<T>;
-export type SkillMap = SkillMapOf<number>; 
+export type SkillMap = SkillMapOf<number>;
 
 // FIXME: Is this still used? Can obj be more strongly typed?
 function JSONtoSkillMapFactory<T>() : (Object) => SkillMapOf<T> {
@@ -129,7 +132,7 @@ export function skillMapFromFactory<T>(initFactory: (number) => T) : SkillMapOf<
     return tees;
 }
 
-export function uniformSkillMap<T>(repeatedValue : T) : SkillMapOf<T> { 
+export function uniformSkillMap<T>(repeatedValue : T) : SkillMapOf<T> {
     return skillMapFromFactory<T>( (s:number) => { return repeatedValue; } );
 }
 

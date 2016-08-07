@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { GameService } from './game.service';
+import { InventoryService } from './inventory.service';
 import { Inventory } from './inventory';
 
 @Component({
@@ -15,16 +15,18 @@ import { Inventory } from './inventory';
 })
 export class InventoryComponent {
 
-    constructor(private game: GameService)
+    constructor(private IS: InventoryService)
     {
     }
 
     get inventory() : Inventory {
-        return this.game.inventory;
+        return this.IS.inventory;
     }
 
     useItem(idx: number) {
-       this.inventory.items[idx].applyItem(this.game);
+      // TODO: implement this
+      console.log(`pretending to use ${this.inventory[idx].name}. Don't forget to implement this...`);
+       //this.inventory.items[idx].applyItem(this.game);
        this.inventory.removeItem(idx);
     }
 }

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { LifetimeStats } from './stats';
 import { KLASSES } from './klass.data';
-import { GameService } from './game.service';
+import { StatsService } from './stats.service';
 
 @Component({
     selector: 'stats',
@@ -25,7 +25,7 @@ export class StatsComponent {
 
     klasses = KLASSES;
     stats: LifetimeStats;
-    constructor(private game: GameService) {
-        this.stats = game.stats;
+    constructor(private SS: StatsService) {
+        this.stats = SS.stats;
     }
 }

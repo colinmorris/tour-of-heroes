@@ -1,20 +1,13 @@
 import { SkillType, uniformSkillMap } from './skill.data';
-import { GameService } from './game.service';
-import { Kicker } from './perk';
+import { PlayerService } from './player.service';
 
-export function randomDrop() : Kicker {
-    let randSkill = SkillType.Farming;
-    let item : Item = new Manual(randSkill);
-    return {description: `You found a ${item.name}`, skillDelta: uniformSkillMap<number>(0),
-        item: item};
-}
 
 export interface Item {
 
     name: string;
     description: string;
 
-    applyItem(game: GameService);
+    applyItem(game: PlayerService);
 }
 
 export interface UseableItem extends Item {
@@ -31,7 +24,7 @@ export class Manual implements UseableItem {
         this.description = `A book that gives skill points when used`;
     }
 
-    applyItem(game: GameService) {
+    applyItem(game: PlayerService) {
         // TODO: scaling effect
         game.trainSkill(this.skill, 100);
     }
