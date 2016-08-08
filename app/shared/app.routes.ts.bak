@@ -1,0 +1,24 @@
+import { provideRouter, RouterConfig } from '@angular/router';
+
+import { HomeComponent } from './home.component';
+import { KlassesComponent } from './klasses.component';
+
+const routes : RouterConfig = [
+    {
+        path: 'explore/:superzone',
+        component: HomeComponent
+    },
+    {
+        path: 'classes',
+        component: KlassesComponent
+    },
+    {
+        path: '',
+        redirectTo: '/explore/fields',
+        pathMatch: 'full'
+    }
+]
+
+export const appRouterProviders = [
+    provideRouter(routes)
+];

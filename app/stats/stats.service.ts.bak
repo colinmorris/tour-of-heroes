@@ -1,0 +1,25 @@
+// Bleh, nvm.
+
+import { Injectable } from '@angular/core';
+import { LifetimeStats} from './stats';
+import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { SkillType, SkillMap } from './skill';
+import { GameService } from './game.service';
+
+type SkillLvlDelta = [SkillType,number];
+
+@Injectable()
+export class StatsService {
+    
+    levelSubject: BehaviorSubject<number>; 
+    skillSubject: Subject<SkillLvlDelta>;
+
+    constructor(
+        private game: GameService
+    ) {
+        this.levelSubject = new BehaviorSubject<number>(game.chara.level);
+        this.skillSubject = new Subject<SkillLvlDelta>();
+        game.chara.statss = this;
+    }
+}
