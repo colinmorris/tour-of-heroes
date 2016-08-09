@@ -1,11 +1,15 @@
-import { multiplicativeOverride, Override, ZoneData, ActionData, SuperZone } from './zones.data.defns';
+import { multiplicativeOverride,
+    Override,
+    ZoneData,
+    ActionData,
+    SuperZone } from './zones.data.defns';
 import { ZONEDATA } from './zones.constants';
 import { GLOBALS } from '../../globals';
 
-import { Zone } from '../zone';
-import { SkillType, SkillMap, JSONtoSkillMap, dictToSkillMap } from '../../skills/skills.data';
-import { ZoneActionModel } from '../zoneaction';
-import { Verb, verbLookup } from '../verb';
+import { Zone } from './zone.interface';
+import { SkillType, SkillMap, JSONtoSkillMap, dictToSkillMap } from '../skills/index';
+import { ZoneAction } from './zoneaction.interface';
+import { Verb, verbLookup } from './verb';
 
 export const ZONES : Object = {}; //{string: Zone[]} = {};
 export const ZONESARR : Zone[] = [];
@@ -39,24 +43,25 @@ function setProbabilities(actions: ActionData[]) {
 }
 
 function zoneFromJSON(j: ZoneData, id: number, superzone: string) : Zone {
-    let z: Zone = new Zone();
+    // Is this giving up type safety?
+    let z: Zone = <Zone>{};
     z.superzone = superzone;
     z.zid = id;
     z.name = j.name;
     z.description = j.description;
     z.difficulty = j.difficulty;
-    z.actions = new Array<ZoneActionModel>();
+    z.actions = new Array<ZoneAction>();
     console.assert(j.actions.length > 0);
     // Postcondition: each action in j.actions will have a prob member, and they'll sum to 1
     setProbabilities(j.actions);
     for (let a of j.actions) {
-        let zam: ZoneActionModel = zamFromJSON(a, j);
+        let zam: ZoneAction = zamFromJSON(a, j);
         z.actions.push(zam);
     }
     return z;
 }
 
-function zamFromJSON(j: ActionData, parentZone: ZoneData) : ZoneActionModel {
+function zamFromJSON(j: ActionData, parentZone: ZoneData) : ZoneAction {
     let skills: SkillType[] = j.skills instanceof Array ? <SkillType[]>j.skills : [<SkillType>j.skills];
     let delay = parentZone.baseDelay ? parentZone.baseDelay : GLOBALS.defaultBaseZoneDelay;
     // skill ratios
@@ -95,15 +100,15 @@ function zamFromJSON(j: ActionData, parentZone: ZoneData) : ZoneActionModel {
         }
     }
 
-    return new ZoneActionModel(
-        verbLookup(j.vb),
-        j.obj,
-        j.opts,
-        dictToSkillMap(skillGains),
-        j.prob,
-        delay,
-        mastery
-    );
+    return {
+        vb:   verbLookup(j.vb),
+        obj:    j.obj,
+        opts:   j.opts,
+        skillDeltas:    dictToSkillMap(skillGains),
+        weight: j.prob,
+        minDelay:   delay,
+        mastery:    mastery
+    }
 }
 
 let DIFFICULTY_MASTERIES = [3, 5, 10, 15, 20, 25, 30, 40, 50, 65];

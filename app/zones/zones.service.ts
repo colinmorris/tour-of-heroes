@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
-import { ZONESARR, ZONES, SUPERZONES } from './data/zones.data';
-import { Zone } from './zone';
+import { ZONESARR, ZONES, SUPERZONES,
+    Zone } from '../core/index';
 
 const NOZONE_ID: number = -1;
 
@@ -10,7 +10,7 @@ const NOZONE_ID: number = -1;
 export class Zones {
     // Zone ID of active zone
     nowActive: number;
-    private activeSubject: BehaviorSubject<number> = new BehaviorSubject<number>(NOZONE_ID);
+    activeSubject: BehaviorSubject<number> = new BehaviorSubject<number>(NOZONE_ID);
 
     claimActiveZone(zoneid: number) {
         this.nowActive = zoneid;

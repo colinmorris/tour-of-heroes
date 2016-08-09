@@ -19,7 +19,6 @@ import { ZonesComponent } from '../zones/zones.component';
 })
 export class HomeComponent {
 
-    superzone: string = 'fields';
     constructor(
     ) {}
 
