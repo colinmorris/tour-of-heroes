@@ -1,20 +1,20 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { ZONESARR } from './zones.data';
+
+import { ZONESARR, ZONES, SUPERZONES } from './data/zones.data';
 import { Zone } from './zone';
 
 const NOZONE_ID: number = -1;
 
 @Injectable()
-export class ActiveZoneService {
+export class Zones {
+    // Zone ID of active zone
     nowActive: number;
-    private subject: BehaviorSubject<number> = new BehaviorSubject<number>(NOZONE_ID);
-
-    activeZoneChannel = this.subject.asObservable();
+    private activeSubject: BehaviorSubject<number> = new BehaviorSubject<number>(NOZONE_ID);
 
     claimActiveZone(zoneid: number) {
         this.nowActive = zoneid;
-        this.subject.next(zoneid);
+        this.activeSubject.next(zoneid);
     }
 
     resetActiveZone() {
@@ -23,5 +23,13 @@ export class ActiveZoneService {
 
     get activeZone() : Zone {
         return ZONESARR[this.nowActive];
+    }
+
+    get superzones() : string[] {
+        return SUPERZONES;
+    }
+
+    zonesInSuperzone(superzone: string) : Zone[] {
+        return ZONES[superzone];
     }
 }

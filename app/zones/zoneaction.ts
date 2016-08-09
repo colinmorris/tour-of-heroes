@@ -1,7 +1,7 @@
-import { GLOBALS } from '../../globals';
-import { JSONtoSkillMap, getTruthySkills, truthySkills, SkillType, SkillMap } from '../../skills';
-import { Player } from '../../player';
-import { Item } from '../../items';
+import { GLOBALS } from '../globals';
+import { JSONtoSkillMap, getTruthySkills, truthySkills, SkillType, SkillMap } from '../skills/skills.data';
+import { Player } from '../player/player';
+//import { Item } from '../items/item';
 import { Verb } from './verb';
 
 const ACTION_METAVAR: string = "__X";
@@ -17,6 +17,7 @@ interface ZoneActionDescription {
     past: string;
 }
 
+/**
 export interface ActionOutcomeEvent {
     description: string;
     skillPoints?: SkillMap;
@@ -27,6 +28,7 @@ export interface ActionOutcome {
     main: ActionOutcomeEvent;
     secondary: ActionOutcomeEvent[];
 }
+**/
 
 export class ZoneActionModel {
     constructor(

@@ -2,7 +2,7 @@ import { SuperZone,
             multiplicativeOverride as MULT,
             additiveOverride as PLUS
         } from './zones.data.defns';
-import { SkillType as S } from '../../skills';
+import { SkillType as S } from '../../skills/skills.data';
 
 let CHEAT_POINTS = 5000;
 let FLOWERS = ["poppies", "daisies", "roses", "orchids", "violets", "begonias"];

@@ -30,33 +30,6 @@
     'upgrade',
   ];
 
-  var myBarrels = [
-    // FUCK YOU SYSTEMJS, FUCK YOU ANGULAR DOCS FOR GETTING ME INTO THIS SITUATION GRRR
-    // TODO: Maybe you should just write a fucking script to do this. fuuck.
-    'app/shared',
-    'app/player',
-        'app/player/player',
-        'app/player/shared',
-    'app/stats',
-    'app/items',
-        'app/items/inventory',
-        'app/items/shared',
-    'app/klasses',
-    'app/perks',
-    'app/skills',
-    'app/ticker',
-    'app/zones',
-        'app/zones/activezone',
-        'app/zones/shared',
-        'app/zones/zone',
-        'app/zones/zones',
-    ];
-  for (let barrel of myBarrels) {
-    packages[barrel] = {main: 'index'};
-}
-
-
-
   // Individual files (~300 requests):
   function packIndex(pkgName) {
     packages['@angular/'+pkgName] = { main: 'index.js', defaultExtension: 'js' };

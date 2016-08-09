@@ -1,4 +1,4 @@
-import { SkillType } from '../../skills';
+import { SkillType } from '../../skills/skills.data';
 
 // defines some useful interfaces for defining zones and actions as (mostly) json files.
 

@@ -1,7 +1,8 @@
-import { Skill, skillMapFromFactory, SkillMapOf, SkillType } from '../../skills';
-import { GLOBALS } from '../../globals';
-import { Klass } from '../../klasses';
-import { Perk, CLASS_PERKS } from '../../perks';
+import { skillMapFromFactory, SkillMapOf, SkillType } from '../skills/skills.data';
+import { Skill } from '../skills/skill';
+import { GLOBALS } from '../globals';
+import { Klass } from '../klasses/klass';
+//import { Perk, CLASS_PERKS } from '../../perks';
 
 export class Player {
     constructor(
@@ -9,8 +10,8 @@ export class Player {
         // Starts from 1 (unlike skills)
         public level: number,
         public klass: Klass,
-        public skills: SkillMapOf<Skill>,
-        public perks: Perk[]
+        public skills: SkillMapOf<Skill>
+  //      public perks: Perk[]
     ) {
         this.totalSkillLevels = 0;
     }
@@ -24,15 +25,16 @@ export class Player {
     }
 
     static newborn(name: string, klass: Klass) {
-        let perks: Perk[] = [];
+    /**
+    let perks: Perk[] = [];
         if (CLASS_PERKS[klass.name]) {
             perks.push(new CLASS_PERKS[klass.name]());
         } else {
             console.warn(`Couldn't find a perk for class ${klass.name}.`);
         }
+        **/
         return new Player(name, 1, klass,
-                             Player.newbornSkills(klass),
-                             perks
+                             Player.newbornSkills(klass)
                             );
     }
 

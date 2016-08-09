@@ -2,10 +2,10 @@ import { multiplicativeOverride, Override, ZoneData, ActionData, SuperZone } fro
 import { ZONEDATA } from './zones.constants';
 import { GLOBALS } from '../../globals';
 
-import { Zone } from './zone';
-import { SkillType, SkillMap, JSONtoSkillMap, dictToSkillMap } from '../../skills';
-import { ZoneActionModel } from './zoneaction';
-import { Verb, verbLookup } from './verb';
+import { Zone } from '../zone';
+import { SkillType, SkillMap, JSONtoSkillMap, dictToSkillMap } from '../../skills/skills.data';
+import { ZoneActionModel } from '../zoneaction';
+import { Verb, verbLookup } from '../verb';
 
 export const ZONES : Object = {}; //{string: Zone[]} = {};
 export const ZONESARR : Zone[] = [];
