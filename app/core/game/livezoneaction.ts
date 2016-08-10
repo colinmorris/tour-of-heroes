@@ -1,3 +1,5 @@
+/** An ongoing zone action. This is the representation that will be made
+ available to the view. **/
 export interface LiveZoneAction {
     description: string;
     pctProgress: number;

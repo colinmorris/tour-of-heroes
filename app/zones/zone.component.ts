@@ -3,7 +3,6 @@ import { Observable } from 'rxjs/Rx';
 
 import { Zones } from './zones.service';
 import { Zone, ActionOutcome, LiveZoneAction } from '../core/index';
-// XXX: LiveZoneAction prolly doesn't belong there
 
 import { ActionService, PostActionInfo } from '../actions/action.service';
 

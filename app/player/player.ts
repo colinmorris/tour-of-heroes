@@ -1,5 +1,5 @@
 import { skillMapFromFactory, SkillMapOf, SkillMap, SkillType } from '../core/index';
-import { Skill } from '../skills/skill';
+import { Skill } from './skill';
 import { GLOBALS } from '../globals';
 
 export class Player {

@@ -6,8 +6,10 @@ import { Item } from '../../items/item';
 
 // TODO: Some naming ambiguity/confusion here. Maybe this should be called CompletedAction
 // or something? Wait until dust settles to worry about this.
+
 export interface ActionOutcome {
     main: ActionEvent;
+    // "Kickers" - extra happenings, usually the result of some perk/buff
     secondary: ActionEvent[];
 }
 

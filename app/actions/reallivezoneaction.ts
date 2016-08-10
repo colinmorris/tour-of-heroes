@@ -7,7 +7,7 @@ import { LiveZoneAction } from '../core/index';
 export class RealLiveZoneAction implements LiveZoneAction {
     remainingTime: number;
     private sub: any;
-    // TODO: I guess this is probably a bad separation of concerns? Meh.
+    // I guess this is probably a bad separation of concerns? Meh.
     private tickRate = GLOBALS.actionBarUpdateInterval;
     constructor(
         public description: string,

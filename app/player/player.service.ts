@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 
 import { KlassService } from '../klasses/klass.service';
-import { Zones } from '../zones/zones.service';
 import { Player } from './player';
 
 import { PlayerOutcome, PlayerEffect,
@@ -17,8 +16,7 @@ export class PlayerService {
     player: Player;
 
     constructor(
-        private klasses: KlassService,
-        private zones: Zones
+        private klasses: KlassService
     ) {
         let klass = klasses.starterKlass;
         let aptitudes = klasses.aptitudesForKlass(klass);
@@ -46,7 +44,9 @@ export class PlayerService {
     }
 
     reincarnate(klass: KlassType) {
-        this.zones.resetActiveZone();
+        // Should probably be up to the component to notify other services
+        // (e.g. actionservice) to clean their shit up. To do it from here
+        // would be a bad separation of concerns.
         // TODO
     }
 

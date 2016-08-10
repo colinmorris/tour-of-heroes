@@ -26,6 +26,7 @@ export class ActionService {
 
     private currentAction: RealLiveZoneAction;
     private activeZone: Zone;
+    // In practice, this'll be an observer registered by a zone component correspond to activeZone
     private postActionWatcher: Observer<PostActionInfo>;
 
     constructor(
@@ -39,7 +40,7 @@ export class ActionService {
     stopActionLoop(zone: Zone) {
         // TODO: would be cool to define a decorator that says "this is
         // a no-op if there's no actions going on right now"
-        if (!this.activeZone) { return; }
+        if (!this.activeZone || this.activeZone != zone) { return; }
         if (this.postActionWatcher) {
             this.postActionWatcher.complete();
             this.postActionWatcher = undefined;
@@ -49,7 +50,9 @@ export class ActionService {
         this.currentAction = undefined;
     }
     stopAllActions() {
-        this.stopActionLoop(this.activeZone);
+        if (this.activeZone) {
+            this.stopActionLoop(this.activeZone);
+        }
     }
 
     observableForZone(zone: Zone) : Observable<PostActionInfo> {
@@ -61,6 +64,7 @@ export class ActionService {
         });
     }
 
+    /** Return the currently running action in the given zone, if any **/
     ongoingActionForZone(zone: Zone) : LiveZoneAction {
         if (this.activeZone && zone.zid == this.activeZone.zid) {
             return this.currentAction;
@@ -106,7 +110,7 @@ export class ActionService {
         return {main: mainEvent, secondary:[]};
     }
 
-    // Stuff that used to be a method of zone, and now feels kind of weird here
+    // Used to be a method of zone, and now feels kind of weird here
     private chooseActionType(zone: Zone) : ZoneAction {
         let dice: number = Math.random();
         let sofar = 0;
