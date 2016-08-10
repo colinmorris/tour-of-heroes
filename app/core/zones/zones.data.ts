@@ -9,6 +9,7 @@ import { GLOBALS } from '../../globals';
 import { Zone } from './zone.interface';
 import { SkillType, SkillMap, JSONtoSkillMap, dictToSkillMap } from '../skills/index';
 import { ZoneAction } from './zoneaction.interface';
+import { VerbalZoneAction } from './zoneaction';
 import { Verb, verbLookup } from './verb';
 
 export const ZONES : Object = {}; //{string: Zone[]} = {};
@@ -100,15 +101,15 @@ function zamFromJSON(j: ActionData, parentZone: ZoneData) : ZoneAction {
         }
     }
 
-    return {
-        vb:   verbLookup(j.vb),
-        obj:    j.obj,
-        opts:   j.opts,
-        skillDeltas:    dictToSkillMap(skillGains),
-        weight: j.prob,
-        minDelay:   delay,
-        mastery:    mastery
-    }
+    return new VerbalZoneAction(
+        verbLookup(j.vb),
+        j.obj,
+        j.opts,
+        dictToSkillMap(skillGains),
+        j.prob,
+        delay,
+        mastery
+    );
 }
 
 let DIFFICULTY_MASTERIES = [3, 5, 10, 15, 20, 25, 30, 40, 50, 65];

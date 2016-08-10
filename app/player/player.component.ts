@@ -1,17 +1,17 @@
 import { Component } from '@angular/core';
 
-import { ProgressBarComponent } from '../shared/index';
+import { ProgressBarComponent } from '../shared/progressbar.component';
 import { InventoryComponent } from '../items/inventory.component';
 
 import { PlayerService } from './player.service';
-import { Player } from '../core/index';
+import { Player } from './player';
 
 @Component({
     selector: 'player-pane',
     directives: [ProgressBarComponent, InventoryComponent],
     template: `
     <h2>{{character.name}}, the level {{character.level}}
-    {{character.klass.name}}</h2>
+    {{character.klass}}</h2>
         Level progress:
         <progress-bar [numerator]="character.totalSkillLevels"
             [denominator]="character.skillLevelsForNextLevel()"></progress-bar>
@@ -19,7 +19,7 @@ import { Player } from '../core/index';
         <ul>
             <li *ngFor="let skill of character.skills">
                 <b>{{skill.name}}</b>
-                Level {{skill.level}} {{aptitudeString(skill)}}
+                Level {{skill.level}} {{skill.aptitude}}
                 <progress-bar [numerator]="skill.skillPoints" [denominator]="skill.pointsForNextLevel()"></progress-bar>
             </li>
         </ul>
@@ -28,11 +28,11 @@ import { Player } from '../core/index';
     `
 })
 export class PlayerComponent {
-    player: Player;
+    character: Player;
     constructor (
         private PS: PlayerService
     ) {
-        this.player = PS.player;
+        this.character = PS.player;
     }
 
 }

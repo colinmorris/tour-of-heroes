@@ -1,10 +1,17 @@
 import { SkillType } from './skilltype.enum';
 
+// TODO: If you were really dedicated, you'd refactor alllll of this
+// to use a proper class.
+
 export type SkillMapOf<T> = Array<T>;
 export type SkillMap = SkillMapOf<number>;
 
 export function uniformSkillMap<T>(repeatedValue : T) : SkillMapOf<T> {
     return skillMapFromFactory<T>( (s:number) => { return repeatedValue; } );
+}
+
+export function zeroSkillMap() : SkillMap {
+    return uniformSkillMap<number>(0);
 }
 
 export function mostlyUniformSkillMap<T>(repeatedValue: T, exceptions: Object) {
@@ -36,6 +43,17 @@ export function skillMapFromFactory<T>(initFactory: (number) => T) : SkillMapOf<
         tees[skillId] = initFactory(skillId);
     }
     return tees;
+}
+
+export function getTruthySkills( sm: SkillMapOf<any>) : SkillType[] {
+    let skills: SkillType[] = new Array<SkillType>();
+    for (let skillId=0; skillId < SkillType.MAX; skillId++) {
+        let value = sm[skillId];
+        if (value) {
+            skills.push(skillId);
+        }
+    }
+    return skills;
 }
 
 

@@ -1,16 +1,23 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Observable } from 'rxjs/Rx';
 
 import { Zones } from './zones.service';
 import { Zone, ActionOutcome, LiveZoneAction } from '../core/index';
 // XXX: LiveZoneAction prolly doesn't belong there
 
+import { ActionService, PostActionInfo } from '../actions/action.service';
+
 @Component({
     selector: 'zone',
+    styles: [`
+        .progress-bar {
+            transition-duration: .1s;
+        }`],
     template: `
     <h3>{{zone.name}} {{active ? "(ACTIVE)" : ""}}</h3>
     <p>{{zone.description}}</p>
     <div *ngIf="loaded">
-        <div *ngIf="active && currentAction">
+        <div *ngIf="currentAction">
             <div class="progress">
                 <span class="ongoing">
                     {{currentAction.description}}
@@ -25,10 +32,10 @@ import { Zone, ActionOutcome, LiveZoneAction } from '../core/index';
                     {{bonus.description}}
                 </div>
             </div>
-            <button (click)="active = false">Stop</button>
+            <button (click)="deactivate()">Stop</button>
         </div>
 
-        <div *ngIf="!active">
+        <div *ngIf="!currentAction">
             <button (click)="select()">Go Here</button>
         </div>
     </div>
@@ -38,55 +45,53 @@ import { Zone, ActionOutcome, LiveZoneAction } from '../core/index';
 export class ZoneComponent implements OnInit, OnDestroy {
 
     @Input() zone : Zone;
-    private _active: boolean = false;
     currentAction: LiveZoneAction;
     lastOutcome: ActionOutcome;
     loaded: boolean = false;
 
-    private sub: any;
+    private actionsub: any;
 
     constructor(
-        private zones: Zones
+        private AS: ActionService
     ) { }
     ngOnInit() {
-        this.sub = this.zones.activeSubject.subscribe({
-            next: zid => {
-                this.active = (this.zone.zid == zid);
-                this.loaded = true;
-            }
-        });
+        this.currentAction = this.AS.ongoingActionForZone(this.zone);
+        if (this.currentAction) {
+            this.setupActionListener();
+        }
+        this.loaded = true;
     }
 
     ngOnDestroy() {
-        this.sub.unsubscribe();
+        if (this.actionsub) {
+            this.actionsub.unsubscribe();
+        }
+    }
+
+    setupActionListener() {
+        this.actionsub = (this.AS.observableForZone(this.zone)
+            .subscribe({
+                next: (post: PostActionInfo) => {
+                    this.currentAction = post.nextAction;
+                    this.lastOutcome = post.outcome;
+                },
+                complete: () => {
+                    this.currentAction = undefined;
+                    this.lastOutcome = undefined;
+                }
+            }));
     }
 
     select() {
-        this.active = true;
-        this.zones.claimActiveZone(this.zone.zid);
+        this.currentAction = this.AS.startActionLoop(this.zone);
+        this.setupActionListener();
     }
 
-    get active() { return this._active; }
-
-    set active(newValue: boolean) {
-        if (newValue == this._active) {
-            // no-op
-            return;
-        }
-        this._active = newValue;
-        if (newValue) {
-            this.activate();
-        } else {
-            this.deactivate();
-        }
-    }
-
-    activate() {
-        // zzz
-    }
-
-    deactivate() {
-        // zzz
+    private deactivate() {
+        this.AS.stopActionLoop(this.zone);
+        this.actionsub.unsubscribe();
+        this.currentAction = undefined;
+        this.lastOutcome = undefined;
     }
 
 }

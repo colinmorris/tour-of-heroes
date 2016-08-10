@@ -3,6 +3,8 @@ import { ROUTER_DIRECTIVES } from '@angular/router';
 
 import { PlayerService } from '../player/player.service';
 import { Zones } from '../zones/zones.service';
+import { ActionService } from '../actions/action.service';
+import { KlassService } from '../klasses/klass.service';
 
 //import { TickerService, TickerComponent } from '../ticker/index';
 
@@ -42,7 +44,7 @@ import { HomeComponent } from './home.component';
         <button>Reset Save</button>
     </div>
   `,
-    providers: [Zones, PlayerService]
+    providers: [Zones, PlayerService, ActionService, KlassService]
 //  providers: [TickerService, PlayerService, ActiveZoneService, InventoryService, // <- no deps
   //    StatsService, KlassesService, ActionService]
 })
