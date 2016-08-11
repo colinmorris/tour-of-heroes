@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { KlassService } from '../klasses/klass.service';
+import { PerkService } from '../perks/perk.service';
 import { Player } from './player';
 
 import { PlayerOutcome, PlayerEffect,
@@ -16,11 +17,18 @@ export class PlayerService {
     player: Player;
 
     constructor(
-        private klasses: KlassService
+        private klasses: KlassService,
+        private perks: PerkService
     ) {
         let klass = klasses.starterKlass;
         let aptitudes = klasses.aptitudesForKlass(klass);
         this.player = Player.newborn("Coolin", klass, aptitudes);
+        this.perks.addPerkForKlass(this.player.klass);
+    }
+
+    getSkillLevel(s: SkillType) : number {
+        // TODO: raw vs. buffed
+        return this.player.skills[s].level;
     }
 
     applyEffect(effect: PlayerEffect) : PlayerOutcome {

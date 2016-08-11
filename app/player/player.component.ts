@@ -2,13 +2,14 @@ import { Component } from '@angular/core';
 
 import { ProgressBarComponent } from '../shared/progressbar.component';
 import { InventoryComponent } from '../items/inventory.component';
+import { PerksComponent } from '../perks/perks.component';
 
 import { PlayerService } from './player.service';
 import { Player } from './player';
 
 @Component({
     selector: 'player-pane',
-    directives: [ProgressBarComponent, InventoryComponent],
+    directives: [ProgressBarComponent, InventoryComponent, PerksComponent],
     template: `
     <h2>{{character.name}}, the level {{character.level}}
     {{character.klass}}</h2>
@@ -23,6 +24,8 @@ import { Player } from './player';
                 <progress-bar [numerator]="skill.skillPoints" [denominator]="skill.pointsForNextLevel()"></progress-bar>
             </li>
         </ul>
+
+        <perks></perks>
 
         <inventory></inventory>
     `

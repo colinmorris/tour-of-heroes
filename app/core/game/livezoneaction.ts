@@ -9,4 +9,5 @@ export interface LiveZoneAction {
     /** TODO: attributes to be added later
     inexperiencePenalty: number;
     */
+    completeEarly();
 }

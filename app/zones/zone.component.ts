@@ -1,16 +1,16 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
+import { Inject, Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 
 import { Zones } from './zones.service';
 import { Zone, ActionOutcome, LiveZoneAction } from '../core/index';
-
+import { actionToken } from '../globals';
 import { ActionService, PostActionInfo } from '../actions/action.service';
 
 @Component({
     selector: 'zone',
     styles: [`
         .progress-bar {
-            transition-duration: .1s;
+            transition-duration: .05s;
         }`],
     template: `
     <h3>{{zone.name}} {{active ? "(ACTIVE)" : ""}}</h3>
@@ -51,7 +51,7 @@ export class ZoneComponent implements OnInit, OnDestroy {
     private actionsub: any;
 
     constructor(
-        private AS: ActionService
+        @Inject(actionToken) private AS: ActionService
     ) { }
     ngOnInit() {
         this.currentAction = this.AS.ongoingActionForZone(this.zone);

@@ -1,3 +1,7 @@
+// XXX
+import { OpaqueToken } from '@angular/core';
+export const actionToken: OpaqueToken = new OpaqueToken('ACTION');
+
 
 export const GLOBALS = {
     playerLevelIncrement:  5,
@@ -8,7 +12,7 @@ export const GLOBALS = {
     backgroundSaveFrequency_ms: 1000 * 60,
 
     // The default minimum delay of actions across zones in ms
-    defaultBaseZoneDelay: 1500,
+    defaultBaseZoneDelay: 2500,
 
     // Disabling this for now. Stuff is changing too fast and the serialization
     // code is therefore pretty prone to breaking out of version compat issues

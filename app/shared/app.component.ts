@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OpaqueToken } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
+import '../rxjs-operators';
 
 import { PlayerService } from '../player/player.service';
 import { Zones } from '../zones/zones.service';
 import { ActionService } from '../actions/action.service';
 import { KlassService } from '../klasses/klass.service';
+import { PerkService } from '../perks/perk.service';
 
 //import { TickerService, TickerComponent } from '../ticker/index';
 
@@ -16,6 +18,7 @@ import { KlassesComponent } from '../klasses/klasses.component';
 import { StatsComponent } from '../stats/stats.component';
 //import { StatsService } from '../stats/stats.service';
 import { HomeComponent } from './home.component';
+import { actionToken } from '../globals';
 
 
 @Component({
@@ -44,7 +47,9 @@ import { HomeComponent } from './home.component';
         <button>Reset Save</button>
     </div>
   `,
-    providers: [Zones, PlayerService, ActionService, KlassService]
+    providers: [Zones, PlayerService, KlassService, PerkService,
+        {provide: actionToken, useClass: ActionService}
+    ]
 //  providers: [TickerService, PlayerService, ActiveZoneService, InventoryService, // <- no deps
   //    StatsService, KlassesService, ActionService]
 })

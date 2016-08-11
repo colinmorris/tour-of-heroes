@@ -1,8 +1,8 @@
-// We're really trying this, huh?
-
 import { Injectable } from '@angular/core';
+
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
+import { Subject } from 'rxjs/Subject';
 
 import { GLOBALS } from '../globals';
 import { PlayerService } from '../player/player.service';
@@ -13,7 +13,9 @@ import { Zone,
     ZoneActionDescription,
     PlayerOutcome,
     ActionEvent,
-    ActionEffect } from '../core/index';
+    ActionEffect,
+    SkillMap, getTruthySkills
+ } from '../core/index';
 import { RealLiveZoneAction } from './reallivezoneaction';
 
 export interface PostActionInfo {
@@ -24,14 +26,30 @@ export interface PostActionInfo {
 @Injectable()
 export class ActionService {
 
-    private currentAction: RealLiveZoneAction;
-    private activeZone: Zone;
+    public currentAction: RealLiveZoneAction;
+    public activeZone: Zone;
     // In practice, this'll be an observer registered by a zone component correspond to activeZone
     private postActionWatcher: Observer<PostActionInfo>;
+    private _actionSpeedMultiplier = 1.0;
+
+    // Experimental
+    actionEffectSubject: Subject<ActionEffect> = new Subject<ActionEffect>();
 
     constructor(
         private PS: PlayerService
     ) { }
+
+    get actionSpeedMultiplier() {
+        return this._actionSpeedMultiplier;
+    }
+    set actionSpeedMultiplier(newValue: number) {
+        console.assert(newValue > 0 && this._actionSpeedMultiplier > 0);
+        let speedup = newValue / this._actionSpeedMultiplier;
+        if (this.currentAction) {
+            this.currentAction.adjustRemainingTime(speedup);
+        }
+        this._actionSpeedMultiplier = newValue;
+    }
 
     // ------------------- ACTION BOOKKEEPING --------------------------
 
@@ -99,12 +117,21 @@ export class ActionService {
 
     // ------------------- ACTION MECHANICS --------------------------
 
+    // TODO: This and chooseActionType should really be made Zone methods
     private getDelay(action: ZoneAction) {
-        return 2000; // TODO
+        let inexperiencePenalty = 1.0;
+        for (let s of getTruthySkills(action.skillDeltas)) {
+            let shortfall = Math.max(0, action.mastery - this.PS.getSkillLevel(s));
+            inexperiencePenalty *= Math.pow(GLOBALS.inexperiencePenaltyBase, shortfall);
+        }
+        let baseDelay = action.minDelay;
+        let delay = baseDelay * inexperiencePenalty;
+        return delay / this.actionSpeedMultiplier;
     }
 
     private getOutcome(action: ZoneAction, mainDesc: string): ActionOutcome {
         let mainEffect: ActionEffect = { skillPoints: action.skillDeltas };
+        this.actionEffectSubject.next(mainEffect);
         let mainOutcome: PlayerOutcome = this.PS.applyEffect(mainEffect);
         let mainEvent: ActionEvent = {description: mainDesc, outcome: mainOutcome};
         return {main: mainEvent, secondary:[]};

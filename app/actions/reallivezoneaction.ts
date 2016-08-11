@@ -1,5 +1,4 @@
-// TODO: not sure about these omnibus imports
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 import { GLOBALS } from '../globals';
 import { LiveZoneAction } from '../core/index';
@@ -19,8 +18,9 @@ export class RealLiveZoneAction implements LiveZoneAction {
         this.remainingTime = duration;
         this.sub = timer.subscribe(
             (i) => {
-                this.remainingTime -= this.tickRate;
-                if (this.remainingTime <= 0) {
+                this.remainingTime = Math.max(0, this.remainingTime - this.tickRate);
+                if (this.remainingTime == 0) {
+                    // is this necessary? I'm confused
                     this.sub.unsubscribe();
                     callback();
                 }
@@ -35,5 +35,16 @@ export class RealLiveZoneAction implements LiveZoneAction {
         if (this.sub) {
             this.sub.unsubscribe();
         }
+    }
+
+    completeEarly() {
+        // this'll be noticed at the next tick (which should make it appear basically instant)
+        this.remainingTime = 0;
+    }
+
+    // Our speed just changed by X% - we should either reduce or increase the
+    // remaining time
+    adjustRemainingTime(speedup: number) {
+        this.remainingTime /= speedup;
     }
 }
