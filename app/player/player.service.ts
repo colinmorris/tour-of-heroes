@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { KlassService } from '../klasses/klass.service';
 import { PerkService } from '../perks/perk.service';
+import { StatsService } from '../stats/stats.service';
 import { LivePlayer } from './player';
 import { Player } from './player.interface';
 import { IPlayerService } from './player.service.interface';
@@ -23,12 +24,19 @@ export class PlayerService implements IPlayerService {
 
     constructor(
         private klasses: KlassService,
-        private perks: PerkService
+        private perks: PerkService,
+        private stats: StatsService
     ) {
         let klass = klasses.starterKlass;
         let aptitudes = klasses.aptitudesForKlass(klass);
         this._player = LivePlayer.newborn("Coolin", klass, aptitudes);
         this.playerLevel$ = this._player.level$.asObservable();
+        this.playerLevel$.subscribe( (lvl) => {
+            this.stats.setLevel(lvl, this._player.klass);
+            // TODO: This is lazy. Simple solution would be to just have
+            // player publish to level$ whenever skill levels go up
+            this.stats.setSkills(this._player.baseSkillLevels());
+        });
         this.perks.addPerkForKlass(this.player.klass, true);
     }
 

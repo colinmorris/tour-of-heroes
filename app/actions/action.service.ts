@@ -7,6 +7,7 @@ import { Subject } from 'rxjs/Subject';
 import { IActionService } from './action.service.interface';
 import { GLOBALS } from '../globals';
 import { PlayerService } from '../player/player.service';
+import { StatsService } from '../stats/stats.service';
 import { Zone,
     ActionOutcome,
     LiveZoneAction,
@@ -37,7 +38,8 @@ export class ActionService implements IActionService {
     actionEffectSubject: Subject<ActionEffect> = new Subject<ActionEffect>();
 
     constructor(
-        private PS: PlayerService
+        private PS: PlayerService,
+        private stats: StatsService
     ) { }
 
     get actionSpeedMultiplier(): number {
@@ -109,6 +111,7 @@ export class ActionService implements IActionService {
             if (this.postActionWatcher) {
                 this.postActionWatcher.next(post);
             }
+            this.stats.actionTaken(this.activeZone.name);
         };
         let action: RealLiveZoneAction = new RealLiveZoneAction(
             desc.present, delay, cb);

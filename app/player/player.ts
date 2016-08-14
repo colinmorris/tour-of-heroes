@@ -43,6 +43,12 @@ export class LivePlayer implements Player {
         this._totalSkillLevels = newValue;
     }
 
+    baseSkillLevels(): SkillMap {
+        return this.skills.map( (s: Skill) => {
+            return s.baseLevel;
+        });
+    }
+
     progress() {
         return {numerator: this.totalSkillLevels,
             denominator: this.skillLevelsForNextLevel()};

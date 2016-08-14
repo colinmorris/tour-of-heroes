@@ -24,6 +24,11 @@ const routes : RouterConfig = [
         path: '',
         redirectTo: '/explore/fields',
         pathMatch: 'full'
+    },
+    {
+        path: 'explore',
+        redirectTo: '/explore/fields',
+        pathMatch: 'full'
     }
 ]
 

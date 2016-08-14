@@ -7,6 +7,7 @@ import { Zones } from '../zones/zones.service';
 import { ActionService } from '../actions/action.service';
 import { KlassService } from '../klasses/klass.service';
 import { PerkService } from '../perks/perk.service';
+import { StatsService } from '../stats/stats.service';
 
 //import { TickerService, TickerComponent } from '../ticker/index';
 
@@ -47,7 +48,7 @@ import { di_tokens } from './di-tokens';
         <button>Reset Save</button>
     </div>
   `,
-    providers: [Zones, KlassService,
+    providers: [Zones, KlassService, StatsService,
         PerkService,
         {provide: di_tokens.perkservice, useExisting: PerkService},
         PlayerService,

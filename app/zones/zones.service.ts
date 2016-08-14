@@ -11,6 +11,14 @@ export class Zones {
         return SUPERZONES;
     }
 
+    get allZones() : Zone[] {
+        let zones: Zone[] = new Array<Zone>();
+        for (let superz of this.superzones) {
+            zones = zones.concat(this.zonesInSuperzone(superz));
+        }
+        return zones;
+    }
+
     zonesInSuperzone(superzone: string) : Zone[] {
         return ZONES[superzone];
     }

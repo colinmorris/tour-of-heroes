@@ -1,26 +1,48 @@
 import { mostlyUniformSkillMap, uniformSkillMap, SkillType } from '../skills/index';
-import { LifetimeStats } from '../stats/index';
+import { IStatsService, Stat } from '../../stats/stats.service.interface';
 import { Klass } from './klass.interface';
 
+// TODO: Specify perks here
 export const KLASSES : Klass[] =[
     {
         name: 'Peasant',
         aptitudes: uniformSkillMap(.5),
-        criteria: (s: LifetimeStats) => { return true; },
+        criteria: (s: IStatsService) => { return true; },
     },
     {
         name: 'Farmer',
-        aptitudes: mostlyUniformSkillMap(.5, 
+        aptitudes: mostlyUniformSkillMap(.5,
                         {
                             [SkillType.Farming]: 1.3,
                             [SkillType.Survival]: .9
                         }),
-        criteria: (s: LifetimeStats) => { return s.maxSkillLevel[SkillType.Farming] >= 10 },
+        criteria: (s: IStatsService) => { return s.skillLevel(SkillType.Farming) >= 10 },
     },
     {
         name: 'Student',
         aptitudes: mostlyUniformSkillMap(.7, {[SkillType.Intellect]: 1.1}),
-        criteria: (s: LifetimeStats) => { return s.actionsTaken >= 10 },
+        criteria: (s: IStatsService) => {
+            return s.current(Stat.ActionsTaken) >= 10;
+        },
     },
-]
+    {
+        name: 'Scholar',
+        aptitudes: mostlyUniformSkillMap(.9, {[SkillType.Intellect]: 1.5}),
+        criteria: (s: IStatsService) => {
+            return s.playerLevel('Student') >= 20;
+        }
+    },
+    {
+        name: 'Mage',
+        aptitudes: mostlyUniformSkillMap(.7, {
+            [SkillType.Intellect]: 1.1,
+            [SkillType.Combat]: 1.1,
+        }),
+        criteria: (s: IStatsService) => {
+            let thresh = 10;
+            return (s.skillLevel(SkillType.Intellect) > thresh) &&
+                (s.skillLevel(SkillType.Combat) > thresh);
+        }
+    }
 
+]

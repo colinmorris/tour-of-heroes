@@ -1,7 +1,7 @@
 import { SkillMap } from '../skills/index';
-import { LifetimeStats } from '../stats/index';
+import { IStatsService } from '../../stats/stats.service.interface';
 
-type UnlockCriteria = (stats: LifetimeStats) => boolean;
+type UnlockCriteria = (stats: IStatsService) => boolean;
 
 export interface Klass {
     name: string;

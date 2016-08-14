@@ -1,29 +1,53 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+
+import { Zones } from '../zones/zones.service';
+import { StatsService } from './stats.service';
+import { Stat } from './stats.service.interface';
 
 @Component({
     selector: 'stats',
-    changeDetection: ChangeDetectionStrategy.OnPush,
     template: `
-        <h1>stats go here!</h1>
+        <h1>Stats!</h1>
+        <h3>Max level attained per class:</h3>
         <ul>
-            <li *ngFor="let timer of timers | async">
-                <b>{{timer | async}}</b>
+            <li *ngFor="let klass of maxLevelPerKlass()">
+                {{klass}} : {{stats.maxLevelPerKlass()[klass]}}
             </li>
         </ul>
+        <h3>Actions taken</h3>
+        Total: {{totalActions()}}
+        This lifetime: {{currActions()}}
+        Per Zone:
+        <ul>
+            <li *ngFor="let zone of zones.allZones">
+                {{zone.name}} : {{stats.actionsTaken(zone.name)}}
+            </li>
+        </ul>
+
     `
 })
 export class StatsComponent {
 
-    tick = 5000
-    tock = 1000
-    timers = Observable.interval(this.tick).scan( (acc:any[], next:number) => {
-        let timer = Observable.interval(this.tock).take(10);
-        return acc.concat([timer]);
-    }, []);
+    constructor(
+        private stats: StatsService,
+        private zones: Zones
+    ) {
 
-    // timers = Observable.interval(this.tock).map( (i) => {
-    //     return ["hello", i];
-    // });
-    //timers = Observable.interval(this.tock);
+    }
+    totalActions() {
+        // TODO: add these helpers to StatsService
+        return this.stats.lifetimeSum(Stat.ActionsTaken);
+    }
+    currActions() {
+        return this.stats.current(Stat.ActionsTaken);
+    }
+    maxLevelPerKlass() {
+        // TODO: this is dumb, should be a call to klassService
+        let keys = [];
+        for (let key in this.stats.maxLevelPerKlass()) {
+            keys.push(key);
+        }
+        return keys;
+    }
 }
