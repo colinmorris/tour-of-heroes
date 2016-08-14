@@ -24,7 +24,8 @@ abstract class OnOffPerk extends AbstractPassive {
 export namespace PASSIVES {
 
 export class PeasantPerk extends OnOffPerk {
-    // TODO: wish there was a way I could get the compiler to bug me if name/desc isn't given
+    // TODO: wish there was a way I could get the compiler to bug me if
+    // name/desc isn't given (i.e. make them "abstract" properties)
     name = "Underdog";
     private levelThreshold = 2;
     description = `Base aptitudes are doubled until level ${this.levelThreshold}`;

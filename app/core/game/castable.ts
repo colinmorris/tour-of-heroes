@@ -1,31 +1,20 @@
 import { Injector, OpaqueToken } from '@angular/core';
 
-export interface Castable {
+// TODO: rename me
 
-    cast(injector: Injector);
-
-}
-
-export abstract class AbstractCastable<T> {
+export class InjectedArgs {
     protected diTokens: OpaqueToken[];
-
-    // TODO: bleh lazy
-    wrapcast(injector: Injector) : T {
-        return this.injectiveCast(injector);
+    constructor(
+        protected injector: Injector
+    ) {
     }
 
-    protected injectionArgs(injector: Injector) : any[] {
+    protected injectionArgs() : any[] {
         let args = [];
         for (let token of this.diTokens) {
-            let service = injector.get(token);
+            let service = this.injector.get(token);
             args.push(service);
         }
         return args;
     }
-
-    injectiveCast(injector: Injector) : T {
-        return this.onCast(...this.injectionArgs(injector));
-    }
-
-    protected abstract onCast(...services: any[]);
 }

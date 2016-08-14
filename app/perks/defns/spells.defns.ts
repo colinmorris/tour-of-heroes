@@ -1,10 +1,7 @@
 import { AbstractSpell, AbstractBuffingSpell } from '../perk';
 import { LiveZoneAction, ActionEffect } from '../../core/index';
 import { di_tokens } from '../../shared/di-tokens';
-
-declare class ActionService {
-    currentAction: LiveZoneAction;
-}
+import { IActionService } from '../../actions/action.service.interface';
 
 // Helpers to save some keystrokes
 abstract class ActionServiceSpell extends AbstractSpell {
@@ -19,7 +16,7 @@ export class Execute extends ActionServiceSpell {
     description = "Blah blah blah";
 
     private completionThreshold = 50;
-    onCast(AS: ActionService) : boolean {
+    onCast(AS: IActionService) : boolean {
         let action: LiveZoneAction = AS.currentAction;
         if (!action || action.pctProgress < this.completionThreshold) {
             return false;
@@ -35,9 +32,6 @@ export class Berserk extends AbstractBuffingSpell {
     description = "get mad";
     buffName = "GoingBerserk";
     buffDuration = 20;
-    onCast() {
-        return true; // XXX
-    }
 }
 
 }

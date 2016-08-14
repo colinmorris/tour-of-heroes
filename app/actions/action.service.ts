@@ -119,7 +119,7 @@ export class ActionService implements IActionService {
     // ------------------- ACTION MECHANICS --------------------------
 
     // TODO: This and chooseActionType should really be made Zone methods
-    private getDelay(action: ZoneAction) {
+    private getDelay(action: ZoneAction): number {
         let inexperiencePenalty = 1.0;
         for (let s of getTruthySkills(action.skillDeltas)) {
             let shortfall = Math.max(0, action.mastery - this.PS.getSkillLevel(s));
@@ -127,7 +127,9 @@ export class ActionService implements IActionService {
         }
         let baseDelay = action.minDelay;
         let delay = baseDelay * inexperiencePenalty;
-        return delay / this.actionSpeedMultiplier;
+        let buffedDelay = delay / this.actionSpeedMultiplier;
+        console.log(`Base delay: ${baseDelay}; After skill penalty: ${delay}; Buffed: ${buffedDelay}`);
+        return buffedDelay;
     }
 
     private getOutcome(action: ZoneAction, mainDesc: string): ActionOutcome {

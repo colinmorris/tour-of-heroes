@@ -55,6 +55,7 @@ export class PerkService implements IPerkService {
         console.log(`Adding a perk for ${klass}`);
         let add = () => {
             this.addSpell("Execute");
+            this.addSpell("Berserk");
             this.addPerkByName("PeasantPerk");
         }
         if (defer) {
@@ -79,27 +80,26 @@ export class PerkService implements IPerkService {
 
     private addSpell(spellName: string) {
         console.assert(!(spellName in this.spells));
-        let spell:AbstractSpell = new SPELLS[spellName];
-        spell.injector = this.injector;
+        let spell:AbstractSpell = new SPELLS[spellName](this.injector);
         this.spells[spellName] = spell;
     }
 
     private addPassive(passiveName: string) {
         console.assert(!(passiveName in this.passives));
-        let passive:AbstractPassive = new PASSIVES[passiveName];
+        let passive:AbstractPassive = new PASSIVES[passiveName](this.injector);
         this.passives[passiveName] = passive;
-        passive.injectiveCast(this.injector);
+        passive.apply();
     }
     // grumble
     public addBuff(buffName: string, duration?: number) {
         // TODO: maybe want to allow buff duplicates? in which case this is a bad idea
-        let buff:AbstractBuff = new BUFFS[buffName];
+        let buff:AbstractBuff = new BUFFS[buffName](this.injector);
         if (duration) {
             console.assert(buff instanceof AbstractTimedBuff);
             (<AbstractTimedBuff>buff).duration = duration;
         }
         this.buffs[buff.name] = buff;
-        buff.injectiveCast(this.injector).then( () => {
+        buff.apply().then( () => {
             delete this.buffs[buff.name];
         });
     }

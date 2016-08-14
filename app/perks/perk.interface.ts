@@ -16,15 +16,15 @@ export interface Spell extends Bonus {
 }
 
 export interface Buff extends Bonus {
+    apply() : Promise<void>;
 }
 
-export interface Passive extends Buff {
+export interface Passive extends Bonus {
+    apply();
 }
 
-interface TemporaryBuff extends Buff {
-}
 
-export interface TimedBuff extends TemporaryBuff {
+export interface TimedBuff extends Buff {
     duration: number;
     remainingTime: number;
 }

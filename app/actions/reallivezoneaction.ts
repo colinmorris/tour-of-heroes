@@ -43,8 +43,11 @@ export class RealLiveZoneAction implements LiveZoneAction {
     }
 
     // Our speed just changed by X% - we should either reduce or increase the
-    // remaining time
+    // remaining time (and the duration - we want the progress bar to stay
+    // at the same size, but move faster from this point on, rather than jerking
+    // forward.)
     adjustRemainingTime(speedup: number) {
         this.remainingTime /= speedup;
+        this.duration /= speedup;
     }
 }

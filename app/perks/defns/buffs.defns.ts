@@ -1,11 +1,10 @@
-import { AbstractBuff } from '../perk';
+import { AbstractBuff, AbstractTimedBuff } from '../perk';
 import { di_tokens } from '../../shared/di-tokens';
 import { IActionService } from '../../actions/action.service.interface';
 
 export namespace BUFFS {
 
-// TODO: YOUAREHERE
-export class GoingBerserk extends AbstractBuff {
+export class GoingBerserk extends AbstractTimedBuff {
     diTokens = [di_tokens.actionservice];
     name = "Berserk";
     private speedup = 2.0;
