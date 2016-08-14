@@ -10,8 +10,6 @@
     "noImplicitAny": false
   },
   "exclude": [
-    "node_modules",
-    "bak_app",
-    "app/perks/scratch"
+    "node_modules"
   ]
 }

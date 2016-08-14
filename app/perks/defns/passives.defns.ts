@@ -53,4 +53,24 @@ export class PeasantPerk extends OnOffPerk {
     }
 }
 
+/**
+class RangerPerk {
+    private sub: any;
+    buff(AS: ActionService) {
+        // This is not particularly satisfying, but it might do. Assuming it works.
+        this.sub = AS.actionEffectSubject.subscribe(
+            (eff: ActionEffect) => {
+                if (AS.activeZone.zid == 1) {
+                    console.log("Ranger perk doubling skill gains");
+                    eff.skillPoints = eff.skillPoints.map( (x) => { return x * 2; });
+                }
+            }
+        )
+    }
+    cleanup(AS: ActionService) {
+        this.sub.unsubscribe();
+    }
+}
+**/
+
 }
