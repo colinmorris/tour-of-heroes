@@ -18,7 +18,7 @@ import { KlassesComponent } from '../klasses/klasses.component';
 import { StatsComponent } from '../stats/stats.component';
 //import { StatsService } from '../stats/stats.service';
 import { HomeComponent } from './home.component';
-import { actionToken } from '../globals';
+import { di_tokens } from './di-tokens';
 
 
 @Component({
@@ -47,11 +47,14 @@ import { actionToken } from '../globals';
         <button>Reset Save</button>
     </div>
   `,
-    providers: [Zones, PlayerService, KlassService, PerkService,
-        {provide: actionToken, useClass: ActionService}
+    providers: [Zones, KlassService,
+        PerkService,
+        {provide: di_tokens.perkservice, useExisting: PerkService},
+        PlayerService,
+        {provide: di_tokens.playerservice, useExisting: PlayerService},
+        ActionService,
+        {provide: di_tokens.actionservice, useExisting: ActionService}
     ]
-//  providers: [TickerService, PlayerService, ActiveZoneService, InventoryService, // <- no deps
-  //    StatsService, KlassesService, ActionService]
 })
 
 export class AppComponent {

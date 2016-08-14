@@ -3,7 +3,6 @@ import { Observable } from 'rxjs/Observable';
 
 import { Zones } from './zones.service';
 import { Zone, ActionOutcome, LiveZoneAction } from '../core/index';
-import { actionToken } from '../globals';
 import { ActionService, PostActionInfo } from '../actions/action.service';
 
 @Component({
@@ -51,7 +50,7 @@ export class ZoneComponent implements OnInit, OnDestroy {
     private actionsub: any;
 
     constructor(
-        @Inject(actionToken) private AS: ActionService
+        private AS: ActionService
     ) { }
     ngOnInit() {
         this.currentAction = this.AS.ongoingActionForZone(this.zone);

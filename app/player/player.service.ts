@@ -1,20 +1,25 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 
 import { KlassService } from '../klasses/klass.service';
 import { PerkService } from '../perks/perk.service';
-import { Player } from './player';
+import { LivePlayer } from './player';
+import { Player } from './player.interface';
+import { IPlayerService } from './player.service.interface';
+import { Skill } from './skill.interface';
 
 import { PlayerOutcome, PlayerEffect,
     ActionEffect,
-    SkillMap, zeroSkillMap, getTruthySkills
+    SkillMap
 } from '../core/index';
 
 type KlassType = string;
 type SkillType = number;
 
 @Injectable()
-export class PlayerService {
-    player: Player;
+export class PlayerService implements IPlayerService {
+    private _player: LivePlayer;
+    playerLevel$ : Observable<number>;
 
     constructor(
         private klasses: KlassService,
@@ -22,33 +27,44 @@ export class PlayerService {
     ) {
         let klass = klasses.starterKlass;
         let aptitudes = klasses.aptitudesForKlass(klass);
-        this.player = Player.newborn("Coolin", klass, aptitudes);
-        this.perks.addPerkForKlass(this.player.klass);
+        this._player = LivePlayer.newborn("Coolin", klass, aptitudes);
+        this.playerLevel$ = this._player.level$.asObservable();
+        this.perks.addPerkForKlass(this.player.klass, true);
     }
+
+    get player() : Player {
+        return this._player;
+    }
+
+    // ---------------------- Accessors -------------------------
 
     getSkillLevel(s: SkillType) : number {
         // TODO: raw vs. buffed
-        return this.player.skills[s].level;
+        return this._player.skills[s].level;
+    }
+
+    getBaseAptitudes() : SkillMap {
+        return this._player.skills.map( (s: Skill) => {
+            return s.baseAptitude;
+        })
+    }
+
+    // ---------------------- Mutators -------------------------
+
+    buffAptitudes(by: SkillMap) {
+        this._player.buffAptitudes(by);
     }
 
     applyEffect(effect: PlayerEffect) : PlayerOutcome {
         let outcome: PlayerOutcome = {};
         if (effect.skillPoints) {
-            outcome.pointsGained = this.applySkillPoints(effect.skillPoints);
+            outcome.pointsGained = this._player.applySkillPoints(effect.skillPoints);
         }
         if (effect.item) {
             // TODO
             console.error("Applying item effects not implemented yet");
         }
         return outcome;
-    }
-
-    private applySkillPoints(points: SkillMap) : SkillMap {
-        let gains: SkillMap = zeroSkillMap();
-        for (let skill of getTruthySkills(points)) {
-            gains[skill] = this.player.skills[skill].train(points[skill]);
-        }
-        return gains;
     }
 
     reincarnate(klass: KlassType) {

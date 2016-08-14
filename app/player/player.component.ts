@@ -5,7 +5,7 @@ import { InventoryComponent } from '../items/inventory.component';
 import { PerksComponent } from '../perks/perks.component';
 
 import { PlayerService } from './player.service';
-import { Player } from './player';
+import { Player } from './player.interface';
 
 @Component({
     selector: 'player-pane',
@@ -14,14 +14,15 @@ import { Player } from './player';
     <h2>{{character.name}}, the level {{character.level}}
     {{character.klass}}</h2>
         Level progress:
-        <progress-bar [numerator]="character.totalSkillLevels"
-            [denominator]="character.skillLevelsForNextLevel()"></progress-bar>
+        <progress-bar [prog]="character"></progress-bar>
 
         <ul>
             <li *ngFor="let skill of character.skills">
                 <b>{{skill.name}}</b>
-                Level {{skill.level}} {{skill.aptitude}}
-                <progress-bar [numerator]="skill.skillPoints" [denominator]="skill.pointsForNextLevel()"></progress-bar>
+                Level {{skill.baseLevel}} (+ {{skill.level - skill.baseLevel}})
+                Aptitude: {{skill.baseAptitude}}
+                    (+ {{skill.aptitude - skill.baseAptitude}})
+                <progress-bar [prog]="skill"></progress-bar>
             </li>
         </ul>
 

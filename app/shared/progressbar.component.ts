@@ -1,21 +1,22 @@
 import { Component, Input } from '@angular/core';
+import { Progress, Progressive } from './progressive.interface';
 
 @Component({
     selector: 'progress-bar',
     template: `
     <div class="progress">
         <div class="progress-bar" [style.width.%]="percentProgress()"></div>
-        {{numerator}} / {{denominator}}
+        {{prog.progress().numerator}} / {{prog.progress().denominator}}
     </div>
     `
 })
 
 export class ProgressBarComponent {
 
-    @Input() numerator : number;
-    @Input() denominator : number;
+    @Input() prog: Progressive;
 
     percentProgress() : number {
-        return 100 * (this.numerator/this.denominator);
+        let currProg = this.prog.progress();
+        return 100 * (currProg.numerator/currProg.denominator);
     }
 }

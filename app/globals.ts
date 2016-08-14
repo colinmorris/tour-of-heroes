@@ -1,8 +1,3 @@
-// XXX
-import { OpaqueToken } from '@angular/core';
-export const actionToken: OpaqueToken = new OpaqueToken('ACTION');
-
-
 export const GLOBALS = {
     playerLevelIncrement:  5,
     skillLevelBaseCost: 10,

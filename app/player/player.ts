@@ -1,68 +1,88 @@
-import { skillMapFromFactory, SkillMapOf, SkillMap, SkillType } from '../core/index';
-import { Skill } from './skill';
-import { GLOBALS } from '../globals';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
-export class Player {
+import { skillMapFromFactory,
+    SkillMapOf,
+    SkillMap,
+    SkillType,
+    zeroSkillMap,
+    getTruthySkills
+} from '../core/index';
+import { LiveSkill } from './skill';
+import { Skill } from './skill.interface';
+
+import { GLOBALS } from '../globals';
+import { Player } from './player.interface'
+
+export class LivePlayer implements Player {
+    level$: BehaviorSubject<number>;
     constructor(
         public name: string,
         // Starts from 1 (unlike skills)
         public level: number,
         public klass: string,
-        public skills: SkillMapOf<Skill>
+        private _skills: SkillMapOf<LiveSkill>
     ) {
-        this.totalSkillLevels = 0;
+        this._totalSkillLevels = 0;
+        // TODO: Possible to use only the subject, and not even need level ivar?
+        this.level$ = new BehaviorSubject<number>(level);
+    }
+
+    get skills() : SkillMapOf<Skill> {
+        return this._skills;
+    }
+
+    private _totalSkillLevels: number;
+    get totalSkillLevels() { return this._totalSkillLevels; }
+    set totalSkillLevels(newValue: number) {
+        let thresh = this.skillLevelsForNextLevel();
+        while (newValue >= thresh) {
+            this.level$.next(this.level++);
+            newValue -= thresh;
+            thresh = this.skillLevelsForNextLevel();
+        }
+        this._totalSkillLevels = newValue;
+    }
+
+    progress() {
+        return {numerator: this.totalSkillLevels,
+            denominator: this.skillLevelsForNextLevel()};
     }
 
     static newbornSkills(aptitudes: SkillMap) {
-        return skillMapFromFactory<Skill>(
+        return skillMapFromFactory<LiveSkill>(
             (s: SkillType) => {
-                return new Skill(s, SkillType[s], 0, aptitudes[s], 0);
+                return new LiveSkill(s, SkillType[s], 0, aptitudes[s], 0);
             }
         );
     }
 
     static newborn(name: string, klass:string, aptitudes: SkillMap) {
-        return new Player(name, 1, klass,
-                             Player.newbornSkills(aptitudes)
+        return new LivePlayer(name, 1, klass,
+                             LivePlayer.newbornSkills(aptitudes)
                             );
     }
 
-    private totalSkillLevels: number;
-
-    trainSkill(skill: SkillType, skillPoints: number) : number {
-        let delta = this.skills[skill].train(skillPoints);
-        if (delta > 0) {
-            // Announce the new skill level
-            // TODO
-            //this.game.skillSubject.next([skill, this.skills[skill].level]);
-
-            let msg = "Increased " + SkillType[skill] + " to level " + this.skills[skill].level;
-            //this.tickerService.logImportant(msg);
-            let newTotal = this.totalSkillLevels + delta;
-            let thresh = this.skillLevelsForNextLevel();
-            while (newTotal >= thresh) {
-                this.level++;
-                //this.tickerService.logImportant(this.name + " reached level " + this.level + "!");
-                newTotal -= thresh;
-                thresh = this.skillLevelsForNextLevel();
-                // TODO
-                //this.game.levelSubject.next(this.level);
-            }
-            this.totalSkillLevels = newTotal;
+    applySkillPoints(points: SkillMap) : SkillMap {
+        let gains: SkillMap = zeroSkillMap();
+        for (let skill of getTruthySkills(points)) {
+            let delta = this._skills[skill].train(points[skill]);
+            gains[skill] = delta.pointsGained;
+            this.totalSkillLevels += delta.levelsGained;
         }
-        return delta;
+        return gains;
+    }
+
+    buffAptitudes(by: SkillMap) {
+        for (let skill of getTruthySkills(by)) {
+            this._skills[skill].aptitudeBonus += by[skill];
+        }
     }
 
     skillLevelsForNextLevel() : number {
-        return Player.skillLevelsForNextLevel(this.level);
+        return LivePlayer.skillLevelsForNextLevel(this.level);
     }
 
     static skillLevelsForNextLevel(level: number) : number {
         return GLOBALS.playerLevelIncrement * level;
     }
-
-    percentProgress() : number {
-        return 100 * (this.totalSkillLevels / this.skillLevelsForNextLevel());
-    }
-
 }

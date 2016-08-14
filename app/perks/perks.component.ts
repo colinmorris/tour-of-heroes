@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { PerkService } from './perk.service';
-import { Spell } from './spell.data';
+import { Spell, Buff, Passive } from './perk.interface';
 
 @Component({
     selector: 'perks',
@@ -18,12 +18,13 @@ import { Spell } from './spell.data';
     </div>
 
     <div class="perks">
-
+        <div *ngFor="let passive of passives">
+            {{passive.name}}: <b>{{passive.description}}</b>
+        </div>
     </div>
     `
 })
 export class PerksComponent implements OnInit {
-    spells: Spell[];
     constructor(
         private PRKS: PerkService
     ) {
@@ -31,10 +32,16 @@ export class PerksComponent implements OnInit {
     }
 
     ngOnInit () {
-        this.spells = this.PRKS.getSpells();
     }
 
-    cast(spell: string) {
-
+    get spells(): Spell[] {
+        return this.PRKS.getSpells();
     }
+    get buffs(): Buff[] {
+        return this.PRKS.getBuffs();
+    }
+    get passives(): Passive[] {
+        return this.PRKS.getPassives();
+    }
+
 }

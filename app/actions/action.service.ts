@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 import { Subject } from 'rxjs/Subject';
 
+import { IActionService } from './action.service.interface';
 import { GLOBALS } from '../globals';
 import { PlayerService } from '../player/player.service';
 import { Zone,
@@ -24,7 +25,7 @@ export interface PostActionInfo {
 }
 
 @Injectable()
-export class ActionService {
+export class ActionService implements IActionService {
 
     public currentAction: RealLiveZoneAction;
     public activeZone: Zone;
@@ -39,7 +40,7 @@ export class ActionService {
         private PS: PlayerService
     ) { }
 
-    get actionSpeedMultiplier() {
+    get actionSpeedMultiplier(): number {
         return this._actionSpeedMultiplier;
     }
     set actionSpeedMultiplier(newValue: number) {
