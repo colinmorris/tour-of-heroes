@@ -3,23 +3,44 @@ import { Component } from '@angular/core';
 import { ActionService } from '../actions/action.service';
 import { PerkService } from '../perks/perk.service';
 import { PlayerService } from '../player/player.service';
-import { KlassService } from './klass.service';
+import { LiveKlass, KlassService } from './klass.service';
+
+import { SkillType } from '../core/index';
 
 @Component({
     selector: 'klass-viewer',
     template: `
         <h1>klasses go here!</h1>
+        <div class="row">
+
+        <div class="col-xs-4">
+        <div *ngIf="selected">
+            <h2>{{selected.name}}</h2>
+            Aptitudes:
+            <ul>
+                <li *ngFor="let apt of selected.aptitudes; let i = index">
+                {{ST[i]}}: {{apt}}
+                </li>
+            </ul>
+            Unlocked?: {{selected.unlocked}}
+            <button (click)="reincarnate()">Reincarnate!</button>
+        </div>
+        </div>
+
+        <div class="col-xs-8">
         <ul>
             <li *ngFor="let klass of KS.allKlasses">
-                <a (click)="selected=klass.name">{{klass.name}}</a>
+                <a (click)="selected=klass">{{klass.name}}</a>
             </li>
         </ul>
-        <b>Selected:</b> {{selected}}
-        <button (click)="reincarnate()">Reincarnate!</button>
+        </div>
+
+        </div>
     `
 })
 export class KlassesComponent {
-    selected: string;
+    selected: LiveKlass;
+    ST = SkillType;
     constructor (
         private KS: KlassService,
         private PS: PlayerService,
@@ -39,7 +60,7 @@ export class KlassesComponent {
         */
         this.AS.stopAllActions();
         this.Perks.resetAllPerks();
-        this.PS.reincarnate(this.selected);
-        this.Perks.addPerkForKlass(this.selected);
+        this.PS.reincarnate(this.selected.name);
+        this.Perks.addPerkForKlass(this.selected.name);
     }
 }

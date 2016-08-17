@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Zones } from './zones.service';
 import { Zone, ActionOutcome, LiveZoneAction } from '../core/index';
 import { ActionService, PostActionInfo } from '../actions/action.service';
+import { SkillGainsPipe } from './skill-gains.pipe';
 
 @Component({
     selector: 'zone',
@@ -11,6 +12,7 @@ import { ActionService, PostActionInfo } from '../actions/action.service';
         .progress-bar {
             transition-duration: .05s;
         }`],
+    pipes: [SkillGainsPipe],
     template: `
     <h3>{{zone.name}} {{active ? "(ACTIVE)" : ""}}</h3>
     <p>{{zone.description}}</p>
@@ -25,7 +27,11 @@ import { ActionService, PostActionInfo } from '../actions/action.service';
             </div>
 
             <div class="previously" *ngIf="lastOutcome">
-                <div class="mainOutcome">{{lastOutcome.main.description}}</div>
+                <div class="mainOutcome">{{lastOutcome.main.description}}
+                    <div *ngIf="lastOutcome.main.outcome.pointsGained">
+                        ({{lastOutcome.main.outcome.pointsGained | skillgains}})
+                    </div>
+                </div>
                 <div *ngFor="let bonus of lastOutcome.secondary" class="secondaryOutcome">
                     {{bonus.description}}
                 </div>

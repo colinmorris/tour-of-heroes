@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { SkillMap, Klass, KLASSES } from '../core/index';
 import { StatsService } from '../stats/stats.service';
 
-interface LiveKlass extends Klass {
+export interface LiveKlass extends Klass {
     unlocked: boolean;
 }
 
