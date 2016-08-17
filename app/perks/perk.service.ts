@@ -13,13 +13,19 @@ let deferral_time = 100; // idk
 
 @Injectable()
 export class PerkService implements IPerkService {
-    private buffs: {[name:string]: AbstractBuff} = <{[n:string]:AbstractBuff}>{};
-    private passives: {[name:string]: AbstractPassive} = <{[n:string]:AbstractPassive}>{};
-    private spells: {[name:string]: AbstractSpell} = <{[n:string]:AbstractSpell}>{};
+    private buffs: {[name:string]: AbstractBuff};
+    private passives: {[name:string]: AbstractPassive};
+    private spells: {[name:string]: AbstractSpell};
     constructor(
         private injector: Injector
     ) {
+        this.resetAllPerks();
+    }
 
+    resetAllPerks() {
+        this.buffs = <{[n:string]:AbstractBuff}>{};
+        this.passives = <{[n:string]:AbstractPassive}>{};
+        this.spells = <{[n:string]:AbstractSpell}>{};
     }
 
     getSpells() : Spell[] {

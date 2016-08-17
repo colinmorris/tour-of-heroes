@@ -29,7 +29,19 @@ export class PlayerService implements IPlayerService {
     ) {
         let klass = klasses.starterKlass;
         let aptitudes = klasses.aptitudesForKlass(klass);
-        this._player = LivePlayer.newborn("Coolin", klass, aptitudes);
+        let player = LivePlayer.newborn("Coolin", klass, aptitudes);
+        this.setPlayer(player);
+        // In the case of reincarnation, this is called by the component
+        this.perks.addPerkForKlass(this.player.klass, true);
+    }
+
+    get player() : Player {
+        return this._player;
+    }
+
+    // Called on service init and on reincarnation.
+    private setPlayer(player: LivePlayer) {
+        this._player = player;
         this.playerLevel$ = this._player.level$.asObservable();
         this.playerLevel$.subscribe( (lvl) => {
             this.stats.setLevel(lvl, this._player.klass);
@@ -37,11 +49,6 @@ export class PlayerService implements IPlayerService {
             // player publish to level$ whenever skill levels go up
             this.stats.setSkills(this._player.baseSkillLevels());
         });
-        this.perks.addPerkForKlass(this.player.klass, true);
-    }
-
-    get player() : Player {
-        return this._player;
     }
 
     // ---------------------- Accessors -------------------------
@@ -76,10 +83,9 @@ export class PlayerService implements IPlayerService {
     }
 
     reincarnate(klass: KlassType) {
-        // Should probably be up to the component to notify other services
-        // (e.g. actionservice) to clean their shit up. To do it from here
-        // would be a bad separation of concerns.
-        // TODO
+        let aptitudes = this.klasses.aptitudesForKlass(klass);
+        let player = LivePlayer.newborn("Coolin", klass, aptitudes);
+        this.setPlayer(player);
     }
 
     trainSkill(skill: SkillType, points: number) {
