@@ -6,7 +6,7 @@ import { multiplicativeOverride,
 import { ZONEDATA } from './zones.constants';
 import { GLOBALS } from '../../globals';
 
-import { Zone } from './zone.interface';
+import { Zone, ConcreteZone } from './zone.interface';
 import { SkillType, SkillMap, JSONtoSkillMap, dictToSkillMap } from '../skills/index';
 import { ZoneAction } from './zoneaction.interface';
 import { VerbalZoneAction } from './zoneaction';
@@ -45,7 +45,7 @@ function setProbabilities(actions: ActionData[]) {
 
 function zoneFromJSON(j: ZoneData, id: number, superzone: string) : Zone {
     // Is this giving up type safety?
-    let z: Zone = <Zone>{};
+    let z: Zone = new ConcreteZone();
     z.superzone = superzone;
     z.zid = id;
     z.name = j.name;

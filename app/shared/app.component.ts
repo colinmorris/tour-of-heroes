@@ -18,7 +18,7 @@ import { di_tokens } from './di-tokens';
     template: `
     <div class="container">
     <nav>
-        <a [routerLink]="['/explore']">Home</a>
+        <a [routerLink]="['/']">Home</a>
         <a [routerLink]="['/classes']">Classes</a>
         <a [routerLink]="['/stats']">Stats</a>
     </nav>

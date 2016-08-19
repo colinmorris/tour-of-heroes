@@ -10,4 +10,8 @@ export interface LiveZoneAction {
     inexperiencePenalty: number;
     */
     completeEarly();
+    // Is this action actually ongoing? Or has it completed?
+    active: boolean;
+    // Where is this action taking place?
+    zid: number;
 }

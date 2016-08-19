@@ -8,10 +8,12 @@ export class RealLiveZoneAction implements LiveZoneAction {
     private sub: any;
     // I guess this is probably a bad separation of concerns? Meh.
     private tickRate = GLOBALS.actionBarUpdateInterval;
+    private killed = false;
     constructor(
         public description: string,
         public duration: number,
-        private callback: () => void
+        private callback: () => void,
+        public zid: number
     ) {
 
         let timer = Observable.interval(this.tickRate);
@@ -31,7 +33,12 @@ export class RealLiveZoneAction implements LiveZoneAction {
         return 100 * (this.duration - this.remainingTime) / this.duration;
     }
 
+    get active() : boolean {
+        return this.remainingTime > 0 && (!this.killed);
+    }
+
     kill() {
+        this.killed = true;
         if (this.sub) {
             this.sub.unsubscribe();
         }

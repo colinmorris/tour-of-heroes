@@ -1,53 +1,53 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 
 import { Zone } from '../core/index';
 import { Zones } from './zones.service';
-import { ZoneComponent } from './zone.component';
+import { ZoneSummaryComponent } from './zone-summary.component';
+
+interface SuperzonePane {
+    name: string;
+    expanded: boolean;
+    zones: Zone[];
+}
 
 @Component({
     selector: 'zones',
-    directives: [ ROUTER_DIRECTIVES, ZoneComponent ],
+    directives: [ ZoneSummaryComponent ],
     styles: [
         `a {
             padding: 10px;
         }`,
     ],
     template: `
-        <nav>
-            <a *ngFor="let superz of superzones"
-                [routerLink]="['/explore/'+superz]"
-                >{{superz}}</a>
-        </nav>
-        <div class="zones">
-        <zone *ngFor="let zone of visibleZones"
-            [zone]="zone"></zone>
+    <div class="superzones">
+        <div *ngFor="let pane of panes">
+            <a (click)="pane.expanded = !pane.expanded">
+                {{pane.name}}
+            </a>
+            <div *ngIf="pane.expanded">
+                <zone-summary [zone]="zone"
+                *ngFor="let zone of pane.zones"
+                ></zone-summary>
+            </div>
         </div>
+    </div>
     `
 })
 export class ZonesComponent implements OnInit {
-
-    private activeSuperzone: string;
-    private sub: any
-    superzones: string[];
+    panes: SuperzonePane[] = new Array<SuperzonePane>();
 
     constructor(
-        private zones: Zones,
-        private route: ActivatedRoute
+        private zones: Zones
     ) {}
 
     ngOnInit() {
-        this.sub = this.route.params.subscribe(params => {
-            this.activeSuperzone = params['superzone'];
-        });
-        this.superzones = this.zones.superzones;
+        console.assert(this.panes.length == 0);
+        for (let superz of this.zones.superzones) {
+            this.panes.push({
+                name: superz, expanded: false,
+                zones: this.zones.zonesInSuperzone(superz)
+            });
+        }
     }
 
-    ngOnDestroy() {
-        this.sub.unsubscribe();
-    }
-
-    get visibleZones() : Zone[] {
-        return this.zones.zonesInSuperzone(this.activeSuperzone);
-    }
 }

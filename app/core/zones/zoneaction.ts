@@ -1,7 +1,8 @@
 import { Verb } from './verb';
-import { SkillMap } from '../skills/index';
+import { SkillType, SkillMap, getTruthySkills } from '../skills/index';
 import { ZoneAction, ZoneActionDescription } from './zoneaction.interface';
 import { randomChoice } from '../utils';
+import { GLOBALS } from '../../globals';
 
 const ACTION_METAVAR: string = "__X";
 
@@ -16,6 +17,28 @@ export class VerbalZoneAction implements ZoneAction {
         public mastery: number
     ) {
 
+    }
+
+    delay(skills: SkillMap): number {
+        let delay = this.minDelay * this.inexperiencePenalty(skills);
+        console.log(`Base delay: ${this.minDelay}; After skill penalty: ${delay}`);
+        return delay;
+    }
+
+    // TODO: zzz this sucks
+    inexperiencePenaltyForSkillLevel(skill: SkillType, skillLevel: number) {
+        let shortfall = Math.max(0, this.mastery - skillLevel);
+        return Math.pow(GLOBALS.inexperiencePenaltyBase, shortfall);
+    }
+
+    inexperiencePenalty(skills: SkillMap) : number {
+        let inexperiencePenalty = 1.0;
+        for (let s of getTruthySkills(this.skillDeltas)) {
+            //inexperiencePenalty *= VerbalZoneAction.inexperiencePenaltyForSkill(skills[s], this.mastery);
+            let shortfall = Math.max(0, this.mastery - skills[s]);
+            inexperiencePenalty *= Math.pow(GLOBALS.inexperiencePenaltyBase, shortfall);
+        }
+        return inexperiencePenalty;
     }
 
     chooseDescription() : ZoneActionDescription {

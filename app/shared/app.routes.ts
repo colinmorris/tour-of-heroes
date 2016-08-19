@@ -6,8 +6,7 @@ import { StatsComponent } from '../stats/stats.component';
 
 const routes : RouterConfig = [
     {
-        // TODO: is superzone? optional by default?
-        path: 'explore/:superzone',
+        path: '',
         component: HomeComponent
     },
     {
@@ -17,19 +16,8 @@ const routes : RouterConfig = [
     {
         path: 'stats',
         component: StatsComponent
-    },
-
-
-    {
-        path: '',
-        redirectTo: '/explore/fields',
-        pathMatch: 'full'
-    },
-    {
-        path: 'explore',
-        redirectTo: '/explore/fields',
-        pathMatch: 'full'
     }
+    
 ]
 
 export const appRouterProviders = [

@@ -54,8 +54,12 @@ export class PlayerService implements IPlayerService {
     // ---------------------- Accessors -------------------------
 
     getSkillLevel(s: SkillType) : number {
-        // TODO: raw vs. buffed
         return this._player.skills[s].level;
+    }
+    getSkillLevels() : SkillMap {
+        return this._player.skills.map( (skill) => {
+            return skill.level;
+        });
     }
 
     getBaseAptitudes() : SkillMap {

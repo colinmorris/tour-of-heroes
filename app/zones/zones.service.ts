@@ -7,6 +7,9 @@ import { ZONESARR, ZONES, SUPERZONES,
 @Injectable()
 export class Zones {
 
+    // TODO: Should probably be a subject?
+    public focalZone: Zone = ZONESARR[0];
+
     get superzones() : string[] {
         return SUPERZONES;
     }

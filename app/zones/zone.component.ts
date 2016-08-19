@@ -1,4 +1,10 @@
-import { Inject, Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Inject, 
+    Component, 
+    Input,
+    SimpleChange,
+    OnChanges,
+    OnInit, 
+    OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { Zones } from './zones.service';
@@ -36,7 +42,7 @@ import { SkillGainsPipe } from './skill-gains.pipe';
                     {{bonus.description}}
                 </div>
             </div>
-            <button (click)="deactivate()">Stop</button>
+            <button (click)="stopAction()">Stop</button>
         </div>
 
         <div *ngIf="!currentAction">
@@ -46,7 +52,7 @@ import { SkillGainsPipe } from './skill-gains.pipe';
     `
 })
 
-export class ZoneComponent implements OnInit, OnDestroy {
+export class ZoneComponent implements OnInit, OnDestroy, OnChanges {
 
     @Input() zone : Zone;
     currentAction: LiveZoneAction;
@@ -59,10 +65,19 @@ export class ZoneComponent implements OnInit, OnDestroy {
         private AS: ActionService
     ) { }
     ngOnInit() {
-        this.currentAction = this.AS.ongoingActionForZone(this.zone);
-        if (this.currentAction) {
-            this.setupActionListener();
-        }
+        this.actionsub = this.AS.postActionSubject
+            .filter( (post: PostActionInfo) => {
+                return post.nextAction.zid == this.zone.zid;
+            })
+            .subscribe({
+                next: (post: PostActionInfo) => {
+                    if (post.nextAction.active) {
+                        this.currentAction = post.nextAction;
+                    }
+                    this.lastOutcome = post.outcome;
+                }
+            });
+
         this.loaded = true;
     }
 
@@ -72,28 +87,33 @@ export class ZoneComponent implements OnInit, OnDestroy {
         }
     }
 
-    setupActionListener() {
-        this.actionsub = (this.AS.observableForZone(this.zone)
-            .subscribe({
+    // this kind of sucks. Would like it if we could just create a new component
+    // every time the zone changes
+    ngOnChanges(changes: {[propertyName: string]: SimpleChange}) {
+        console.assert("zone" in changes);
+        if (this.currentAction) {
+            this.currentAction = undefined;
+            this.lastOutcome = undefined;
+        } else {
+            this.AS.postActionSubject.take(1).subscribe( {
                 next: (post: PostActionInfo) => {
-                    this.currentAction = post.nextAction;
-                    this.lastOutcome = post.outcome;
-                },
-                complete: () => {
-                    this.currentAction = undefined;
-                    this.lastOutcome = undefined;
+                    if (post.nextAction.active && 
+                          post.nextAction.zid == changes["zone"].currentValue.zid
+                       ) {
+                        this.currentAction = post.nextAction;
+                        this.lastOutcome = post.outcome;
+                    }
                 }
-            }));
+            });
+        }
     }
 
     select() {
         this.currentAction = this.AS.startActionLoop(this.zone);
-        this.setupActionListener();
     }
 
-    private deactivate() {
+    private stopAction() {
         this.AS.stopActionLoop(this.zone);
-        this.actionsub.unsubscribe();
         this.currentAction = undefined;
         this.lastOutcome = undefined;
     }
