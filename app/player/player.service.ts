@@ -4,10 +4,13 @@ import { Observable } from 'rxjs/Observable';
 import { KlassService } from '../klasses/klass.service';
 import { PerkService } from '../perks/perk.service';
 import { StatsService } from '../stats/stats.service';
+import { SerializationService } from '../shared/serialization.service';
+
 import { LivePlayer } from './player';
-import { Player } from './player.interface';
+import { Player, RawPlayer } from './player.interface';
 import { IPlayerService } from './player.service.interface';
 import { Skill } from './skill.interface';
+import { GLOBALS } from '../globals';
 
 import { PlayerOutcome, PlayerEffect,
     ActionEffect,
@@ -25,22 +28,36 @@ export class PlayerService implements IPlayerService {
     constructor(
         private klasses: KlassService,
         private perks: PerkService,
-        private stats: StatsService
+        private stats: StatsService,
+        private serials: SerializationService
     ) {
-        let klass = klasses.starterKlass;
-        let aptitudes = klasses.aptitudesForKlass(klass);
-        let player = LivePlayer.newborn("Coolin", klass, aptitudes);
-        this.setPlayer(player);
-        // In the case of reincarnation, this is called by the component
-        this.perks.addPerkForKlass(this.player.klass, true);
+        let saved:RawPlayer = serials.loadPlayer();
+        let player:LivePlayer;
+        if (saved && GLOBALS.loadSaves) {
+            player = LivePlayer.fromJSON(saved);
+        } else {
+            console.log("Starting fresh");
+            player = this.startingPlayer();
+        }
+        this.setPlayer(player, true);
+
+        serials.saveSignaller.subscribe( () => {
+            serials.savePlayer(this.toJSON());
+        });
     }
 
     get player() : Player {
         return this._player;
     }
 
+    private startingPlayer() : LivePlayer {
+        let klass = this.klasses.starterKlass;
+        let aptitudes = this.klasses.aptitudesForKlass(klass);
+        return LivePlayer.newborn("Coolin", klass, aptitudes);
+    }
+
     // Called on service init and on reincarnation.
-    private setPlayer(player: LivePlayer) {
+    private setPlayer(player: LivePlayer, defer=false) {
         this._player = player;
         this.playerLevel$ = this._player.level$.asObservable();
         this.playerLevel$.subscribe( (lvl) => {
@@ -49,6 +66,12 @@ export class PlayerService implements IPlayerService {
             // player publish to level$ whenever skill levels go up
             this.stats.setSkills(this._player.baseSkillLevels());
         });
+        this.perks.addPerkForKlass(this.player.klass, defer);
+        this.perks.addAncestryPerk(defer);
+    }
+
+    toJSON() : RawPlayer {
+        return this._player.toJSON();
     }
 
     // ---------------------- Accessors -------------------------

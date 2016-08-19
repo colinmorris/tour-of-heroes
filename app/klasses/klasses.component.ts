@@ -54,14 +54,11 @@ export class KlassesComponent {
         - stop any currently running actions
         - clear inventory
         - remove all buffs and perks
-        - create a new player object, and assign it the appropriate perks
-            - make sure there are no dangling references to the old player obj
-            especially when it comes to observables
+        - create a new player object and assign the appropriate perks (taken
+            care of by player service)
         */
         this.AS.stopAllActions();
         this.Perks.resetAllPerks();
         this.PS.reincarnate(this.selected.name);
-        this.Perks.addPerkForKlass(this.selected.name);
-        this.Perks.addAncestryPerk();
     }
 }

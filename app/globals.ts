@@ -11,7 +11,9 @@ export const GLOBALS = {
 
     // Disabling this for now. Stuff is changing too fast and the serialization
     // code is therefore pretty prone to breaking out of version compat issues
-    loadSaves: false,
+    loadSaves: true,
+
+    autoSave: false,
 
     actionBarUpdateInterval: 50,
 

@@ -84,7 +84,14 @@ export class PerkService implements IPerkService {
         }
     }
 
-    addAncestryPerk() {
+    addAncestryPerk(defer=false) {
+        if (defer) {
+            setTimeout(() => this.inner_addAncestryPerk(), deferral_time);
+        } else {
+            this.inner_addAncestryPerk();
+        }
+    }
+    private inner_addAncestryPerk() {
         let ancestry = new PASSIVES.AncestryPerk(this.injector);
         let success = ancestry.apply();
         if (!success) {

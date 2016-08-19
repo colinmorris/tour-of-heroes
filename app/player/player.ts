@@ -8,10 +8,10 @@ import { skillMapFromFactory,
     getTruthySkills
 } from '../core/index';
 import { LiveSkill } from './skill';
-import { Skill } from './skill.interface';
+import { Skill, RawSkill } from './skill.interface';
 
 import { GLOBALS } from '../globals';
-import { Player } from './player.interface'
+import { Player, RawPlayer } from './player.interface'
 
 export class LivePlayer implements Player {
     level$: BehaviorSubject<number>;
@@ -29,6 +29,37 @@ export class LivePlayer implements Player {
 
     get skills() : SkillMapOf<Skill> {
         return this._skills;
+    }
+
+    static newborn(name: string, klass:string, aptitudes: SkillMap) {
+        return new LivePlayer(name, 1, klass,
+                             LivePlayer.newbornSkills(aptitudes)
+                            );
+    }
+    static newbornSkills(aptitudes: SkillMap) {
+        return skillMapFromFactory<LiveSkill>(
+            (s: SkillType) => {
+                return new LiveSkill(s, SkillType[s], 0, aptitudes[s], 0);
+            }
+        );
+    }
+
+    static fromJSON(raw: RawPlayer) : LivePlayer {
+        return new LivePlayer(
+            raw.name,
+            raw.level,
+            raw.klass,
+            raw.skills.map( (skill: RawSkill) => LiveSkill.fromJSON(skill) )
+        );
+    }
+
+    toJSON() : RawPlayer {
+        return {
+            name: this.name,
+            klass: this.klass,
+            level: this.level,
+            skills: this._skills.map( (skill: LiveSkill) => skill.toJSON() )
+        };
     }
 
     private _totalSkillLevels: number;
@@ -52,20 +83,6 @@ export class LivePlayer implements Player {
     progress() {
         return {numerator: this.totalSkillLevels,
             denominator: this.skillLevelsForNextLevel()};
-    }
-
-    static newbornSkills(aptitudes: SkillMap) {
-        return skillMapFromFactory<LiveSkill>(
-            (s: SkillType) => {
-                return new LiveSkill(s, SkillType[s], 0, aptitudes[s], 0);
-            }
-        );
-    }
-
-    static newborn(name: string, klass:string, aptitudes: SkillMap) {
-        return new LivePlayer(name, 1, klass,
-                             LivePlayer.newbornSkills(aptitudes)
-                            );
     }
 
     applySkillPoints(points: SkillMap) : SkillMap {

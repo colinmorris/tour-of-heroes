@@ -1,5 +1,5 @@
 import { GLOBALS } from '../globals';
-import { Skill } from './skill.interface';
+import { Skill, RawSkill } from './skill.interface';
 
 export interface SkillDelta {
     pointsGained: number;
@@ -17,6 +17,21 @@ export class LiveSkill implements Skill {
         public baseAptitude: number,
         public points: number
     ){}
+
+    toJSON() : RawSkill {
+        return {
+            id: this.id,
+            name: this.name,
+            baseLevel: this.baseLevel,
+            baseAptitude: this.baseAptitude,
+            points: this.points
+        };
+    }
+
+    static fromJSON(raw: RawSkill) : LiveSkill {
+        return new LiveSkill(raw.id, raw.name, raw.baseLevel,
+            raw.baseAptitude, raw.points);
+    }
 
     get level() {
         return this.baseLevel + this.levelBonus;

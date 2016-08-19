@@ -7,10 +7,11 @@ import { ActionService } from '../actions/action.service';
 import { KlassService } from '../klasses/klass.service';
 import { PerkService } from '../perks/perk.service';
 import { StatsService } from '../stats/stats.service';
+import { SerializationService } from './serialization.service';
 
 import '../rxjs-operators';
 import { di_tokens } from './di-tokens';
-
+import { GLOBALS } from '../globals';
 
 @Component({
     selector: 'my-app',
@@ -23,9 +24,11 @@ import { di_tokens } from './di-tokens';
         <a [routerLink]="['/stats']">Stats</a>
     </nav>
     <router-outlet></router-outlet>
+    <button (click)="serials.save()">Save</button>
+    <button (click)="serials.clearSave()">Clear Save</button>
     </div>
   `,
-    providers: [Zones, KlassService, 
+    providers: [Zones, KlassService, SerializationService,
         StatsService,
         {provide: di_tokens.statsservice, useExisting: StatsService},
         PerkService,
@@ -38,4 +41,11 @@ import { di_tokens } from './di-tokens';
 })
 
 export class AppComponent {
+    constructor(
+        private serials: SerializationService
+    ) {
+        if (GLOBALS.autoSave) {
+            console.warn("Haha, jk, autosave isnt implemented yet.");
+        }
+    }
 }
