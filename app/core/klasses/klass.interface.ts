@@ -7,4 +7,5 @@ export interface Klass {
     name: string;
     aptitudes: SkillMap;
     criteria: UnlockCriteria;
+    img: string;
 }

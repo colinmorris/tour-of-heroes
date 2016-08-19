@@ -5,32 +5,53 @@ import { PerkService } from '../perks/perk.service';
 import { PlayerService } from '../player/player.service';
 import { LiveKlass, KlassService } from './klass.service';
 
+import { SkillComponent } from '../shared/skill.component';
+
 import { SkillType } from '../core/index';
 
 @Component({
     selector: 'klass-viewer',
+    directives: [SkillComponent],
+    styles: [
+        `.focal img {
+            width: 216px;
+        }
+        img.locked {
+            -webkit-filter: contrast(0);
+        }
+        ul {
+            list-style: none;
+        }
+        `
+    ],
     template: `
-        <h1>klasses go here!</h1>
         <div class="row">
 
         <div class="col-xs-4">
-        <div *ngIf="selected">
-            <h2>{{selected.name}}</h2>
+        <div *ngIf="selected" class="focal">
+            <h2>{{displayName(selected)}}</h2>
+            <img [src]="'/assets/units/' + selected.img"
+                [class.locked]="!selected.unlocked">
             Aptitudes:
             <ul>
                 <li *ngFor="let apt of selected.aptitudes; let i = index">
-                {{ST[i]}}: {{apt}}
+                <skill [skill]="i"></skill>{{apt}}
                 </li>
             </ul>
-            Unlocked?: {{selected.unlocked}}
-            <button (click)="reincarnate()">Reincarnate!</button>
+            <button *ngIf="selected.unlocked"
+                class="btn"
+                (click)="reincarnate()">
+                    Reincarnate!
+            </button>
         </div>
         </div>
 
         <div class="col-xs-8">
         <ul>
             <li *ngFor="let klass of KS.allKlasses">
-                <a (click)="selected=klass">{{klass.name}}</a>
+                <img [src]="'/assets/units/' + klass.img"
+                    [class.locked]="!klass.unlocked">
+                <a (click)="selected=klass">{{displayName(klass)}}</a>
             </li>
         </ul>
         </div>
@@ -47,6 +68,10 @@ export class KlassesComponent {
         private AS: ActionService,
         private Perks: PerkService
     ) {
+    }
+
+    displayName(klass: LiveKlass) {
+        return klass.unlocked ? klass.name : "???";
     }
 
     reincarnate() {

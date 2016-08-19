@@ -8,7 +8,8 @@ export const KLASSES : Klass[] =[
         // perk: double apts until level 10
         name: 'Peasant',
         aptitudes: uniformSkillMap(.5),
-        criteria: (s: IStatsService) => true,
+        img: 'ruffian.png',
+        criteria: (s: IStatsService) => true
     },
     {
         name: 'Farmer',
@@ -17,11 +18,13 @@ export const KLASSES : Klass[] =[
                             [SkillType.Farming]: 1.3,
                             [SkillType.Survival]: .9
                         }),
+        img: 'peasant.png',
         criteria: (s: IStatsService) => { return s.skillLevel(SkillType.Farming) >= 10 },
     },
     {
         name: 'Student',
         aptitudes: mostlyUniformSkillMap(.7, {[SkillType.Intellect]: 1.1}),
+        img: 'mage.png',
         criteria: (s: IStatsService) => {
             return s.current(Stat.ActionsTaken) >= 10;
         },
@@ -29,6 +32,7 @@ export const KLASSES : Klass[] =[
     {
         name: 'Scholar',
         aptitudes: mostlyUniformSkillMap(.9, {[SkillType.Intellect]: 1.5}),
+        img: 'red-mage.png',
         criteria: (s: IStatsService) => {
             return s.playerLevel('Student') >= 20;
         }
@@ -39,6 +43,7 @@ export const KLASSES : Klass[] =[
             [SkillType.Intellect]: 1.1,
             [SkillType.Combat]: 1.1,
         }),
+        img: 'elder-mage.png',
         criteria: (s: IStatsService) => {
             let thresh = 10;
             return (s.skillLevel(SkillType.Intellect) > thresh) &&
