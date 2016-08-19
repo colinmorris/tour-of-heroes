@@ -42,11 +42,11 @@ import { SkillGainsPipe } from './skill-gains.pipe';
                     {{bonus.description}}
                 </div>
             </div>
-            <button (click)="stopAction()">Stop</button>
+            <button (click)="stopAction()" class="btn btn-danger">Stop</button>
         </div>
 
         <div *ngIf="!currentAction">
-            <button (click)="select()">Go Here</button>
+            <button (click)="select()" class="btn btn-primary">Explore</button>
         </div>
     </div>
     `

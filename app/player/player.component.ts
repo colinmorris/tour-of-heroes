@@ -4,7 +4,7 @@ import { ProgressBarComponent } from '../shared/progressbar.component';
 import { InventoryComponent } from '../items/inventory.component';
 import { PerksComponent } from '../perks/perks.component';
 import { BuffedStatComponent } from './buffed-stat.component';
-import { SkillComponent } from './skill.component';
+import { SkillComponent } from '../shared/skill.component';
 
 import { PlayerService } from './player.service';
 import { Player } from './player.interface';

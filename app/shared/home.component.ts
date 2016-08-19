@@ -9,14 +9,23 @@ import { Zones } from '../zones/zones.service';
 @Component({
     selector: 'home',
     directives: [PlayerComponent, ZonesComponent, ZoneComponent],
+    styles: [
+        `.focalZone {
+            margin-bottom: 30px;
+        }`
+    ],
     template: `
     <div class="row">
         <div class="col-xs-3">
             <player-pane></player-pane>
         </div>
         <div class="col-xs-9">
-            <zone *ngIf="zones.focalZone" [zone]="zones.focalZone"></zone>
-            <zones></zones>
+            <div class="row focalZone">
+                <zone *ngIf="zones.focalZone" [zone]="zones.focalZone"></zone>
+            </div>
+            <div class="row">
+                <zones></zones>
+            </div>
         </div>
     </div>
   `

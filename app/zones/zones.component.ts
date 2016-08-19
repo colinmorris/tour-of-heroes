@@ -19,16 +19,28 @@ interface SuperzonePane {
         }`,
     ],
     template: `
-    <div class="superzones">
-        <div *ngFor="let pane of panes">
-            <a (click)="pane.expanded = !pane.expanded">
+    <div class="superzones panel-group">
+        <div *ngFor="let pane of panes" class="panel panel-default">
+
+            <div (click)="pane.expanded = !pane.expanded"
+                class="panel-heading"
+            >
+                <h4 class="panel-title">
+                <a role="button">
                 {{pane.name}}
-            </a>
-            <div *ngIf="pane.expanded">
-                <zone-summary [zone]="zone"
-                *ngFor="let zone of pane.zones"
-                ></zone-summary>
+                </a>
+                </h4>
             </div>
+
+            <div *ngIf="pane.expanded" class="panel-body">
+                <ul class="list-group">
+                    <li *ngFor="let zone of pane.zones" class="list-group-item">
+                        <zone-summary [zone]="zone">
+                        </zone-summary>
+                    </li>
+                </ul>
+            </div>
+
         </div>
     </div>
     `
