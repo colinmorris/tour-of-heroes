@@ -6,12 +6,14 @@ export interface LiveZoneAction {
 
     remainingTime: number;
     duration: number;
-    /** TODO: attributes to be added later
-    inexperiencePenalty: number;
-    */
-    completeEarly();
     // Is this action actually ongoing? Or has it completed?
     active: boolean;
     // Where is this action taking place?
     zid: number;
+    /** TODO: attributes to be added later
+    inexperiencePenalty: number;
+    */
+    completeEarly();
+    // Advance the progress of this action by the given amount of time.
+    advanceProgress(skipMillis: number);
 }

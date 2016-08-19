@@ -1,9 +1,9 @@
-import { Inject, 
-    Component, 
+import { Inject,
+    Component,
     Input,
     SimpleChange,
     OnChanges,
-    OnInit, 
+    OnInit,
     OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
@@ -28,7 +28,7 @@ import { SkillGainsPipe } from './skill-gains.pipe';
                 <span class="ongoing">
                     {{currentAction.description}}
                 </span>
-                <div class="progress-bar" [style.width.%]="currentAction.pctProgress">
+                <div (click)="actionClick()" class="progress-bar" [style.width.%]="currentAction.pctProgress">
                 </div>
             </div>
 
@@ -97,7 +97,7 @@ export class ZoneComponent implements OnInit, OnDestroy, OnChanges {
         } else {
             this.AS.postActionSubject.take(1).subscribe( {
                 next: (post: PostActionInfo) => {
-                    if (post.nextAction.active && 
+                    if (post.nextAction.active &&
                           post.nextAction.zid == changes["zone"].currentValue.zid
                        ) {
                         this.currentAction = post.nextAction;
@@ -106,6 +106,11 @@ export class ZoneComponent implements OnInit, OnDestroy, OnChanges {
                 }
             });
         }
+    }
+
+    actionClick() {
+        // TODO: Throttle these to thwart evil auto-clickers
+        this.currentAction.advanceProgress(500);
     }
 
     select() {

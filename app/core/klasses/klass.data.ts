@@ -5,9 +5,10 @@ import { Klass } from './klass.interface';
 // TODO: Specify perks here
 export const KLASSES : Klass[] =[
     {
+        // perk: double apts until level 10
         name: 'Peasant',
         aptitudes: uniformSkillMap(.5),
-        criteria: (s: IStatsService) => { return true; },
+        criteria: (s: IStatsService) => true,
     },
     {
         name: 'Farmer',

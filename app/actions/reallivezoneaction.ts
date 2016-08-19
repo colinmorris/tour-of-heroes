@@ -57,4 +57,8 @@ export class RealLiveZoneAction implements LiveZoneAction {
         this.remainingTime /= speedup;
         this.duration /= speedup;
     }
+
+    advanceProgress(skipMillis: number) {
+        this.remainingTime = Math.max(0, this.remainingTime - skipMillis);
+    }
 }
