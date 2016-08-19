@@ -62,5 +62,6 @@ export class KlassesComponent {
         this.Perks.resetAllPerks();
         this.PS.reincarnate(this.selected.name);
         this.Perks.addPerkForKlass(this.selected.name);
+        this.Perks.addAncestryPerk();
     }
 }

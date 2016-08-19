@@ -25,7 +25,9 @@ import { di_tokens } from './di-tokens';
     <router-outlet></router-outlet>
     </div>
   `,
-    providers: [Zones, KlassService, StatsService,
+    providers: [Zones, KlassService, 
+        StatsService,
+        {provide: di_tokens.statsservice, useExisting: StatsService},
         PerkService,
         {provide: di_tokens.perkservice, useExisting: PerkService},
         PlayerService,

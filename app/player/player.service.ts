@@ -92,8 +92,4 @@ export class PlayerService implements IPlayerService {
         this.setPlayer(player);
     }
 
-    trainSkill(skill: SkillType, points: number) {
-        // Any perks applying to particular zones/items need to be applied upstream
-        // TODO
-    }
 }

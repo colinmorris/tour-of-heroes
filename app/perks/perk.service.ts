@@ -84,6 +84,16 @@ export class PerkService implements IPerkService {
         }
     }
 
+    addAncestryPerk() {
+        let ancestry = new PASSIVES.AncestryPerk(this.injector);
+        let success = ancestry.apply();
+        if (!success) {
+            console.log("Not eligible for ancestry perk yet.");
+        } else {
+            this.passives["AncestryPerk"] = ancestry;
+        }
+    }
+
     private addSpell(spellName: string) {
         console.assert(!(spellName in this.spells));
         let spell:AbstractSpell = new SPELLS[spellName](this.injector);

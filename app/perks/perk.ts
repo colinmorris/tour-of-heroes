@@ -96,9 +96,11 @@ export abstract class AbstractTimedBuff extends AbstractBuff implements TimedBuf
 }
 
 export abstract class AbstractPassive extends AbstractBonus implements Passive {
-    apply() {
+    // (Sort of a hack. I'm toying with the idea of passives being able to return
+    // success/failure. Makes sense for ancestry perk, possibly for others.)
+    apply() : any {
         let args = this.injectionArgs();
-        this.onCast(...args);
+        return this.onCast(...args);
     }
-    abstract onCast(...services: any[]);
+    abstract onCast(...services: any[]) : any;
 }

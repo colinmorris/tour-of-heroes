@@ -3,6 +3,7 @@ import { di_tokens } from '../../shared/di-tokens';
 import { SkillMap } from '../../core/index';
 import { Observable } from 'rxjs/Observable';
 import { IPlayerService } from '../../player/player.service.interface';
+import { IStatsService } from '../../stats/stats.service.interface';
 
 abstract class OnOffPerk extends AbstractPassive {
     private _active: boolean;
@@ -22,6 +23,41 @@ abstract class OnOffPerk extends AbstractPassive {
 }
 
 export namespace PASSIVES {
+
+export class AncestryPerk extends AbstractPassive {
+    // TODO: Maybe it makes sense to use these classes just for defining behavior,
+    // and define some structs in a separate file for stuff like name, description,
+    // and future metadata (e.g. path to image for icon).
+    name = "Heroic Ancestry";
+    diTokens = [di_tokens.statsservice, di_tokens.playerservice];
+    private multiplier : number;
+    get description() {
+        return `Base aptitudes multiplied by ${this.multiplier}`;
+    }
+    onCast(SS: IStatsService, PS: IPlayerService) : boolean {
+        let maxLvls = SS.maxLevelPerKlass();
+        let multiplier = 1;
+        for (let klass in maxLvls) {
+            multiplier *= (1 + AncestryPerk.multiplierForLevel(maxLvls[klass]));
+        }
+        multiplier -= 1;
+        if (multiplier <= 0) {
+            return false;
+        }
+        let buffs = PS.getBaseAptitudes().map( (apt: number) => apt * multiplier );
+        PS.buffAptitudes(buffs);
+        return true;
+    }
+
+    static multiplierForLevel(level: number) : number {
+        if (level <= 0) {
+            return 0;
+        }
+        return Math.log10(level);
+    }
+}
+
+
 
 export class PeasantPerk extends OnOffPerk {
     // TODO: wish there was a way I could get the compiler to bug me if
