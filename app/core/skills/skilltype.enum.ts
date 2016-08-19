@@ -12,7 +12,7 @@ export enum SkillType {
     MAX,
 }
 
-export const skill_images: string[] = [
+let skill_images_wesnoth: string[] = [
     'pitchfork.png',
     'sword-human.png',
     'torch.png',
@@ -24,3 +24,16 @@ export const skill_images: string[] = [
     'scroll_red.png',
     'ankh_necklace.png'
 ]
+
+export const skill_images: string[] = [
+    'fedhas.png',
+    'long_blades.png',
+    'ice_magic.png',
+
+    'nemelex_xobeh.png',
+    'stealth.png',
+
+    'unarmed_combat_paw.png',
+    'spellcasting.png',
+    'invocations.png'
+].map( (fname: string) => '/assets/skills_dcss/' + fname );
