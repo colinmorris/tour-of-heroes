@@ -23,6 +23,10 @@ export class PerkService implements IPerkService {
     }
 
     resetAllPerks() {
+        // TODO: is it possible some perks will stick around because they're
+        // still subscribed to stuff in other services? That'd be real bad.
+        // Some quick testing suggests this isn't happening, though it's not
+        // really clear to me what's preventing it from happening.
         this.buffs = <{[n:string]:AbstractBuff}>{};
         this.passives = <{[n:string]:AbstractPassive}>{};
         this.spells = <{[n:string]:AbstractSpell}>{};
@@ -60,9 +64,13 @@ export class PerkService implements IPerkService {
         // TODO: should call out to klassService to get the right perk?
         console.log(`Adding a perk for ${klass}`);
         let add = () => {
-            this.addSpell("Execute");
-            this.addSpell("Berserk");
-            this.addPerkByName("PeasantPerk");
+            //this.addSpell("Berserk");
+            this.addPerkByName("StudentPerk");
+            if (klass == "Peasant") {
+                this.addPerkByName("PeasantPerk");
+            } else {
+                this.addSpell("Execute");
+            }
         }
         if (defer) {
             setTimeout(add, deferral_time);

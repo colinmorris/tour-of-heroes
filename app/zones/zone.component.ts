@@ -34,8 +34,8 @@ import { SkillGainsPipe } from './skill-gains.pipe';
 
             <div class="previously" *ngIf="lastOutcome">
                 <div class="mainOutcome">{{lastOutcome.main.description}}
-                    <div *ngIf="lastOutcome.main.outcome.pointsGained">
-                        ({{lastOutcome.main.outcome.pointsGained | skillgains}})
+                    <div *ngIf="lastOutcome.main.pointsGained">
+                        ({{lastOutcome.main.pointsGained | skillgains}})
                     </div>
                 </div>
                 <div *ngFor="let bonus of lastOutcome.secondary" class="secondaryOutcome">

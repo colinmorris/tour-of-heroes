@@ -12,8 +12,7 @@ import { IPlayerService } from './player.service.interface';
 import { Skill } from './skill.interface';
 import { GLOBALS } from '../globals';
 
-import { PlayerOutcome, PlayerEffect,
-    ActionEffect,
+import {
     SkillMap
 } from '../core/index';
 
@@ -97,16 +96,8 @@ export class PlayerService implements IPlayerService {
         this._player.buffAptitudes(by);
     }
 
-    applyEffect(effect: PlayerEffect) : PlayerOutcome {
-        let outcome: PlayerOutcome = {};
-        if (effect.skillPoints) {
-            outcome.pointsGained = this._player.applySkillPoints(effect.skillPoints);
-        }
-        if (effect.item) {
-            // TODO
-            console.error("Applying item effects not implemented yet");
-        }
-        return outcome;
+    trainSkills(basePoints: SkillMap) : SkillMap {
+        return this._player.applySkillPoints(basePoints);
     }
 
     reincarnate(klass: KlassType) {

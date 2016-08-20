@@ -11,12 +11,12 @@ import { PlayerService } from '../player/player.service';
 import { StatsService } from '../stats/stats.service';
 import { Zone,
     ActionOutcome,
+    ProtoActionOutcome,
+    SecondaryAction,
     LiveZoneAction,
     ZoneAction,
     ZoneActionDescription,
-    PlayerOutcome,
     ActionEvent,
-    ActionEffect,
     SkillMap, getTruthySkills
  } from '../core/index';
 import { RealLiveZoneAction } from './reallivezoneaction';
@@ -38,7 +38,8 @@ export class ActionService implements IActionService {
     private _actionSpeedMultiplier = 1.0;
 
     // Experimental
-    actionEffectSubject: Subject<ActionEffect> = new Subject<ActionEffect>();
+    protoActionOutcomeSubject: Subject<ProtoActionOutcome> =
+        new Subject<ProtoActionOutcome>();
 
     constructor(
         private PS: PlayerService,
@@ -119,14 +120,23 @@ export class ActionService implements IActionService {
     }
 
     private getOutcome(action: ZoneAction, mainDesc: string): ActionOutcome {
-        let mainEffect: ActionEffect = { skillPoints: action.skillDeltas };
-        this.actionEffectSubject.next(mainEffect);
-        // TODO: Bad separation of concerns. Application should happen here
-        // (calling PS for skill gains, calling PerkService for buffs, invService
-        // for items, etc.)
-        let mainOutcome: PlayerOutcome = this.PS.applyEffect(mainEffect);
-        let mainEvent: ActionEvent = {description: mainDesc, outcome: mainOutcome};
-        return {main: mainEvent, secondary:[]};
+        let proto:ProtoActionOutcome = {action: action,
+            kickers: new Array<SecondaryAction>()};
+        // By broadcasting this, we give observers the chance to mutate it
+        // (by adding secondary effects), before we apply. Probably before.
+        // Still not clear on the rxjs scheduler stuff.
+        this.protoActionOutcomeSubject.next(proto);
+
+        let mainEvent = {description: mainDesc,
+            pointsGained: this.PS.trainSkills(action.skillDeltas)};
+        let kickerEvents:ActionEvent[] = new Array<ActionEvent>();
+        for (let secondary of proto.kickers) {
+            let kickerOutcome:ActionEvent = {description: secondary.description,
+                pointsGained: this.PS.trainSkills(secondary.skillPoints)};
+            kickerEvents.push(kickerOutcome);
+        }
+        let outcome:ActionOutcome = {main: mainEvent, secondary:kickerEvents};
+        return outcome;
     }
 
     // TODO: Used to be a method of zone, and now feels kind of weird here

@@ -1,9 +1,13 @@
 import { AbstractPassive } from '../perk';
 import { di_tokens } from '../../shared/di-tokens';
-import { SkillMap } from '../../core/index';
+import { SkillMap, zeroSkillMap, SkillType,
+    ProtoActionOutcome, ActionEvent, SecondaryAction
+} from '../../core/index';
 import { Observable } from 'rxjs/Observable';
+
 import { IPlayerService } from '../../player/player.service.interface';
 import { IStatsService } from '../../stats/stats.service.interface';
+import { IActionService } from '../../actions/action.service.interface';
 
 abstract class OnOffPerk extends AbstractPassive {
     private _active: boolean;
@@ -54,6 +58,33 @@ export class AncestryPerk extends AbstractPassive {
             return 0;
         }
         return Math.log10(level);
+    }
+}
+
+export class StudentPerk extends AbstractPassive {
+    name = "Extra Credit"
+    diTokens = [di_tokens.actionservice];
+    private prob = .1;
+    description = "zzzz"
+    onCast(AS: IActionService) {
+        AS.protoActionOutcomeSubject
+            .filter( (outcome: ProtoActionOutcome) => {
+                let intGain = outcome.action.skillDeltas[SkillType.Intellect];
+                return (intGain == 0 || intGain == undefined)
+                    && (Math.random() <= this.prob);
+            })
+            .subscribe( (proto: ProtoActionOutcome) => {
+                console.log("Adding student kicker");
+                let bonusPoints = zeroSkillMap();
+                let mainPointGains = proto.action.skillDeltas
+                    .reduce( (prev, curr) => prev+curr, 0);
+                bonusPoints[SkillType.Intellect] = mainPointGains;
+                let kicker:SecondaryAction = {
+                    description: `Earned some extra credit`,
+                    skillPoints: bonusPoints
+                };
+                proto.kickers.push(kicker);
+            });
     }
 }
 

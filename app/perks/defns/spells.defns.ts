@@ -1,5 +1,5 @@
 import { AbstractSpell, AbstractBuffingSpell } from '../perk';
-import { LiveZoneAction, ActionEffect } from '../../core/index';
+import { LiveZoneAction } from '../../core/index';
 import { di_tokens } from '../../shared/di-tokens';
 import { IActionService } from '../../actions/action.service.interface';
 
