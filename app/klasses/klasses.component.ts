@@ -54,13 +54,17 @@ import { SkillType } from '../core/index';
         </div>
 
         <div class="col-xs-8">
-        <ul>
-            <li *ngFor="let klass of KS.allKlasses">
-                <img [src]="'/assets/units/' + klass.img"
-                    [class.locked]="!klass.unlocked">
-                <a (click)="selected=klass">{{displayName(klass)}}</a>
-            </li>
-        </ul>
+            <div class="row">
+                <div *ngFor="let klass of KS.allKlasses"
+                    class="col-xs-2"
+                >
+                    <img [src]="'/assets/units/' + klass.img"
+                        [class.locked]="!klass.unlocked">
+                    <div>
+                    <a (click)="selected=klass">{{displayName(klass)}}</a>
+                    </div>
+                </div>
+            </div>
         </div>
 
         </div>
