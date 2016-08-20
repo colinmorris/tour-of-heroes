@@ -22,6 +22,10 @@ import { SkillType } from '../core/index';
         ul {
             list-style: none;
         }
+        .reincarnate-button {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
         `
     ],
     template: `
@@ -32,14 +36,17 @@ import { SkillType } from '../core/index';
             <h2>{{displayName(selected)}}</h2>
             <img [src]="'/assets/units/' + selected.img"
                 [class.locked]="!selected.unlocked">
-            Aptitudes:
-            <ul>
-                <li *ngFor="let apt of selected.aptitudes; let i = index">
+
+            <h3><span class="label label-default">Aptitudes</span></h3>
+            <div class="apts">
+                <span *ngFor="let apt of selected.aptitudes; let i = index">
                 <skill [skill]="i"></skill>{{apt}}
-                </li>
-            </ul>
+                <br *ngIf="i==3">
+                </span>
+            </div>
+
             <button *ngIf="selected.unlocked"
-                class="btn"
+                class="btn btn-default reincarnate-button center-block"
                 (click)="reincarnate()">
                     Reincarnate!
             </button>
