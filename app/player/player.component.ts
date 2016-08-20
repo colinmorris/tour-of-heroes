@@ -49,7 +49,7 @@ import { Player } from './player.interface';
             <div class="row">
 
                 <div class="col-xs-2">
-                <skill [skill]="skill.id"></skill>
+                <skill [skill]="skill.id" [title]="skill.name"></skill>
                 </div>
 
                 <div class="col-xs-2">

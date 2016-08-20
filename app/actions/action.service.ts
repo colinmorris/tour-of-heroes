@@ -121,6 +121,9 @@ export class ActionService implements IActionService {
     private getOutcome(action: ZoneAction, mainDesc: string): ActionOutcome {
         let mainEffect: ActionEffect = { skillPoints: action.skillDeltas };
         this.actionEffectSubject.next(mainEffect);
+        // TODO: Bad separation of concerns. Application should happen here
+        // (calling PS for skill gains, calling PerkService for buffs, invService
+        // for items, etc.)
         let mainOutcome: PlayerOutcome = this.PS.applyEffect(mainEffect);
         let mainEvent: ActionEvent = {description: mainDesc, outcome: mainOutcome};
         return {main: mainEvent, secondary:[]};
