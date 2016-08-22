@@ -2,6 +2,10 @@ import { mostlyUniformSkillMap, uniformSkillMap, SkillType } from '../skills/ind
 import { IStatsService, Stat } from '../../stats/stats.service.interface';
 import { Klass } from './klass.interface';
 
+let low_skill_lvl = 10;
+let med_skill_lvl = 25;
+let hi_skill_lvl = 50;
+
 // TODO: Specify perks here
 export const KLASSES : Klass[] =[
     {
@@ -19,7 +23,9 @@ export const KLASSES : Klass[] =[
                             [SkillType.Survival]: .9
                         }),
         img: 'peasant.png',
-        criteria: (s: IStatsService) => { return s.skillLevel(SkillType.Farming) >= 10 },
+        criteria: (s: IStatsService) => {
+            return s.skillLevel(SkillType.Farming) >= low_skill_lvl;
+        }
     },
     {
         name: 'Student',
@@ -27,7 +33,19 @@ export const KLASSES : Klass[] =[
         img: 'mage.png',
         criteria: (s: IStatsService) => {
             return s.current(Stat.ActionsTaken) >= 10;
-        },
+        }
+    },
+    {
+        name: 'Assassin',
+        aptitudes: mostlyUniformSkillMap(.7, {
+            [SkillType.Stealth]: 1.5,
+            [SkillType.Intellect]: 1.2,
+            [SkillType.Combat]: .9
+        }),
+        img: 'assassin+female.png',
+        criteria: (s: IStatsService) => {
+            return s.skillLevel(SkillType.Stealth) >= med_skill_lvl;
+        }
     },
     {
         name: 'Scholar',
@@ -45,7 +63,7 @@ export const KLASSES : Klass[] =[
         }),
         img: 'elder-mage.png',
         criteria: (s: IStatsService) => {
-            let thresh = 10;
+            let thresh = low_skill_lvl;
             return (s.skillLevel(SkillType.Intellect) > thresh) &&
                 (s.skillLevel(SkillType.Combat) > thresh);
         }

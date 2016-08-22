@@ -45,7 +45,10 @@ export class StatsService implements IStatsService {
 
     // ----------------------- Write --------------------------------
     setSkills(levels: SkillMap) {
-        this.stats.skillLevels = levels;
+        for (let i=0; i < SkillType.MAX; i++) {
+            this.stats.skillLevels[i] = Math.max(levels[i],
+                this.stats.skillLevels[i]);
+        }
     }
     setLevel(level: number, klass: string) {
         let simple = this.stats.simpleStats[Stat.PlayerLevel];

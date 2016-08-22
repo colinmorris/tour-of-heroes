@@ -10,7 +10,7 @@ abstract class ActionServiceSpell extends AbstractSpell {
 
 export namespace SPELLS {
 
-export class Execute extends ActionServiceSpell {
+export class AssassinPerk extends ActionServiceSpell {
     cooldown = 60;
     name = "Execute";
     description = "Blah blah blah";
