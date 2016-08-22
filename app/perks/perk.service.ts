@@ -13,7 +13,7 @@ let deferral_time = 100; // idk
 
 @Injectable()
 export class PerkService implements IPerkService {
-    private buffs: {[name:string]: AbstractBuff};
+    private buffs: {[name:string]: Buff};
     private passives: {[name:string]: AbstractPassive};
     private spells: {[name:string]: AbstractSpell};
     constructor(
@@ -61,16 +61,10 @@ export class PerkService implements IPerkService {
     (The timer-based solution is kind of a dumb hack. Should probably listen
     for an event fired when the app component is done loading. Or something.) **/
     addPerkForKlass(klass: string, defer=false) {
-        // TODO: should call out to klassService to get the right perk?
         console.log(`Adding a perk for ${klass}`);
+        let perkName = klass + 'Perk';
         let add = () => {
-            //this.addSpell("Berserk");
-            this.addPerkByName("StudentPerk");
-            if (klass == "Peasant") {
-                this.addPerkByName("PeasantPerk");
-            } else {
-                this.addSpell("Execute");
-            }
+            this.addPerkByName(perkName);
         }
         if (defer) {
             setTimeout(add, deferral_time);
@@ -80,9 +74,6 @@ export class PerkService implements IPerkService {
     }
 
     addPerkByName(name: string) {
-        // TODO: Bleh, it's totally possible for a name to be shared between two
-        // of these categories, even intentionally (e.g. "Berserk"). Should probably
-        // do some kind of namespacing.
         if (name in SPELLS) {
             this.addSpell(name);
         } else if (name in PASSIVES) {
@@ -121,17 +112,24 @@ export class PerkService implements IPerkService {
         this.passives[passiveName] = passive;
         passive.apply();
     }
-    // grumble
-    public addBuff(buffName: string, duration?: number) {
-        // TODO: maybe want to allow buff duplicates? in which case this is a bad idea
-        let buff:AbstractBuff = new BUFFS[buffName](this.injector);
-        if (duration) {
-            console.assert(buff instanceof AbstractTimedBuff);
-            (<AbstractTimedBuff>buff).duration = duration;
-        }
-        this.buffs[buff.name] = buff;
+
+    /** TODO: I think this refactor to allow passing in additional constructor
+    arguments was actually unnecessary. The thing that needs to add the buff
+    (the passive, spell, item, whatever) should know which buff class it
+    needs specifically, and just call some factory method of that class.
+    */
+    public addBuff(buffName: string, ...buffArgs: any[]) {
+        let buff:AbstractBuff = new BUFFS[buffName](this.injector, ...buffArgs);
+        this.addBuffObject(buff);
+    }
+    public addBuffObject(buff: Buff) {
+        // kind of a hack - want to allow multiple instances of the same buff
+        // TODO: but this still isn't really settled (maybe applying a dupe buff
+        // should just extend or refresh the duration of the existing one?)
+        let buffid:string = buff.name + Math.random();
+        this.buffs[buffid] = buff;
         buff.apply().then( () => {
-            delete this.buffs[buff.name];
+            delete this.buffs[buffid];
         });
     }
 

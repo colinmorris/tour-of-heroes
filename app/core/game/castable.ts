@@ -5,7 +5,8 @@ import { Injector, OpaqueToken } from '@angular/core';
 export class InjectedArgs {
     protected diTokens: OpaqueToken[];
     constructor(
-        protected injector: Injector
+        protected injector: Injector,
+        ...args: any[]
     ) {
     }
 

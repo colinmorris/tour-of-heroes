@@ -8,6 +8,7 @@ import { LiveKlass, KlassService } from './klass.service';
 import { SkillComponent } from '../shared/skill.component';
 
 import { SkillType } from '../core/index';
+import { GLOBALS } from '../globals';
 
 @Component({
     selector: 'klass-viewer',
@@ -45,7 +46,7 @@ import { SkillType } from '../core/index';
                 </span>
             </div>
 
-            <button *ngIf="selected.unlocked"
+            <button *ngIf="selected.unlocked || cheatMode"
                 class="btn btn-default reincarnate-button center-block"
                 (click)="reincarnate()">
                     Reincarnate!
@@ -73,6 +74,7 @@ import { SkillType } from '../core/index';
 export class KlassesComponent {
     selected: LiveKlass;
     ST = SkillType;
+    cheatMode = GLOBALS.cheatMode;
     constructor (
         private KS: KlassService,
         private PS: PlayerService,

@@ -13,7 +13,8 @@ import { Skill } from './skill.interface';
 import { GLOBALS } from '../globals';
 
 import {
-    SkillMap
+    SkillMap,
+    mostlyUniformSkillMap
 } from '../core/index';
 
 type KlassType = string;
@@ -94,6 +95,14 @@ export class PlayerService implements IPlayerService {
 
     buffAptitudes(by: SkillMap) {
         this._player.buffAptitudes(by);
+    }
+
+    buffSkillLevels(by: SkillMap) {
+        this._player.buffSkillLevels(by);
+    }
+    buffSkillLevel(skill: SkillType, levels: number) {
+        let buffs = mostlyUniformSkillMap(0, {[skill]: levels});
+        this.buffSkillLevels(buffs);
     }
 
     trainSkills(basePoints: SkillMap) : SkillMap {

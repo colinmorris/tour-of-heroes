@@ -58,6 +58,7 @@ export abstract class AbstractBuffingSpell extends AbstractSpell {
     onCast(PS: IPerkService) {
         // You are treading on extremely fucking thin ice here. Have to be super
         // careful about not introducing circular dependencies/infinite loops.
+        // XXX: refactor me
         PS.addBuff(this.buffName, this.buffDuration);
         return true;
     }

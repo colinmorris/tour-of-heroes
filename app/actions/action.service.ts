@@ -131,8 +131,10 @@ export class ActionService implements IActionService {
             pointsGained: this.PS.trainSkills(action.skillDeltas)};
         let kickerEvents:ActionEvent[] = new Array<ActionEvent>();
         for (let secondary of proto.kickers) {
-            let kickerOutcome:ActionEvent = {description: secondary.description,
-                pointsGained: this.PS.trainSkills(secondary.skillPoints)};
+            let kickerOutcome:ActionEvent = {description: secondary.description};
+            if (secondary.skillPoints) {
+                kickerOutcome.pointsGained = this.PS.trainSkills(secondary.skillPoints);
+            }
             kickerEvents.push(kickerOutcome);
         }
         let outcome:ActionOutcome = {main: mainEvent, secondary:kickerEvents};

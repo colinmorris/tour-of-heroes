@@ -22,5 +22,8 @@ export const GLOBALS = {
 
     inventoryCapacity: 5,
 
-    dropRate: .1
+    dropRate: .1,
+
+    // Useful for testing. Can reinc into any class regardless of unlock status.
+    cheatMode: true
 }

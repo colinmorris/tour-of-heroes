@@ -1,13 +1,15 @@
-import { AbstractPassive } from '../perk';
+import { AbstractPassive, AbstractBuff } from '../perk';
 import { di_tokens } from '../../shared/di-tokens';
 import { SkillMap, zeroSkillMap, SkillType,
     ProtoActionOutcome, ActionEvent, SecondaryAction
 } from '../../core/index';
 import { Observable } from 'rxjs/Observable';
+import { BUFFS } from './buffs.defns';
 
 import { IPlayerService } from '../../player/player.service.interface';
 import { IStatsService } from '../../stats/stats.service.interface';
 import { IActionService } from '../../actions/action.service.interface';
+import { IPerkService } from '../perk.service.interface';
 
 abstract class OnOffPerk extends AbstractPassive {
     private _active: boolean;
@@ -85,6 +87,30 @@ export class StudentPerk extends AbstractPassive {
                 };
                 proto.kickers.push(kicker);
             });
+    }
+}
+
+export class FarmerPerk extends AbstractPassive {
+    diTokens = [di_tokens.actionservice, di_tokens.perkservice];
+    name = "Frugivore";
+    description = `Chance to eat a piece of fruit after performing a farming
+    action, temporarily boosting the level of a random skill.`;
+    private prob = .05;
+    onCast(AS: IActionService, PS: IPerkService) {
+        AS.protoActionOutcomeSubject
+        .filter( (outcome: ProtoActionOutcome) => {
+            let farmGain = outcome.action.skillDeltas[SkillType.Farming];
+            return (farmGain > 0)
+                && (Math.random() <= this.prob);
+        })
+        .subscribe( (proto: ProtoActionOutcome) => {
+            // Apply the buff
+            let buff:AbstractBuff = BUFFS.Fruity.randomFruity(this.injector);
+            PS.addBuffObject(buff);
+            // Let the world know
+            let kicker:SecondaryAction = {description: `Ate some fruit. Delicious!`};
+            proto.kickers.push(kicker);
+        });
     }
 }
 

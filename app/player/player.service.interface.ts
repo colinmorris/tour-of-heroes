@@ -1,4 +1,4 @@
-import { SkillMap } from '../core/index';
+import { SkillMap, SkillType } from '../core/index';
 import { Observable } from 'rxjs/Observable';
 
 export interface IPlayerService {
@@ -8,4 +8,6 @@ export interface IPlayerService {
     getBaseAptitudes(): SkillMap;
 
     buffAptitudes(by: SkillMap);
+    buffSkillLevels(by: SkillMap);
+    buffSkillLevel(skill: SkillType, by: number);
 }

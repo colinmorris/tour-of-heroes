@@ -101,6 +101,12 @@ export class LivePlayer implements Player {
         }
     }
 
+    buffSkillLevels(by: SkillMap) {
+        for (let skill of getTruthySkills(by)) {
+            this._skills[skill].levelBonus += by[skill];
+        }
+    }
+
     skillLevelsForNextLevel() : number {
         return LivePlayer.skillLevelsForNextLevel(this.level);
     }

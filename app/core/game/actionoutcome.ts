@@ -21,7 +21,7 @@ export interface ProtoActionOutcome {
 
 export interface SecondaryAction {
     description: string;
-    skillPoints: SkillMap;
+    skillPoints?: SkillMap;
 }
 
 export interface ActionEvent {
