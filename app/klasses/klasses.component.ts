@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { ActionService } from '../actions/action.service';
 import { PerkService } from '../perks/perk.service';
@@ -81,7 +82,8 @@ export class KlassesComponent {
         private PS: PlayerService,
         private AS: ActionService,
         private Perks: PerkService,
-        private Stats: StatsService
+        private Stats: StatsService,
+        private router: Router
     ) {
     }
 
@@ -112,5 +114,6 @@ export class KlassesComponent {
 
         this.Perks.resetAllPerks();
         this.PS.reincarnate(this.selected.name);
+        this.router.navigate(['/']);
     }
 }

@@ -10,6 +10,7 @@ export class RealLiveZoneAction implements LiveZoneAction {
     // I guess this is probably a bad separation of concerns? Meh.
     private tickRate = GLOBALS.actionBarUpdateInterval;
     private killed = false;
+    // Observed by the zone component, used to set the progress bar width
     pctProgress$ : Observable<number>;
     private observer: Observer<number>;
     /** One of "reset" or "". reset removes any transitions. We start in
