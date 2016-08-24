@@ -26,7 +26,7 @@ export const KLASSES : Klass[] =[
                         }),
         img: 'peasant.png',
         criteria: (s: IStatsService) => {
-            return s.skillLevel(SkillType.Farming) >= low_skill_lvl;
+            return s.skillLevel(SkillType.Farming) / low_skill_lvl;
         }
     },
     {
@@ -34,7 +34,7 @@ export const KLASSES : Klass[] =[
         aptitudes: mostlyUniformSkillMap(.7, {[SkillType.Intellect]: 1.1}),
         img: 'mage.png',
         criteria: (s: IStatsService) => {
-            return s.current(Stat.ActionsTaken) >= 10;
+            return s.current(Stat.ActionsTaken) / 10;
         }
     },
     {
@@ -46,7 +46,7 @@ export const KLASSES : Klass[] =[
         }),
         img: 'assassin+female.png',
         criteria: (s: IStatsService) => {
-            return s.skillLevel(SkillType.Stealth) >= med_skill_lvl;
+            return s.skillLevel(SkillType.Stealth) / med_skill_lvl;
         }
     },
     {
@@ -76,7 +76,7 @@ export const KLASSES : Klass[] =[
             /** TODO: Maybe criteria should be something like complete X actions
             in Y seconds? **/
             // Let's just use a simple placeholder for now
-            return s.skillLevel(SkillType.Combat) > low_skill_lvl;
+            return s.skillLevel(SkillType.Combat) / low_skill_lvl;
         }
     },
     {
@@ -88,7 +88,7 @@ export const KLASSES : Klass[] =[
             }),
             img: 'skeleton.png',
             criteria: (s: IStatsService) => {
-                return s.lifetimeSum(Stat.Clicks) > 5;
+                return s.lifetimeSum(Stat.Clicks) / 5;
             }
     },
     {
@@ -101,7 +101,7 @@ export const KLASSES : Klass[] =[
         }),
         img: 'pikeman.png',
         criteria: (s: IStatsService) => {
-            return s.lifetimeSumActionsTaken('Colloseum') > 3;
+            return s.lifetimeSumActionsTaken('Colloseum') / 3;
         }
     },
     {
@@ -109,7 +109,7 @@ export const KLASSES : Klass[] =[
         aptitudes: mostlyUniformSkillMap(.9, {[SkillType.Intellect]: 1.5}),
         img: 'red-mage.png',
         criteria: (s: IStatsService) => {
-            return s.playerLevel('Student') >= 20;
+            return s.playerLevel('Student') / 20;
         }
     },
     {
@@ -122,7 +122,7 @@ export const KLASSES : Klass[] =[
         }),
         img: 'horseman.png',
         criteria: (s: IStatsService) => {
-            return s.lifetimeSumActionsTaken('Stables') > 3;
+            return s.lifetimeSumActionsTaken('Stables') / 3;
         }
     }
 

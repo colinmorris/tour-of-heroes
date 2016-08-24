@@ -1,7 +1,10 @@
 import { SkillMap } from '../skills/index';
 import { IStatsService } from '../../stats/stats.service.interface';
 
-type UnlockCriteria = (stats: IStatsService) => boolean;
+/** A number will be treated as relative progress towards unlocking. .5 means
+halfway there, anything >= 1 means yes-unlocked.
+**/
+type UnlockCriteria = (stats: IStatsService) => (boolean | number);
 
 export interface Klass {
     name: string;

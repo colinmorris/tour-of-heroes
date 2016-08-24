@@ -63,7 +63,7 @@ export class StatsService implements IStatsService {
 
     }
     clicked() {
-
+        this.incrementSimpleStat(Stat.Clicks);
     }
     actionTaken(zone: string) {
         this.incrementSimpleStat(Stat.ActionsTaken);
@@ -94,7 +94,7 @@ export class StatsService implements IStatsService {
         return this.stats.unlocks[u];
     }
     playerLevel(klass: string) {
-        return this.stats.klassLevels[klass];
+        return this.stats.klassLevels[klass] || 0;
     }
     maxLevelPerKlass() : {[klass:string] : number} {
         return this.stats.klassLevels;

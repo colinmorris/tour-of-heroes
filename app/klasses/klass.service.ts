@@ -6,6 +6,7 @@ import { StatsService } from '../stats/stats.service';
 
 export interface LiveKlass extends Klass {
     unlocked: boolean;
+    progress?: number; // % progress to unlocking - only set if unlocked is false
 }
 
 @Injectable()
@@ -47,11 +48,23 @@ export class KlassService {
             if (klass.unlocked) {
                 continue;
             }
-            let didUnlock = klass.criteria(this.stats);
+            let unlockScore = klass.criteria(this.stats);
+            var didUnlock: boolean;
+            if (typeof unlockScore == 'number') {
+                if (isNaN(unlockScore)) {
+                    console.warn("Got score of NaN for " + klass.name);
+                    unlockScore = 0;
+                }
+                klass.progress = <number>unlockScore;
+                didUnlock = (<number>unlockScore) >= 1;
+            } else {
+                didUnlock = <boolean>unlockScore;
+            }
             if (didUnlock) {
                 console.log(`Wow!! Unlocked ${klass.name}`);
+                klass.progress = undefined;
             }
-            this.klassMap[klass.name].unlocked = didUnlock;
+            klass.unlocked = didUnlock;
         }
     }
 

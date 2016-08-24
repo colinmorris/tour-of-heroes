@@ -11,6 +11,7 @@ import { Zones } from './zones.service';
 import { Zone, ActionOutcome, LiveZoneAction } from '../core/index';
 import { ActionService, PostActionInfo } from '../actions/action.service';
 import { PlayerService } from '../player/player.service';
+import { StatsService } from '../stats/stats.service';
 import { SkillGainsPipe } from './skill-gains.pipe';
 import { GLOBALS } from '../globals';
 
@@ -80,7 +81,8 @@ export class ZoneComponent implements OnInit, OnDestroy, OnChanges {
 
     constructor(
         private AS: ActionService,
-        private PS: PlayerService
+        private PS: PlayerService,
+        private Stats: StatsService
     ) { }
     ngOnInit() {
         this.actionsub = this.AS.postActionSubject
@@ -134,6 +136,7 @@ export class ZoneComponent implements OnInit, OnDestroy, OnChanges {
             console.log(`Click power buffed from ${skip} to ${buffedSkip}`);
         }
         this.currentAction.advanceProgress(buffedSkip);
+        this.Stats.clicked();
     }
 
     select() {

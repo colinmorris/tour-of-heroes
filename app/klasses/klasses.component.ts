@@ -53,6 +53,12 @@ import { GLOBALS } from '../globals';
                 (click)="reincarnate()">
                     Reincarnate!
             </button>
+            <div *ngIf="!selected.unlocked">
+                <p *ngIf="selected.progress !== undefined">
+                    Unlock progress: {{selected.progress | percent:'1.0-0'}}
+                </p>
+                
+            </div>
         </div>
         </div>
 
