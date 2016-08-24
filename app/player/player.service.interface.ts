@@ -8,6 +8,8 @@ export interface IPlayerService {
     getBaseAptitudes(): SkillMap;
 
     buffAptitudes(by: SkillMap);
+    /** Convenience method. "Buffs" by the negative of the given values. **/
+    debuffAptitudes(by: SkillMap);
     buffSkillLevels(by: SkillMap);
     buffSkillLevel(skill: SkillType, by: number);
 }

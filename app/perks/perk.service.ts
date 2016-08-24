@@ -23,10 +23,13 @@ export class PerkService implements IPerkService {
     }
 
     resetAllPerks() {
-        // TODO: is it possible some perks will stick around because they're
-        // still subscribed to stuff in other services? That'd be real bad.
-        // Some quick testing suggests this isn't happening, though it's not
-        // really clear to me what's preventing it from happening.
+        /** Make sure buffs and passives clean up gracefully **/
+        for (let buffname in this.buffs) {
+            this.buffs[buffname].onDestroy();
+        }
+        for (let passiveName in this.passives) {
+            this.passives[passiveName].onDestroy();
+        }
         this.buffs = <{[n:string]:AbstractBuff}>{};
         this.passives = <{[n:string]:AbstractPassive}>{};
         this.spells = <{[n:string]:AbstractSpell}>{};
@@ -62,6 +65,9 @@ export class PerkService implements IPerkService {
     for an event fired when the app component is done loading. Or something.) **/
     addPerkForKlass(klass: string, defer=false) {
         console.log(`Adding a perk for ${klass}`);
+        /** TODO: this is very brittle. At the very least, should iterate through
+        all known classes on initialization and assert that their corresponding
+        perk exists. **/
         let perkName = klass + 'Perk';
         let add = () => {
             this.addPerkByName(perkName);

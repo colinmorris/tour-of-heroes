@@ -5,6 +5,11 @@ export interface ZoneActionDescription {
     past: string;
 }
 
+export interface ActionDelay {
+    base: number;
+    inexperiencePenalty: number;
+}
+
 export interface ZoneAction {
     skillDeltas: SkillMap;
     weight: number;
@@ -15,7 +20,7 @@ export interface ZoneAction {
 
     // Possibly not idempotent because of randomness
     chooseDescription() : ZoneActionDescription;
-    delay(skills: SkillMap) : number;
+    delay(skills: SkillMap) : ActionDelay;
     inexperiencePenalty(skills: SkillMap) : number;
     inexperiencePenaltyForSkillLevel(skill: SkillType, level: number) : number;
 }

@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { IPerkService } from './perk.service.interface';
 import { di_tokens } from '../shared/di-tokens';
 import { InjectedArgs } from '../core/index';
-import { Bonus, Spell, Buff, Passive, TimedBuff } from './perk.interface';
+import { BaseBuff, Bonus, Spell, Buff, Passive, TimedBuff } from './perk.interface';
 
 // TODO: This file needs to be split up.
 // also moved to core?
@@ -64,9 +64,13 @@ export abstract class AbstractBuffingSpell extends AbstractSpell {
     }
 }
 
-export abstract class AbstractBuff extends AbstractBonus implements Buff {
+export abstract class AbstractBuff extends AbstractBonus implements BaseBuff {
     abstract apply() : Promise<void>;
-    // Called when this buff expires
+    onDestroy() {
+        let args = this.injectionArgs();
+        this.cleanUp(...args);
+    }
+    abstract onCast(...services: any[]);
     abstract cleanUp(...services: any[]);
 }
 
@@ -93,15 +97,13 @@ export abstract class AbstractTimedBuff extends AbstractBuff implements TimedBuf
         });
         return promise;
     }
-    abstract onCast(...services: any[]);
 }
 
-export abstract class AbstractPassive extends AbstractBonus implements Passive {
+export abstract class AbstractPassive extends AbstractBuff implements Passive {
     // (Sort of a hack. I'm toying with the idea of passives being able to return
     // success/failure. Makes sense for ancestry perk, possibly for others.)
     apply() : any {
         let args = this.injectionArgs();
         return this.onCast(...args);
     }
-    abstract onCast(...services: any[]) : any;
 }

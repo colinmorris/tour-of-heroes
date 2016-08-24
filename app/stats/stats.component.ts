@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { Zones } from '../zones/zones.service';
 import { StatsService } from './stats.service';
-import { Stat } from './stats.service.interface';
+import { Stat } from '../core/index';
 
 @Component({
     selector: 'stats',

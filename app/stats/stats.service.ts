@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { IStatsService,
+import { IStatsService } from './stats.service.interface';
+import { SkillType, SkillMap, SkillMapOf, uniformSkillMap,
     Stat, NamedUnlock
- } from './stats.service.interface';
-import { SkillType, SkillMap, SkillMapOf, uniformSkillMap } from '../core/index';
+ } from '../core/index';
 import { SerializationService } from '../shared/serialization.service';
 import { StatsData, StatCell } from './stats-data.interface';
 import { GLOBALS } from '../globals';
@@ -78,6 +78,9 @@ export class StatsService implements IStatsService {
      incrementStatCell(cell: StatCell) {
         cell.current += 1;
         cell.sum += 1;
+    }
+    unlock(u: NamedUnlock) {
+        this.stats.unlocks[u] = true;
     }
 
     // ----------------------- Read --------------------------------

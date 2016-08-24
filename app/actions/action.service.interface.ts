@@ -5,4 +5,5 @@ export interface IActionService {
     currentAction: LiveZoneAction;
     actionSpeedMultiplier: number;
     protoActionOutcomeSubject: Observable<ProtoActionOutcome>;
+    inexpMultiplier: number;
 }

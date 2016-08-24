@@ -36,6 +36,8 @@ export class ActionService implements IActionService {
         new ReplaySubject<PostActionInfo>(1);
 
     private _actionSpeedMultiplier = 1.0;
+    // Inexperience penalty multiplied by this amount
+    public inexpMultiplier = 1.0;
 
     // Experimental
     protoActionOutcomeSubject: Subject<ProtoActionOutcome> =
@@ -112,8 +114,14 @@ export class ActionService implements IActionService {
 
     private getDelay(action: ZoneAction): number {
         let delay = action.delay(this.PS.getSkillLevels());
-        let buffedDelay = delay / this.actionSpeedMultiplier;
-        if (delay != buffedDelay) {
+        let inexp = 1.0 + (this.inexpMultiplier * (delay.inexperiencePenalty - 1));
+        if (inexp != delay.inexperiencePenalty) {
+            console.log(`Ineptitude penalty adjusted from
+                ${delay.inexperiencePenalty} to ${inexp}.`);
+        }
+        let skillAdjustedDelay = delay.base * inexp;
+        let buffedDelay = skillAdjustedDelay / this.actionSpeedMultiplier;
+        if (skillAdjustedDelay != buffedDelay) {
             console.log(`Buffed: ${buffedDelay}`);
         }
         return buffedDelay;

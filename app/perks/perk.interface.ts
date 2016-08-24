@@ -12,14 +12,26 @@ export interface Bonus {
 export interface Spell extends Bonus {
     cooldown: number;
     remainingCooldown: number;
+    /** Returns success/failure **/
     cast() : boolean;
 }
 
-export interface Buff extends Bonus {
+/** Common parent of passives and (temporary) buffs **/
+export interface BaseBuff extends Bonus {
+    apply();
+    /** Called when this buff should be removed. Could be called because this
+    is a temporary buff and its timer ran out, or because of reincarnation.
+    **/
+    onDestroy();
+}
+
+export interface Buff extends BaseBuff {
+    /** Returns a promise which resolves when this buff completes (e.g. because
+    the timer ran out or some other condition was fulfilled). **/
     apply() : Promise<void>;
 }
 
-export interface Passive extends Bonus {
+export interface Passive extends BaseBuff {
     apply();
 }
 

@@ -4,10 +4,11 @@ import { ActionService } from '../actions/action.service';
 import { PerkService } from '../perks/perk.service';
 import { PlayerService } from '../player/player.service';
 import { LiveKlass, KlassService } from './klass.service';
+import { StatsService } from '../stats/stats.service';
 
 import { SkillComponent } from '../shared/skill.component';
 
-import { SkillType } from '../core/index';
+import { SkillType, NamedUnlock } from '../core/index';
 import { GLOBALS } from '../globals';
 
 @Component({
@@ -79,7 +80,8 @@ export class KlassesComponent {
         private KS: KlassService,
         private PS: PlayerService,
         private AS: ActionService,
-        private Perks: PerkService
+        private Perks: PerkService,
+        private Stats: StatsService
     ) {
     }
 
@@ -96,6 +98,17 @@ export class KlassesComponent {
             care of by player service)
         */
         this.AS.stopAllActions();
+
+        /** TODO: This is kind of lame. Should try to find a more appropriate
+        place for this logic at some point. **/
+        if (
+            (!this.Stats.unlocked(NamedUnlock.Pacifist)) &&
+            (this.PS.player.level >= 10) &&
+            (this.PS.player.skills[SkillType.Combat].baseLevel < 1)
+        ) {
+            this.Stats.unlock(NamedUnlock.Pacifist);
+        }
+
         this.Perks.resetAllPerks();
         this.PS.reincarnate(this.selected.name);
     }

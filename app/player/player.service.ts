@@ -96,6 +96,9 @@ export class PlayerService implements IPlayerService {
     buffAptitudes(by: SkillMap) {
         this._player.buffAptitudes(by);
     }
+    debuffAptitudes(by: SkillMap) {
+        this._player.buffAptitudes( by.map( (apt)=>-1*apt ) );
+    }
 
     buffSkillLevels(by: SkillMap) {
         this._player.buffSkillLevels(by);

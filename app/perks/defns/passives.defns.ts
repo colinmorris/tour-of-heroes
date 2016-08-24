@@ -28,6 +28,13 @@ abstract class OnOffPerk extends AbstractPassive {
 
 }
 
+abstract class WatcherPassive extends AbstractPassive {
+    protected sub: any;
+    cleanUp(...args) {
+        this.sub.unsubscribe();
+    }
+}
+
 export namespace PASSIVES {
 
 export class AncestryPerk extends AbstractPassive {
@@ -37,6 +44,7 @@ export class AncestryPerk extends AbstractPassive {
     name = "Heroic Ancestry";
     diTokens = [di_tokens.statsservice, di_tokens.playerservice];
     private multiplier : number;
+    private appliedBuffs: SkillMap;
     get description() {
         return `Base aptitudes multiplied by ${this.multiplier}`;
     }
@@ -50,9 +58,12 @@ export class AncestryPerk extends AbstractPassive {
         if (multiplier <= 0) {
             return false;
         }
-        let buffs = PS.getBaseAptitudes().map( (apt: number) => apt * multiplier );
-        PS.buffAptitudes(buffs);
+        this.appliedBuffs = PS.getBaseAptitudes().map( (apt: number) => apt * multiplier );
+        PS.buffAptitudes(this.appliedBuffs);
         return true;
+    }
+    cleanUp(SS: IStatsService, PS: IPlayerService) {
+        PS.debuffAptitudes(this.appliedBuffs);
     }
 
     static multiplierForLevel(level: number) : number {
@@ -63,13 +74,26 @@ export class AncestryPerk extends AbstractPassive {
     }
 }
 
-export class StudentPerk extends AbstractPassive {
+export class ClericPerk extends AbstractPassive {
+    name = "Grace";
+    description = "zooozozozozzzzz";
+    diTokens = [di_tokens.actionservice];
+    private inexpMultiplier = .5;
+    onCast(AS: IActionService) {
+        AS.inexpMultiplier = this.inexpMultiplier;
+    }
+    cleanUp(AS: IActionService) {
+        AS.inexpMultiplier = 1.0; // TODO: brittle
+    }
+}
+
+export class StudentPerk extends WatcherPassive {
     name = "Extra Credit"
     diTokens = [di_tokens.actionservice];
     private prob = .1;
     description = "zzzz"
     onCast(AS: IActionService) {
-        AS.protoActionOutcomeSubject
+        this.sub = AS.protoActionOutcomeSubject
             .filter( (outcome: ProtoActionOutcome) => {
                 let intGain = outcome.action.skillDeltas[SkillType.Intellect];
                 return (intGain == 0 || intGain == undefined)
@@ -90,14 +114,14 @@ export class StudentPerk extends AbstractPassive {
     }
 }
 
-export class FarmerPerk extends AbstractPassive {
+export class FarmerPerk extends WatcherPassive {
     diTokens = [di_tokens.actionservice, di_tokens.perkservice];
     name = "Frugivore";
     description = `Chance to eat a piece of fruit after performing a farming
     action, temporarily boosting the level of a random skill.`;
     private prob = .05;
     onCast(AS: IActionService, PS: IPerkService) {
-        AS.protoActionOutcomeSubject
+        this.sub = AS.protoActionOutcomeSubject
         .filter( (outcome: ProtoActionOutcome) => {
             let farmGain = outcome.action.skillDeltas[SkillType.Farming];
             return (farmGain > 0)
@@ -141,8 +165,12 @@ export class PeasantPerk extends OnOffPerk {
     onDeactivate() {
         console.log("Peasant perk going away now");
         this.sub.unsubscribe();
-        let mirrorBuffs = this.aptitudeBuffs.map( (x) => { return -x;} );
-        this.PS.buffAptitudes(mirrorBuffs);
+        this.PS.debuffAptitudes(this.aptitudeBuffs);
+    }
+    cleanUp(...args) {
+        if (this.active) {
+            this.onDeactivate();
+        }
     }
 }
 

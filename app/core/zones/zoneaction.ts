@@ -1,6 +1,6 @@
 import { Verb } from './verb';
 import { SkillType, SkillMap, getTruthySkills } from '../skills/index';
-import { ZoneAction, ZoneActionDescription } from './zoneaction.interface';
+import { ZoneAction, ZoneActionDescription, ActionDelay } from './zoneaction.interface';
 import { randomChoice } from '../utils';
 import { GLOBALS } from '../../globals';
 
@@ -19,10 +19,11 @@ export class VerbalZoneAction implements ZoneAction {
 
     }
 
-    delay(skills: SkillMap): number {
-        let delay = this.minDelay * this.inexperiencePenalty(skills);
+    delay(skills: SkillMap) : ActionDelay {
+        let inexp = this.inexperiencePenalty(skills);
+        let delay = this.minDelay * inexp;
         console.log(`Base delay: ${this.minDelay}; After skill penalty: ${delay}`);
-        return delay;
+        return {base: this.minDelay, inexperiencePenalty: inexp};
     }
 
     // TODO: zzz this sucks

@@ -26,7 +26,7 @@ export class AssassinPerk extends ActionServiceSpell {
     }
 }
 
-export class Berserk extends AbstractBuffingSpell {
+export class BerserkerPerk extends AbstractBuffingSpell {
     cooldown = 60;
     name = "Berserk";
     description = "get mad";

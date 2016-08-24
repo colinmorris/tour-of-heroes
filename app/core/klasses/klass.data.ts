@@ -1,6 +1,7 @@
 import { mostlyUniformSkillMap, uniformSkillMap, SkillType } from '../skills/index';
-import { IStatsService, Stat } from '../../stats/stats.service.interface';
+import { IStatsService } from '../../stats/stats.service.interface';
 import { Klass } from './klass.interface';
+import { Stat, NamedUnlock as NU } from '../stats/index';
 
 let low_skill_lvl = 10;
 let med_skill_lvl = 25;
@@ -20,7 +21,8 @@ export const KLASSES : Klass[] =[
         aptitudes: mostlyUniformSkillMap(.5,
                         {
                             [SkillType.Farming]: 1.3,
-                            [SkillType.Survival]: .9
+                            [SkillType.Survival]: .9,
+                            [SkillType.Riding]: 1.0
                         }),
         img: 'peasant.png',
         criteria: (s: IStatsService) => {
@@ -45,6 +47,36 @@ export const KLASSES : Klass[] =[
         img: 'assassin+female.png',
         criteria: (s: IStatsService) => {
             return s.skillLevel(SkillType.Stealth) >= med_skill_lvl;
+        }
+    },
+
+    {
+        name: 'Cleric',
+        aptitudes: mostlyUniformSkillMap(.7, {
+            [SkillType.Piety]: 1.5,
+            [SkillType.Combat]: 0.4,
+            [SkillType.Survival]: 0.6,
+            [SkillType.Intellect]: 1.0
+        }),
+        img: 'white-mage.png',
+        criteria: (s: IStatsService) => {
+            return s.unlocked(NU.Pacifist);
+        }
+    },
+    {
+        name: 'Berserker',
+        aptitudes: mostlyUniformSkillMap(.8, {
+            [SkillType.Combat]: 1.6,
+            [SkillType.Charm]: .6,
+            [SkillType.Intellect]: .5,
+            [SkillType.Stealth]: .5,
+            [SkillType.Survival]: .9
+        }),
+        img: 'berserker.png',
+        criteria: (s: IStatsService) => {
+            /** TODO: Maybe criteria should be something like complete X actions
+            in Y seconds? **/
+            return true;
         }
     },
     {

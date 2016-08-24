@@ -1,20 +1,7 @@
-import { SkillType } from '../core/index';
-
-export enum Stat {
-    PlayerLevel, // klass
-    ItemsFound, // (klass, zone,)
-    SpellsCast, // (klass,)
-    Clicks, // (klass)
-    SkillLevel, // skill (basically obligatory)
-    ActionsTaken, // zone
-    MAX
-}
-
-export enum NamedUnlock {
-    MAX
-}
+import { SkillType, Stat, NamedUnlock } from '../core/index';
 
 export interface IStatsService {
+    // TODO: clarify semantix
     current(s: Stat) : number;
     lifetimeSum(s: Stat) : number;
     unlocked(u: NamedUnlock) : boolean;
@@ -26,10 +13,3 @@ export interface IStatsService {
     actionsTaken(zone: string) : number;
     lifetimeSumActionsTaken(zone: string) : number;
 }
-
-/** For 'counter' stats, there are a few questions it makes sense to ask:
-- value in this lifetime
-- max value across lifetimes
-- sum across lifetimes (this one probably isn't super meaningful for some stats
-    like player level or skill level)
-**/
