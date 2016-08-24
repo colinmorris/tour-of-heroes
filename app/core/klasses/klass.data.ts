@@ -49,7 +49,6 @@ export const KLASSES : Klass[] =[
             return s.skillLevel(SkillType.Stealth) >= med_skill_lvl;
         }
     },
-
     {
         name: 'Cleric',
         aptitudes: mostlyUniformSkillMap(.7, {
@@ -76,9 +75,23 @@ export const KLASSES : Klass[] =[
         criteria: (s: IStatsService) => {
             /** TODO: Maybe criteria should be something like complete X actions
             in Y seconds? **/
-            return true;
+            // Let's just use a simple placeholder for now
+            return s.skillLevel(SkillType.Combat) > low_skill_lvl;
         }
     },
+    {
+            name: 'Skeleton',
+            aptitudes: mostlyUniformSkillMap(.7, {
+                [SkillType.Stealth]: .5,
+                [SkillType.Piety]: .5,
+                [SkillType.Survival]: 1.0
+            }),
+            img: 'skeleton.png',
+            criteria: (s: IStatsService) => {
+                return s.lifetimeSum(Stat.Clicks) > 5;
+            }
+    },
+
     {
         name: 'Scholar',
         aptitudes: mostlyUniformSkillMap(.9, {[SkillType.Intellect]: 1.5}),

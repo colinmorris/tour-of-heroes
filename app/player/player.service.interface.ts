@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 export interface IPlayerService {
 
     playerLevel$: Observable<number>;
+    clickMultiplier: number;
 
     getBaseAptitudes(): SkillMap;
 

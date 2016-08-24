@@ -24,6 +24,7 @@ type SkillType = number;
 export class PlayerService implements IPlayerService {
     private _player: LivePlayer;
     playerLevel$ : Observable<number>;
+    public clickMultiplier = 1.0;
 
     constructor(
         private klasses: KlassService,

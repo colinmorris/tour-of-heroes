@@ -138,7 +138,20 @@ export class FarmerPerk extends WatcherPassive {
     }
 }
 
+export class SkeletonPerk extends AbstractPassive {
+    name = "Strong Phalanges";
+    private clickMultiplier = 2;
+    description = `Base clicking power increased by
+        ${this.clickMultiplier * 100}%`;
+    diTokens = [di_tokens.playerservice];
+    onCast(PS: IPlayerService) {
+        PS.clickMultiplier += this.clickMultiplier;
+    }
+    cleanUp(PS: IPlayerService) {
+        PS.clickMultiplier -= this.clickMultiplier;
+    }
 
+}
 
 export class PeasantPerk extends OnOffPerk {
     // TODO: wish there was a way I could get the compiler to bug me if

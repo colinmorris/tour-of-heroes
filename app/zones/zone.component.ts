@@ -10,6 +10,7 @@ import { Observable } from 'rxjs/Observable';
 import { Zones } from './zones.service';
 import { Zone, ActionOutcome, LiveZoneAction } from '../core/index';
 import { ActionService, PostActionInfo } from '../actions/action.service';
+import { PlayerService } from '../player/player.service';
 import { SkillGainsPipe } from './skill-gains.pipe';
 
 @Component({
@@ -62,7 +63,8 @@ export class ZoneComponent implements OnInit, OnDestroy, OnChanges {
     private actionsub: any;
 
     constructor(
-        private AS: ActionService
+        private AS: ActionService,
+        private PS: PlayerService
     ) { }
     ngOnInit() {
         this.actionsub = this.AS.postActionSubject
@@ -110,7 +112,12 @@ export class ZoneComponent implements OnInit, OnDestroy, OnChanges {
 
     actionClick() {
         // TODO: Throttle these to thwart evil auto-clickers
-        this.currentAction.advanceProgress(500);
+        let skip = 500;
+        let buffedSkip = skip * this.PS.clickMultiplier;
+        if (buffedSkip != skip) {
+            console.log(`Click power buffed from ${skip} to ${buffedSkip}`);
+        }
+        this.currentAction.advanceProgress(buffedSkip);
     }
 
     select() {
