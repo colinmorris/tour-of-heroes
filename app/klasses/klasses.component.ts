@@ -97,6 +97,7 @@ export class KlassesComponent {
         - create a new player object and assign the appropriate perks (taken
             care of by player service)
         */
+        // TODO: Should also reset the focal zone (incl. clearing currentAction/lastOutcome)
         this.AS.stopAllActions();
 
         /** TODO: This is kind of lame. Should try to find a more appropriate

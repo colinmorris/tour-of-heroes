@@ -15,7 +15,8 @@ export const GLOBALS = {
 
     autoSave: false,
 
-    actionBarUpdateInterval: 50,
+    actionBarUpdateInterval: 300,
+    actionBarTransitionMs: 600,
 
     // Every 5 levels of difference leads to a doubling of time.
     inexperiencePenaltyBase: 1.1487,

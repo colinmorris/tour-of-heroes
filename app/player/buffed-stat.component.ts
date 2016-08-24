@@ -13,7 +13,10 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
         {{base}}
     </template>
     <template [ngIf]="base != buffed">
-        <span class="buffed" title="{{base}} + {{buffed-base}}">{{buffed}}</span>
+        <span class="buffed"
+            title="{{base | number:'1.1-2'}} + {{buffed-base | number:'1.1-2'}}">
+            {{buffed | number:'1.0-1'}}
+        </span>
     </template>
     `
 })

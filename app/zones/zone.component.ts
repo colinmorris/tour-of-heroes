@@ -12,24 +12,40 @@ import { Zone, ActionOutcome, LiveZoneAction } from '../core/index';
 import { ActionService, PostActionInfo } from '../actions/action.service';
 import { PlayerService } from '../player/player.service';
 import { SkillGainsPipe } from './skill-gains.pipe';
+import { GLOBALS } from '../globals';
 
 @Component({
     selector: 'zone',
     styles: [`
         .progress-bar {
-            transition-duration: .05s;
-        }`],
+            transition-duration: ${GLOBALS.actionBarTransitionMs}ms;
+            transition-timing-function: linear;
+        }
+        .progress-bar.reset {
+            transition: none;
+        }
+        .progress {
+            height: 40px;
+            width: 85%;
+        }
+        .ongoing-text {
+            font-weight: bold;
+        }
+        `],
     pipes: [SkillGainsPipe],
     template: `
     <h3>{{zone.name}} {{active ? "(ACTIVE)" : ""}}</h3>
     <p>{{zone.description}}</p>
     <div *ngIf="loaded">
         <div *ngIf="currentAction">
-            <div class="progress">
-                <span class="ongoing">
-                    {{currentAction.description}}
-                </span>
-                <div (click)="actionClick()" class="progress-bar" [style.width.%]="currentAction.pctProgress">
+            <span class="ongoing-text">
+            {{currentAction.description}}...
+            </span>
+            <div class="progress center-block" (click)="actionClick()">
+                <div
+                    class="progress-bar {{currentAction.animationClass}}"
+                    [style.width.%]="currentAction.pctProgress$ | async"
+                    >
                 </div>
             </div>
 

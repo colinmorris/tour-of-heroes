@@ -6,7 +6,7 @@ import { Spell, Buff, Passive } from './perk.interface';
 @Component({
     selector: 'perks',
     template: `
-    <div class="spells" *ngIf="spells">
+    <div class="spells" *ngIf="spells.length > 0">
         <h3>Spells</h3>
         <div *ngFor="let spell of spells">
             <a (click)="spell.cast()" title="{{spell.description}}">

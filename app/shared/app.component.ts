@@ -16,6 +16,11 @@ import { GLOBALS } from '../globals';
 @Component({
     selector: 'my-app',
     directives: [ ROUTER_DIRECTIVES ],
+    styles: [`
+        .save {
+            margin-top: 15px;
+        }
+    `],
     template: `
     <div class="container">
     <nav>
@@ -24,8 +29,10 @@ import { GLOBALS } from '../globals';
         <a [routerLink]="['/stats']">Stats</a>
     </nav>
     <router-outlet></router-outlet>
+    <div class="row save">
     <button (click)="serials.save()">Save</button>
     <button (click)="serials.clearSave()">Clear Save</button>
+    </div>
     </div>
   `,
     providers: [Zones, KlassService, SerializationService,
