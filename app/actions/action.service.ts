@@ -129,19 +129,26 @@ export class ActionService implements IActionService {
 
     private getOutcome(action: ZoneAction, mainDesc: string): ActionOutcome {
         let proto:ProtoActionOutcome = {action: action,
-            kickers: new Array<SecondaryAction>()};
+            kickers: new Array<SecondaryAction>(),
+            zone: this.activeZone,
+            spMultiplier: 1
+        };
         // By broadcasting this, we give observers the chance to mutate it
         // (by adding secondary effects), before we apply. Probably before.
         // Still not clear on the rxjs scheduler stuff.
         this.protoActionOutcomeSubject.next(proto);
-
+        let spBoost = (s: SkillMap, mlt: number) => s.map((sp) => sp*mlt);
         let mainEvent = {description: mainDesc,
-            pointsGained: this.PS.trainSkills(action.skillDeltas)};
+            pointsGained: this.PS.trainSkills(
+                spBoost(action.skillDeltas, proto.spMultiplier)
+            )};
         let kickerEvents:ActionEvent[] = new Array<ActionEvent>();
         for (let secondary of proto.kickers) {
             let kickerOutcome:ActionEvent = {description: secondary.description};
             if (secondary.skillPoints) {
-                kickerOutcome.pointsGained = this.PS.trainSkills(secondary.skillPoints);
+                kickerOutcome.pointsGained = this.PS.trainSkills(
+                    spBoost(secondary.skillPoints, proto.spMultiplier)
+                );
             }
             kickerEvents.push(kickerOutcome);
         }

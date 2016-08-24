@@ -187,24 +187,38 @@ export class PeasantPerk extends OnOffPerk {
     }
 }
 
-/**
-class RangerPerk {
-    private sub: any;
-    buff(AS: ActionService) {
-        // This is not particularly satisfying, but it might do. Assuming it works.
-        this.sub = AS.actionEffectSubject.subscribe(
-            (eff: ActionEffect) => {
-                if (AS.activeZone.zid == 1) {
-                    console.log("Ranger perk doubling skill gains");
-                    eff.skillPoints = eff.skillPoints.map( (x) => { return x * 2; });
-                }
-            }
-        )
-    }
-    cleanup(AS: ActionService) {
-        this.sub.unsubscribe();
+export class GladiatorPerk extends WatcherPassive {
+    name = "Pit Fighter";
+    private spMultiplier = 5;
+    description = `SP gains increased by
+        ${this.spMultiplier*100}% when adventuring in the Colloseum`;
+    diTokens = [di_tokens.actionservice];
+    onCast(AS: IActionService) {
+        this.sub = AS.protoActionOutcomeSubject
+            .filter( (proto: ProtoActionOutcome) => {
+                return proto.zone.name == 'Colloseum';
+            })
+            .subscribe( (proto: ProtoActionOutcome) => {
+                proto.spMultiplier += this.spMultiplier;
+            });
     }
 }
-**/
+
+export class HorsemanPerk extends WatcherPassive {
+    name = "Stability";
+    private spMultiplier = 5;
+    description = `SP gains increased by
+        ${this.spMultiplier*100}% when adventuring in the Colloseum`;
+    diTokens = [di_tokens.actionservice];
+    onCast(AS: IActionService) {
+        this.sub = AS.protoActionOutcomeSubject
+            .filter( (proto: ProtoActionOutcome) => {
+                return proto.zone.name == 'Stables';
+            })
+            .subscribe( (proto: ProtoActionOutcome) => {
+                proto.spMultiplier += this.spMultiplier;
+            });
+    }
+}
 
 }

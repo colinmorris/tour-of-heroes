@@ -10,6 +10,7 @@ export interface IStatsService {
     maxLevelPerKlass() : {[klass:string] : number};
     skillLevel(skill: SkillType) : number;
 
+    // TODO: Would be nice if this were not stringly typed :(
     actionsTaken(zone: string) : number;
     lifetimeSumActionsTaken(zone: string) : number;
 }

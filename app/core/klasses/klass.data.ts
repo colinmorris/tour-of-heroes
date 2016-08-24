@@ -91,7 +91,19 @@ export const KLASSES : Klass[] =[
                 return s.lifetimeSum(Stat.Clicks) > 5;
             }
     },
-
+    {
+        name: 'Gladiator',
+        aptitudes: mostlyUniformSkillMap(.7, {
+            [SkillType.Combat]: 1.2,
+            [SkillType.Charm]: 1.2,
+            [SkillType.Farming]: .6,
+            [SkillType.Piety]: .6
+        }),
+        img: 'pikeman.png',
+        criteria: (s: IStatsService) => {
+            return s.lifetimeSumActionsTaken('Colloseum') > 3;
+        }
+    },
     {
         name: 'Scholar',
         aptitudes: mostlyUniformSkillMap(.9, {[SkillType.Intellect]: 1.5}),
@@ -101,17 +113,32 @@ export const KLASSES : Klass[] =[
         }
     },
     {
-        name: 'Mage',
+        name: 'Horseman',
         aptitudes: mostlyUniformSkillMap(.7, {
-            [SkillType.Intellect]: 1.1,
-            [SkillType.Combat]: 1.1,
+            [SkillType.Riding]: 1.3,
+            [SkillType.Combat]: 0.9,
+            [SkillType.Stealth]: 0.5,
+            [SkillType.Survival]: 0.8
         }),
-        img: 'elder-mage.png',
+        img: 'horseman.png',
         criteria: (s: IStatsService) => {
-            let thresh = low_skill_lvl;
-            return (s.skillLevel(SkillType.Intellect) > thresh) &&
-                (s.skillLevel(SkillType.Combat) > thresh);
+            return s.lifetimeSumActionsTaken('Stables') > 3;
         }
     }
+
+    // TODO: needs a perk
+    // {
+    //     name: 'Mage',
+    //     aptitudes: mostlyUniformSkillMap(.7, {
+    //         [SkillType.Intellect]: 1.1,
+    //         [SkillType.Combat]: 1.1,
+    //     }),
+    //     img: 'elder-mage.png',
+    //     criteria: (s: IStatsService) => {
+    //         let thresh = low_skill_lvl;
+    //         return (s.skillLevel(SkillType.Intellect) > thresh) &&
+    //             (s.skillLevel(SkillType.Combat) > thresh);
+    //     }
+    // }
 
 ]

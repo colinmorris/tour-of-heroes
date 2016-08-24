@@ -1,7 +1,7 @@
 import { SkillMap } from '../skills/index';
 // TODO: This definitely needs to move to core. Violation of organizing principles.
 import { Item } from '../../items/item';
-import { ZoneAction } from '../zones/index';
+import { ZoneAction, Zone } from '../zones/index';
 
 // TODO: these should probably be split out into separate files
 
@@ -16,7 +16,10 @@ export interface ActionOutcome {
 
 export interface ProtoActionOutcome {
     action: ZoneAction;
+    zone: Zone;
     kickers: SecondaryAction[];
+    // SP gains multiplied by this amount (for main event and secondaries)
+    spMultiplier: number;
 }
 
 export interface SecondaryAction {

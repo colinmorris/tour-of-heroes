@@ -1,5 +1,5 @@
 import { AbstractSpell, AbstractBuffingSpell } from '../perk';
-import { LiveZoneAction } from '../../core/index';
+import { LiveZoneAction, ProtoActionOutcome } from '../../core/index';
 import { di_tokens } from '../../shared/di-tokens';
 import { IActionService } from '../../actions/action.service.interface';
 
@@ -32,6 +32,25 @@ export class BerserkerPerk extends AbstractBuffingSpell {
     description = "get mad";
     buffName = "GoingBerserk";
     buffDuration = 20;
+}
+
+export class ScholarPerk extends AbstractSpell {
+    name = "Concentrate";
+    cooldown = 60;
+    private spMultiplier = 3.0;
+    description = `Increase the SP gains from the current action by
+        ${this.spMultiplier}%`;
+    diTokens = [di_tokens.actionservice];
+    onCast(AS: IActionService) {
+        let action: LiveZoneAction = AS.currentAction;
+        if (!action || !action.active) {
+            return false;
+        }
+        AS.protoActionOutcomeSubject.take(1).subscribe( (proto: ProtoActionOutcome) => {
+            proto.spMultiplier += this.spMultiplier;
+        });
+        return true;
+    }
 }
 
 }
