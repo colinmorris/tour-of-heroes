@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 
-import { Zone, getTruthySkills, SkillType } from '../core/index';
+import { Zone, getTruthySkills, SkillType, SkillDifficulty } from '../core/index';
 
 import { PlayerService } from '../player/player.service';
 import { Zones } from './zones.service';
@@ -11,8 +11,8 @@ import { SkillComponent } from '../shared/skill.component';
 @Component({
     selector: 'zone-summary',
     directives: [ ROUTER_DIRECTIVES, SkillComponent ],
-    // TODO: Only show description when expanded?
-    // TODO: define a pipe (component) for skilltype stuff
+    styles: [`
+        `],
     template: `
     <div class="row">
 
@@ -20,13 +20,20 @@ import { SkillComponent } from '../shared/skill.component';
     {{zone.name}}
     </div>
 
-    <div class="col-xs-6">
+    <div class="col-xs-4">
     <span *ngFor="let diff of difficulties()">
         <skill [skill]="diff.skill"
             [bg]="difficultyColor(diff.difficulty)"
-            [title]="difficultyString(diff.difficulty)"
+            [title]="difficultyString(diff)"
             >
         </skill>
+    </span>
+    </div>
+
+    <div class="col-xs-2">
+    <span class="overall-difficulty"
+          *ngIf="overallDifficulty() > 1">
+          {{penaltyString(overallDifficulty())}}
     </span>
     </div>
 
@@ -70,23 +77,41 @@ export class ZoneSummaryComponent {
         }
     }
 
-    difficultyString(diff: number) : string {
-        if (diff <= 1) {
-            return 'easy';
-        } else if (diff <= 1.5){
-            return 'challenging';
-        } else if (diff <= 3) {
-            return 'hard';
-        } else {
-            return 'grueling';
+    difficultyString(d: any) : string {
+        let diffWordFn = (diff) => {
+            if (diff <= 1) {
+                return 'easy';
+            } else if (diff <= 1.5){
+                return 'challenging';
+            } else if (diff <= 3) {
+                return 'hard';
+            } else {
+                return 'grueling';
+            }
         }
+        let currSkill = this.PS.getSkillLevel(d.skill);
+        return `${diffWordFn(d.difficulty)}:
+            penalty=${this.penaltyString(d.difficulty)}
+             mastered at level ${d.masteredAt} (currently: ${currSkill})`;
+    }
+
+    penaltyString(penalty) : string {
+        return ((penalty - 1) * 100).toFixed(0) + '%';
+    }
+
+    overallDifficulty() {
+        return this.zone.difficultyPerSkill(this.PS.getSkillLevels()).score;
     }
 
     difficulties() {
         let diffs = [];
-        let diffLvls = this.zone.difficultyPerSkill(this.PS.getSkillLevels());
+        let diffLvls = this.zone.difficultyPerSkill(this.PS.getSkillLevels()).perSkill;
         for (let skill of getTruthySkills(diffLvls)) {
-            diffs.push({skill: skill, difficulty: diffLvls[skill]});
+            diffs.push({
+                skill: skill,
+                difficulty: diffLvls[skill].penalty,
+                masteredAt: diffLvls[skill].masteredAt
+            });
         }
         return diffs;
     }

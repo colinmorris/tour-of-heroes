@@ -16,8 +16,11 @@ interface SuperzonePane {
     styles: [
         `a {
             padding: 10px;
-        }`,
-    ],
+        }
+        .zone-header {
+            font-weight: bold;
+        }
+        `,],
     template: `
     <div>
 
@@ -35,6 +38,15 @@ interface SuperzonePane {
          [class.active]="activePane==pane"
          >
             <ul *ngIf="activePane==pane" class="list-group">
+                <li class="list-group-item zone-header">
+                <div class="row">
+                    <div class="col-xs-3">Zone</div>
+                    <div class="col-xs-4">Skills</div>
+                    <div class="col-xs-2">Slowdown</div>
+                    <div class="col-xs-3"></div>
+                </div>
+                </li>
+
                 <li *ngFor="let zone of pane.zones" class="list-group-item">
                     <zone-summary [zone]="zone">
                     </zone-summary>

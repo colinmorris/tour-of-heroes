@@ -21,6 +21,7 @@ export interface ZoneAction {
     // Possibly not idempotent because of randomness
     chooseDescription() : ZoneActionDescription;
     delay(skills: SkillMap) : ActionDelay;
+    // A multiplier in [1, inf)
     inexperiencePenalty(skills: SkillMap) : number;
     inexperiencePenaltyForSkillLevel(skill: SkillType, level: number) : number;
 }
