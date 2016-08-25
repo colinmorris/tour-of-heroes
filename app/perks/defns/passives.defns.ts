@@ -2,7 +2,8 @@ import { AbstractPassive, AbstractBuff } from '../perk';
 import { di_tokens } from '../../shared/di-tokens';
 import { SkillMap, zeroSkillMap, SkillType,
     ProtoActionOutcome, ActionEvent, SecondaryAction,
-    formatPct
+    formatPct,
+    ancestryBonusForLevel, ancestryBonus
 } from '../../core/index';
 import { Observable } from 'rxjs/Observable';
 import { BUFFS } from './buffs.defns';
@@ -52,11 +53,7 @@ export class AncestryPerk extends AbstractPassive {
     static sdescription = `Base aptitudes increased according to max level
         attained for each class`;
     onCast(SS: IStatsService, PS: IPlayerService) : boolean {
-        let maxLvls = SS.maxLevelPerKlass();
-        let multiplier = 1;
-        for (let klass in maxLvls) {
-            multiplier *= (1 + AncestryPerk.multiplierForLevel(maxLvls[klass]));
-        }
+        let multiplier = ancestryBonus(SS.maxLevels());
         multiplier -= 1;
         if (multiplier <= 0) {
             return false;
@@ -68,13 +65,6 @@ export class AncestryPerk extends AbstractPassive {
     }
     cleanUp(SS: IStatsService, PS: IPlayerService) {
         PS.debuffAptitudes(this.appliedBuffs);
-    }
-
-    static multiplierForLevel(level: number) : number {
-        if (level <= 10) {
-            return 0;
-        }
-        return Math.log10(level - 9);
     }
 }
 

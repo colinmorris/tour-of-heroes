@@ -105,6 +105,13 @@ export class StatsService implements IStatsService {
     maxLevelPerKlass() : {[klass:string] : number} {
         return this.stats.klassLevels;
     }
+    maxLevels() : number[] {
+        let levels = new Array<number>();
+        for (let klass in this.stats.klassLevels) {
+            levels.push(this.stats.klassLevels[klass]);
+        }
+        return levels;
+    }
     skillLevel(skill: SkillType) {
         return this.stats.skillLevels[skill];
     }

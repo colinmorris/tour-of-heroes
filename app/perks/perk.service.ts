@@ -1,6 +1,8 @@
 import { Injector, Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
+import { ancestryBonusForLevel, ancestryBonus } from '../core/index';
+import { IStatsService } from '../stats/stats.service.interface';
 import { IPerkService } from './perk.service.interface';
 import { AbstractBonus, AbstractSpell, AbstractTimedBuff,
     AbstractBuff, AbstractPassive } from './perk';
@@ -115,6 +117,24 @@ export class PerkService implements IPerkService {
         } else {
             this.passives["AncestryPerk"] = ancestry;
         }
+    }
+    ancestryBonusForLevel(level: number) {
+        return ancestryBonusForLevel(level);
+    }
+    ancestryBonus(stats: IStatsService) {
+        return ancestryBonus(stats.maxLevels());
+    }
+    ancestryBonusWithSub(stats: IStatsService, subklass: string, level: number) {
+        let maxLevels:number[] = new Array<number>();
+        let perKlass = stats.maxLevelPerKlass();
+        for (let klass in perKlass) {
+            if (klass == subklass) {
+                maxLevels.push(level);
+            } else {
+                maxLevels.push(perKlass[klass]);
+            }
+        }
+        return ancestryBonus(maxLevels);
     }
 
     private addSpell(spellName: string) {

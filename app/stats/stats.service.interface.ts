@@ -8,6 +8,9 @@ export interface IStatsService {
 
     playerLevel(klass: string) : number;
     maxLevelPerKlass() : {[klass:string] : number};
+    /** Essentially maxLevelPerKlass().values() (if javascript were a sane
+        language and therefore had such a method) **/
+    maxLevels() : number[];
     skillLevel(skill: SkillType) : number;
 
     // TODO: Would be nice if this were not stringly typed :(
