@@ -15,7 +15,7 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
     <template [ngIf]="base != buffed">
         <span class="buffed"
             title="{{base | number:'1.1-2'}} + {{buffed-base | number:'1.1-2'}}">
-            {{buffed | number:'1.0-1'}}
+            {{buffed | number:'1.1-1'}}
         </span>
     </template>
     `

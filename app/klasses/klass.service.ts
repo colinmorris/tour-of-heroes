@@ -70,4 +70,8 @@ export class KlassService {
         return this.klassMap[klass].aptitudes;
     }
 
+    iconForKlass(klass: string) : string {
+        return '/assets/units/' + this.klassMap[klass].img;
+    }
+
 }
