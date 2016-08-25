@@ -30,7 +30,7 @@ export class Fruity extends AbstractTimedBuff {
     diTokens = [di_tokens.playerservice];
     constructor(
         injector: Injector,
-        private buffedSkill: SkillType
+        public buffedSkill: SkillType
     ) {
         super(injector, buffedSkill);
     }
@@ -41,11 +41,43 @@ export class Fruity extends AbstractTimedBuff {
         return new Fruity(injector, randomSkill);
     }
     get name() : string {
-        return "Fruit of " + SkillType[this.buffedSkill];
+        var g: string;
+        switch (this.buffedSkill) {
+            case SkillType.Combat:
+                g = "wrath";
+                break;
+            case SkillType.Farming:
+                g = "agriculture";
+                break;
+            case SkillType.Survival:
+                g = "bushwack";
+                break;
+            case SkillType.Charm:
+                g = "yack";
+                break;
+            case SkillType.Stealth:
+                g = "stealth";
+                break;
+            case SkillType.Riding:
+                g = "yak";
+                break;
+            case SkillType.Intellect:
+                g = "math";
+                break;
+            case SkillType.Piety:
+                g = "the cloth";
+                break;
+            default:
+                g = "???";
+        }
+        return "Grapes of " + g;
     }
     duration = 120;
     private buffAmt = 5;
     static sdescription = "zzz";
+    get description() {
+        return SkillType[this.buffedSkill] + ` boosted by ${this.buffAmt}`;
+    }
     onCast(PS: IPlayerService) {
         // It'd be kind of cool if these buff methods just returned a callback
         // that undid the buff. Could do the same thing e.g. with AS.actionSpeedMultiplier

@@ -135,10 +135,12 @@ export class FarmerPerk extends WatcherPassive {
         })
         .subscribe( (proto: ProtoActionOutcome) => {
             // Apply the buff
-            let buff:AbstractBuff = BUFFS.Fruity.randomFruity(this.injector);
+            let buff:BUFFS.Fruity = BUFFS.Fruity.randomFruity(this.injector);
             PS.addBuffObject(buff);
             // Let the world know
-            let kicker:SecondaryAction = {description: `Ate some fruit. Delicious!`};
+            let kicker:SecondaryAction =
+                {description: `Ate some fruit. Delicious!
+                    (${SkillType[buff.buffedSkill]} skill temporarily increased)`};
             proto.kickers.push(kicker);
         });
     }
