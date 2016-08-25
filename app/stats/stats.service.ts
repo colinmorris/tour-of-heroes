@@ -50,6 +50,12 @@ export class StatsService implements IStatsService {
                 this.stats.skillLevels[i]);
         }
     }
+    /** Should only be called on reincarnation to avert a nasty bug with
+    heroic ancestry buff. Unfortunately, this behaviour introduces a new,
+    not-quite-as-bad bug where class unlock conditions like "reach level X
+    as class Y" won't be acknowledged until reincarnation. Could keep two
+    trackers if that really matters.
+    **/
     setLevel(level: number, klass: string) {
         let simple = this.stats.simpleStats[Stat.PlayerLevel];
         simple.sum += (level - simple.current);

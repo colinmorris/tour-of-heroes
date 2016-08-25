@@ -62,7 +62,8 @@ export class PlayerService implements IPlayerService {
         this._player = player;
         this.playerLevel$ = this._player.level$.asObservable();
         this.playerLevel$.subscribe( (lvl) => {
-            this.stats.setLevel(lvl, this._player.klass);
+            // Actually won't do this until reincarnation.
+            //this.stats.setLevel(lvl, this._player.klass);
             // TODO: This is lazy. Simple solution would be to just have
             // player publish to level$ whenever skill levels go up
             this.stats.setSkills(this._player.baseSkillLevels());
