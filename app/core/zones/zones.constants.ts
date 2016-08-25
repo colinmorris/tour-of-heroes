@@ -41,15 +41,15 @@ zones:
     ],
     difficulty: 2,
 },
-{
-    name: 'Cheatzone',
-    description: 'Cheatz',
-    actions: [
-        {vb: 'cheat', obj: 'the game', skills: [S.Farming, S.Riding, S.Charm, S.Stealth, S.Piety],
-            gains: PLUS(CHEAT_POINTS)}
-        ],
-    difficulty: 0,
-},
+// {
+//     name: 'Cheatzone',
+//     description: 'Cheatz',
+//     actions: [
+//         {vb: 'cheat', obj: 'the game', skills: [S.Farming, S.Riding, S.Charm, S.Stealth, S.Piety],
+//             gains: PLUS(CHEAT_POINTS)}
+//         ],
+//     difficulty: 0,
+// },
 {
     name: 'Mushroom Cave',
     description: 'A grotto where mycologists cultivate mushrooms with curative, poisonous, or psychedelic properties',
@@ -129,7 +129,7 @@ zones: [
     name: 'Gryphon Nest',
     description: 'Scouts spotted the nest of a great gryphon on a mountain top',
     actions: [
-        {vb: "climb", skills: S.Survival, weight:1.0},
+        {vb: "climb", obj:"", skills: S.Survival, weight:1.0},
         {vb: "sneak", obj: "an egg out of the nest", skills: S.Stealth, weight: .2},
         {vb: "ride", obj: "a great gryphon", skills: S.Riding, bonusLevel:1},
     ],
