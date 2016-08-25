@@ -22,13 +22,11 @@ export class KlassService {
         this.klassMap = <{[name:string] : LiveKlass}>{};
         for (let klass of KLASSES) {
             let k: LiveKlass = klass as LiveKlass;
-            // XXX: This is gonna cause some problems later. Should probably
-            // do one immediate check.
             k.unlocked = false;
             this.klassMap[klass.name] = k;
         }
         // Set up unlock checks
-        Observable.interval(this.unlockCheckInterval).subscribe( () => {
+        Observable.timer(0, this.unlockCheckInterval).subscribe( () => {
             this.checkUnlocks();
         });
     }
