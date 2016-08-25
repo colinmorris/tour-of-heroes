@@ -5,12 +5,12 @@ import { Progressive } from '../shared/progressive.interface';
 export interface RawSkill {
     id: number;
     name: string;
-    baseLevel: number;
     baseAptitude: number;
     points: number;
 }
 
 export interface Skill extends RawSkill, Progressive {
+    baseLevel: number;
     level: number;
     aptitude: number;
     pointsForNextLevel: number;

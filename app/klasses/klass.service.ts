@@ -51,7 +51,7 @@ export class KlassService {
             let unlockScore = klass.criteria(this.stats);
             var didUnlock: boolean;
             if (typeof unlockScore == 'number') {
-                if (isNaN(unlockScore)) {
+                if (isNaN(<number>unlockScore)) {
                     console.warn("Got score of NaN for " + klass.name);
                     unlockScore = 0;
                 }

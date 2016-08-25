@@ -9,27 +9,45 @@ export interface SkillDelta {
 export class LiveSkill implements Skill {
     public aptitudeBonus = 0;
     public levelBonus = 0;
+    public baseLevel: number;
+    // Points 'leftover' after accounting for whole skill levels
+    public floatingPoints: number;
     constructor(
         public id: number,
         public name: string,
-        // starting from 0
-        public baseLevel: number,
         public baseAptitude: number,
         public points: number
-    ){}
+    ){
+        this.crunchStartingPoints();
+    }
+
+
+    private crunchStartingPoints() {
+        let usedPoints = 0;
+        let floatingPoints = this.points;
+        let lvl = 0;
+        let nextLump = LiveSkill.pointsForNextLevel(lvl);
+        while (nextLump <= floatingPoints) {
+            floatingPoints -= nextLump;
+            usedPoints += nextLump;
+            lvl++;
+            nextLump = LiveSkill.pointsForNextLevel(lvl);
+        }
+        this.baseLevel = lvl;
+        this.floatingPoints = floatingPoints;
+    }
 
     toJSON() : RawSkill {
         return {
             id: this.id,
             name: this.name,
-            baseLevel: this.baseLevel,
             baseAptitude: this.baseAptitude,
             points: this.points
         };
     }
 
     static fromJSON(raw: RawSkill) : LiveSkill {
-        return new LiveSkill(raw.id, raw.name, raw.baseLevel,
+        return new LiveSkill(raw.id, raw.name,
             raw.baseAptitude, raw.points);
     }
 
@@ -40,20 +58,21 @@ export class LiveSkill implements Skill {
         return this.baseAptitude + this.aptitudeBonus;
     }
     progress() {
-        return {numerator: this.points, denominator: this.pointsForNextLevel};
+        return {numerator: this.floatingPoints, denominator: this.pointsForNextLevel};
     }
     train(points: number) : SkillDelta {
         let pointGain = points * this.aptitude;
-        let newTotal = this.points + pointGain;
+        this.points += pointGain;
+        let newFloat = this.floatingPoints + pointGain;
         let thresh = this.pointsForNextLevel;
         let levelDelta = 0;
-        while (newTotal >= thresh) {
+        while (newFloat >= thresh) {
             this.baseLevel++;
             levelDelta++;
-            newTotal -= thresh;
+            newFloat -= thresh;
             thresh = this.pointsForNextLevel;
         }
-        this.points = newTotal;
+        this.floatingPoints = newFloat;
         return {pointsGained: pointGain, levelsGained: levelDelta};
     }
 
@@ -62,8 +81,10 @@ export class LiveSkill implements Skill {
     }
 
     static pointsForNextLevel(level: number) : number {
-        // 100, 200, 400, etc. probably too steep
-        return GLOBALS.skillLevelBaseCost * Math.pow(2, level);
+        let raw = Math.floor(GLOBALS.skillLevelBaseCost *
+            Math.pow(GLOBALS.skillLevelExpPointCostBase, level));
+        let remainder = raw % 5;
+        return raw - remainder;
     }
 
 }

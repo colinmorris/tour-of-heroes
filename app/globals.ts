@@ -1,6 +1,7 @@
 export const GLOBALS = {
-    playerLevelIncrement:  5,
+    playerLevelIncrement:  1,
     skillLevelBaseCost: 10,
+    skillLevelExpPointCostBase: 1.1487,
 
     // TODO: Probably need compatibility versions at some point. Bleh.
     localStorageToken: 'joat',
@@ -13,7 +14,8 @@ export const GLOBALS = {
     // code is therefore pretty prone to breaking out of version compat issues
     loadSaves: true,
 
-    autoSave: false,
+    autoSave: true,
+    autoSaveIntervalMs: 60*1000,
 
     actionBarUpdateInterval: 300,
     actionBarTransitionMs: 600,

@@ -3,9 +3,9 @@ import { IStatsService } from '../../stats/stats.service.interface';
 import { Klass } from './klass.interface';
 import { Stat, NamedUnlock as NU } from '../stats/index';
 
-let low_skill_lvl = 10;
-let med_skill_lvl = 25;
-let hi_skill_lvl = 50;
+let low_skill_lvl = 15;
+let med_skill_lvl = 30;
+let hi_skill_lvl = 75;
 
 // TODO: Specify perks here
 export const KLASSES : Klass[] =[
@@ -34,7 +34,7 @@ export const KLASSES : Klass[] =[
         aptitudes: mostlyUniformSkillMap(.7, {[SkillType.Intellect]: 1.1}),
         img: 'mage.png',
         criteria: (s: IStatsService) => {
-            return s.current(Stat.ActionsTaken) / 500;
+            return s.current(Stat.ActionsTaken) / 1500;
         }
     },
     {
@@ -88,7 +88,7 @@ export const KLASSES : Klass[] =[
             }),
             img: 'skeleton.png',
             criteria: (s: IStatsService) => {
-                return s.lifetimeSum(Stat.Clicks) / 200;
+                return s.lifetimeSum(Stat.Clicks) / 400;
             }
     },
     {
@@ -122,7 +122,7 @@ export const KLASSES : Klass[] =[
         }),
         img: 'horseman.png',
         criteria: (s: IStatsService) => {
-            return s.lifetimeSumActionsTaken('Stables') / 150;
+            return s.lifetimeSumActionsTaken('Stables') / 1000;
         }
     }
 

@@ -1,5 +1,6 @@
-import { Component, OpaqueToken } from '@angular/core';
+import { Component, OpaqueToken, OnInit } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
 
 import { PlayerService } from '../player/player.service';
 import { Zones } from '../zones/zones.service';
@@ -47,12 +48,20 @@ import { GLOBALS } from '../globals';
     ]
 })
 
-export class AppComponent {
+export class AppComponent implements OnInit {
     constructor(
         private serials: SerializationService
     ) {
+
+    }
+
+    ngOnInit() {
         if (GLOBALS.autoSave) {
-            console.warn("Haha, jk, autosave isnt implemented yet.");
+            Observable.interval(GLOBALS.autoSaveIntervalMs).subscribe( () => {
+                console.log("Auto-saving");
+                this.serials.save();
+            });
         }
+
     }
 }

@@ -1,7 +1,8 @@
 import { AbstractPassive, AbstractBuff } from '../perk';
 import { di_tokens } from '../../shared/di-tokens';
 import { SkillMap, zeroSkillMap, SkillType,
-    ProtoActionOutcome, ActionEvent, SecondaryAction
+    ProtoActionOutcome, ActionEvent, SecondaryAction,
+    formatPct
 } from '../../core/index';
 import { Observable } from 'rxjs/Observable';
 import { BUFFS } from './buffs.defns';
@@ -12,7 +13,7 @@ import { IActionService } from '../../actions/action.service.interface';
 import { IPerkService } from '../perk.service.interface';
 
 abstract class OnOffPerk extends AbstractPassive {
-    private _active: boolean;
+    private _active: boolean = false;
     get active() { return this._active; }
     set active(newValue: boolean) {
         if (this._active == newValue) { return; }
@@ -46,7 +47,7 @@ export class AncestryPerk extends AbstractPassive {
     private multiplier : number;
     private appliedBuffs: SkillMap;
     get description() {
-        return `Base aptitudes multiplied by ${this.multiplier}`;
+        return `Base aptitudes multiplied by ${formatPct(this.multiplier)}`;
     }
     onCast(SS: IStatsService, PS: IPlayerService) : boolean {
         let maxLvls = SS.maxLevelPerKlass();
@@ -58,6 +59,7 @@ export class AncestryPerk extends AbstractPassive {
         if (multiplier <= 0) {
             return false;
         }
+        this.multiplier = multiplier;
         this.appliedBuffs = PS.getBaseAptitudes().map( (apt: number) => apt * multiplier );
         PS.buffAptitudes(this.appliedBuffs);
         return true;
@@ -67,10 +69,10 @@ export class AncestryPerk extends AbstractPassive {
     }
 
     static multiplierForLevel(level: number) : number {
-        if (level <= 0) {
+        if (level <= 10) {
             return 0;
         }
-        return Math.log10(level);
+        return Math.log10(level - 9);
     }
 }
 
@@ -120,7 +122,7 @@ export class FarmerPerk extends WatcherPassive {
     name = "Frugivore";
     description = `Chance to eat a piece of fruit after performing a farming
     action, temporarily boosting the level of a random skill.`;
-    private prob = .05;
+    private prob = .1;
     onCast(AS: IActionService, PS: IPerkService) {
         this.sub = AS.protoActionOutcomeSubject
         .filter( (outcome: ProtoActionOutcome) => {
@@ -159,7 +161,12 @@ export class PeasantPerk extends OnOffPerk {
     // name/desc isn't given (i.e. make them "abstract" properties)
     name = "Underdog";
     private levelThreshold = 10;
-    description = `Base aptitudes are doubled until level ${this.levelThreshold}`;
+    private aptMultiplier = 3.0;
+    // TODO: Is it possible to store a string property that uses something like
+    // angular's templating syntax, and sort of 'eval' that in a template?
+    // In particular, it'd be nice to be able to use pipes here.
+    description = `Base aptitudes increased by ${this.aptMultiplier*100}%
+        until level ${this.levelThreshold}`;
     diTokens = [di_tokens.playerservice];
     private sub: any;
     private aptitudeBuffs: SkillMap;
@@ -173,8 +180,8 @@ export class PeasantPerk extends OnOffPerk {
 
     onActivate() {
         let apts: SkillMap = this.PS.getBaseAptitudes();
-        this.aptitudeBuffs = apts;
-        this.PS.buffAptitudes(apts);
+        this.aptitudeBuffs = apts.map( (apt) => apt * this.aptMultiplier );
+        this.PS.buffAptitudes(this.aptitudeBuffs);
     }
     onDeactivate() {
         console.log("Peasant perk going away now");

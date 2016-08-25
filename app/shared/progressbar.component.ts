@@ -3,13 +3,26 @@ import { Progress, Progressive } from './progressive.interface';
 
 @Component({
     selector: 'progress-bar',
-    // TODO: this method of showing num/denominator is kind of janky (weird
-    // things happen when it gets crowded out by the bar)
+    styles: [`
+        .progress {
+            position: relative;
+        }
+        .hover-text {
+            position: absolute;
+            display: block;
+            width: 100%;
+            color: black;
+        }
+    `],
     template: `
     <div on-mouseenter="hover=true" on-mouseleave="hover=false" class="progress">
-        <div class="progress-bar" [style.width.%]="percentProgress()"></div>
-        <span *ngIf="hover">{{prog.progress().numerator}} / {{prog.progress().denominator}}
-        </span>
+        <div class="progress-bar progress-bar-info" [style.width.%]="percentProgress()">
+            <span class="hover-text" *ngIf="hover">
+                {{prog.progress().numerator | number:'1.0-0'}} /
+                {{prog.progress().denominator | number:'1.0-0'}}
+            </span>
+        </div>
+
     </div>
     `
 })
@@ -20,6 +33,9 @@ export class ProgressBarComponent {
 
     percentProgress() : number {
         let currProg = this.prog.progress();
+        if (currProg.denominator < currProg.numerator) {
+            console.warn(`Numerator greater than denominator. Um.`);
+        }
         return 100 * (currProg.numerator/currProg.denominator);
     }
 }

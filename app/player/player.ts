@@ -22,9 +22,30 @@ export class LivePlayer implements Player {
         public klass: string,
         private _skills: SkillMapOf<LiveSkill>
     ) {
-        this._totalSkillLevels = 0;
+        /** This is... confusing. It's essentially the number of skill levels
+        left over after taking away those "used up" to reach the current plvl.
+        It would be nice if this (and even plvl itself) could be recalculated
+        when a player is deserialized, to gracefully handle any changes that
+        might have occurred wrt level formulas.
+        **/
+        this._totalSkillLevels = this.calculateTotalSkills();
         // TODO: Possible to use only the subject, and not even need level ivar?
-        this.level$ = new BehaviorSubject<number>(level);
+        this.level$ = new BehaviorSubject<number>(this.level);
+    }
+
+    private calculateTotalSkills() : number {
+        let lvl = 1;
+        let totalSkills = this._skills.reduce((acc, skill) => acc+skill.level, 0);
+        while (totalSkills >= LivePlayer.skillLevelsForNextLevel(lvl)) {
+            totalSkills -= LivePlayer.skillLevelsForNextLevel(lvl);
+            lvl++;
+        }
+        if (lvl != this.level) {
+            console.warn(`Calculated level ${lvl}, but level ${this.level} was
+                saved. Did you change the leveling formula?`);
+            this.level = lvl;
+        }
+        return totalSkills;
     }
 
     get skills() : SkillMapOf<Skill> {
@@ -39,7 +60,7 @@ export class LivePlayer implements Player {
     static newbornSkills(aptitudes: SkillMap) {
         return skillMapFromFactory<LiveSkill>(
             (s: SkillType) => {
-                return new LiveSkill(s, SkillType[s], 0, aptitudes[s], 0);
+                return new LiveSkill(s, SkillType[s], aptitudes[s], 0);
             }
         );
     }
@@ -111,6 +132,7 @@ export class LivePlayer implements Player {
         return LivePlayer.skillLevelsForNextLevel(this.level);
     }
 
+    // How many skill levels needed to reach the level after the given one?
     static skillLevelsForNextLevel(level: number) : number {
         return GLOBALS.playerLevelIncrement * level;
     }
