@@ -10,8 +10,15 @@ import { BaseBuff, Bonus, Spell, Buff, Passive, TimedBuff } from './perk.interfa
 // also moved to core?
 
 export abstract class AbstractBonus extends InjectedArgs implements Bonus {
-    name: string;
-    description: string;
+    get name(): string {
+        // haaaack. http://stackoverflow.com/a/29244254/262271
+        return (<typeof AbstractBonus>this.constructor).sname;
+    }
+    static sname: string;
+    get description(): string {
+        return (<typeof AbstractBonus>this.constructor).sdescription;
+    }
+    static sdescription: string;
 }
 
 export abstract class AbstractSpell extends AbstractBonus implements Spell {

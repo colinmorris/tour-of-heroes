@@ -48,6 +48,13 @@ import { GLOBALS } from '../globals';
                 </span>
             </div>
 
+            <div *ngIf="selected.unlocked">
+            <h3><span class="label label-default">Perk</span></h3>
+            <p><b>{{Perks.perkForKlass(selected.name).sname}}</b>
+                {{Perks.perkForKlass(selected.name).sdescription}}
+            </p>
+            </div>
+
             <button *ngIf="selected.unlocked || cheatMode"
                 class="btn btn-default reincarnate-button center-block"
                 (click)="reincarnate()">
@@ -57,7 +64,7 @@ import { GLOBALS } from '../globals';
                 <p *ngIf="selected.progress !== undefined">
                     Unlock progress: {{selected.progress | percent:'1.0-0'}}
                 </p>
-                
+
             </div>
         </div>
         </div>

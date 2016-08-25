@@ -10,9 +10,9 @@ export namespace BUFFS {
 
 export class GoingBerserk extends AbstractTimedBuff {
     diTokens = [di_tokens.actionservice];
-    name = "Berserk";
+    static sname = "Berserk";
     private speedup = 2.0;
-    description = "u mad";
+    static sdescription = "u mad";
     duration = 20
 
     onCast(AS: IActionService) {
@@ -40,10 +40,12 @@ export class Fruity extends AbstractTimedBuff {
         );
         return new Fruity(injector, randomSkill);
     }
-    name = "Fruity";
+    get name() : string {
+        return "Fruit of " + SkillType[this.buffedSkill];
+    }
     duration = 120;
     private buffAmt = 5;
-    description = "zzz";
+    static sdescription = "zzz";
     onCast(PS: IPlayerService) {
         // It'd be kind of cool if these buff methods just returned a callback
         // that undid the buff. Could do the same thing e.g. with AS.actionSpeedMultiplier

@@ -42,13 +42,15 @@ export class AncestryPerk extends AbstractPassive {
     // TODO: Maybe it makes sense to use these classes just for defining behavior,
     // and define some structs in a separate file for stuff like name, description,
     // and future metadata (e.g. path to image for icon).
-    name = "Heroic Ancestry";
+    static sname = "Heroic Ancestry";
     diTokens = [di_tokens.statsservice, di_tokens.playerservice];
     private multiplier : number;
     private appliedBuffs: SkillMap;
     get description() {
         return `Base aptitudes multiplied by ${formatPct(this.multiplier)}`;
     }
+    static sdescription = `Base aptitudes increased according to max level
+        attained for each class`;
     onCast(SS: IStatsService, PS: IPlayerService) : boolean {
         let maxLvls = SS.maxLevelPerKlass();
         let multiplier = 1;
@@ -77,13 +79,14 @@ export class AncestryPerk extends AbstractPassive {
 }
 
 export class ClericPerk extends AbstractPassive {
-    name = "Grace";
-    description = `Reduces speed penalty for difficult zones by
-        ${(1 - this.inexpMultiplier)*100}%`;
+    static sname = "Grace";
+    static inexpMultiplier = .5;
+    static sdescription = `Reduces speed penalty for difficult zones by
+            ${(1 - ClericPerk.inexpMultiplier)*100}%`;
     diTokens = [di_tokens.actionservice];
-    private inexpMultiplier = .5;
+
     onCast(AS: IActionService) {
-        AS.inexpMultiplier = this.inexpMultiplier;
+        AS.inexpMultiplier = ClericPerk.inexpMultiplier;
     }
     cleanUp(AS: IActionService) {
         AS.inexpMultiplier = 1.0; // TODO: brittle
@@ -91,10 +94,10 @@ export class ClericPerk extends AbstractPassive {
 }
 
 export class StudentPerk extends WatcherPassive {
-    name = "Extra Credit"
+    static sname = "Extra Credit";
     diTokens = [di_tokens.actionservice];
     private prob = .1;
-    description = "zzzz"
+    static sdescription = "zzzz";
     onCast(AS: IActionService) {
         this.sub = AS.protoActionOutcomeSubject
             .filter( (outcome: ProtoActionOutcome) => {
@@ -119,8 +122,8 @@ export class StudentPerk extends WatcherPassive {
 
 export class FarmerPerk extends WatcherPassive {
     diTokens = [di_tokens.actionservice, di_tokens.perkservice];
-    name = "Frugivore";
-    description = `Chance to eat a piece of fruit after performing a farming
+    static sname = "Frugivore";
+    static sdescription = `Chance to eat a piece of fruit after performing a farming
     action, temporarily boosting the level of a random skill.`;
     private prob = .1;
     onCast(AS: IActionService, PS: IPerkService) {
@@ -142,16 +145,16 @@ export class FarmerPerk extends WatcherPassive {
 }
 
 export class SkeletonPerk extends AbstractPassive {
-    name = "Strong Phalanges";
-    private clickMultiplier = .5;
-    description = `Base clicking power increased by
-        ${this.clickMultiplier * 100}%`;
+    static sname = "Strong Phalanges";
+    static clickMultiplier = .5;
+    static sdescription = `Base clicking power increased by
+        ${SkeletonPerk.clickMultiplier * 100}%`;
     diTokens = [di_tokens.playerservice];
     onCast(PS: IPlayerService) {
-        PS.clickMultiplier += this.clickMultiplier;
+        PS.clickMultiplier += SkeletonPerk.clickMultiplier;
     }
     cleanUp(PS: IPlayerService) {
-        PS.clickMultiplier -= this.clickMultiplier;
+        PS.clickMultiplier -= SkeletonPerk.clickMultiplier;
     }
 
 }
@@ -160,13 +163,16 @@ export class PeasantPerk extends OnOffPerk {
     // TODO: wish there was a way I could get the compiler to bug me if
     // name/desc isn't given (i.e. make them "abstract" properties)
     name = "Underdog";
-    private levelThreshold = 10;
-    private aptMultiplier = 3.0;
+    static sname = "Underdog";
+    static levelThreshold = 10;
+    static aptMultiplier = 3.0;
     // TODO: Is it possible to store a string property that uses something like
     // angular's templating syntax, and sort of 'eval' that in a template?
     // In particular, it'd be nice to be able to use pipes here.
-    description = `Base aptitudes increased by ${this.aptMultiplier*100}%
-        until level ${this.levelThreshold}`;
+    description = `Base aptitudes increased by ${PeasantPerk.aptMultiplier*100}%
+        until level ${PeasantPerk.levelThreshold}`;
+    static sdescription = `Base aptitudes increased by ${PeasantPerk.aptMultiplier*100}%
+        until level ${PeasantPerk.levelThreshold}`;
     diTokens = [di_tokens.playerservice];
     private sub: any;
     private aptitudeBuffs: SkillMap;
@@ -174,13 +180,13 @@ export class PeasantPerk extends OnOffPerk {
     onCast(PS: IPlayerService) {
         this.PS = PS;
         this.sub = PS.playerLevel$.subscribe( (level) => {
-            this.active = level < this.levelThreshold;
+            this.active = level < PeasantPerk.levelThreshold;
         });
     }
 
     onActivate() {
         let apts: SkillMap = this.PS.getBaseAptitudes();
-        this.aptitudeBuffs = apts.map( (apt) => apt * this.aptMultiplier );
+        this.aptitudeBuffs = apts.map( (apt) => apt * PeasantPerk.aptMultiplier );
         this.PS.buffAptitudes(this.aptitudeBuffs);
     }
     onDeactivate() {
@@ -196,10 +202,10 @@ export class PeasantPerk extends OnOffPerk {
 }
 
 export class GladiatorPerk extends WatcherPassive {
-    name = "Pit Fighter";
-    private spMultiplier = .5;
-    description = `SP gains increased by
-        ${this.spMultiplier*100}% when adventuring in the Colloseum`;
+    static sname = "Pit Fighter";
+    static spMultiplier = .5;
+    static sdescription = `SP gains increased by
+        ${GladiatorPerk.spMultiplier*100}% when adventuring in the Colloseum`;
     diTokens = [di_tokens.actionservice];
     onCast(AS: IActionService) {
         this.sub = AS.protoActionOutcomeSubject
@@ -207,16 +213,16 @@ export class GladiatorPerk extends WatcherPassive {
                 return proto.zone.name == 'Colloseum';
             })
             .subscribe( (proto: ProtoActionOutcome) => {
-                proto.spMultiplier += this.spMultiplier;
+                proto.spMultiplier += GladiatorPerk.spMultiplier;
             });
     }
 }
 
 export class HorsemanPerk extends WatcherPassive {
-    name = "Stability";
-    private spMultiplier = .5;
-    description = `SP gains increased by
-        ${this.spMultiplier*100}% when adventuring in the Colloseum`;
+    static sname = "Stability";
+    static spMultiplier = .5;
+    static sdescription = `SP gains increased by
+        ${HorsemanPerk.spMultiplier*100}% when adventuring in the Colloseum`;
     diTokens = [di_tokens.actionservice];
     onCast(AS: IActionService) {
         this.sub = AS.protoActionOutcomeSubject
@@ -224,7 +230,7 @@ export class HorsemanPerk extends WatcherPassive {
                 return proto.zone.name == 'Stables';
             })
             .subscribe( (proto: ProtoActionOutcome) => {
-                proto.spMultiplier += this.spMultiplier;
+                proto.spMultiplier += HorsemanPerk.spMultiplier;
             });
     }
 }

@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { IPerkService } from './perk.service.interface';
 import { AbstractBonus, AbstractSpell, AbstractTimedBuff,
     AbstractBuff, AbstractPassive } from './perk';
-import { Spell, Passive, Buff } from './perk.interface';
+import { Spell, Passive, Buff, Bonus } from './perk.interface';
 import { SPELLS } from './defns/spells.defns';
 import { PASSIVES } from './defns/passives.defns';
 import { BUFFS } from './defns/buffs.defns';
@@ -56,6 +56,17 @@ export class PerkService implements IPerkService {
             res.push(this.buffs[name]);
         }
         return res;
+    }
+    perkForKlass(klass: string) : Bonus {
+        let perkName = klass + 'Perk';
+        if (perkName in SPELLS) {
+            return SPELLS[perkName];
+        } else if (perkName in PASSIVES) {
+            let psv = PASSIVES[perkName];
+            return psv;
+        } else {
+            console.warn(`Couldn't find a perk for ${klass}`);
+        }
     }
 
     /** If defer is true, then wait a little bit before adding. This must be

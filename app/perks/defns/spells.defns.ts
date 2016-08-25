@@ -12,8 +12,8 @@ export namespace SPELLS {
 
 export class AssassinPerk extends ActionServiceSpell {
     cooldown = 60;
-    name = "Execute";
-    description = "Blah blah blah";
+    static sname = "Execute";
+    static sdescription = "Blah blah blah";
 
     private completionThreshold = 50;
     onCast(AS: IActionService) : boolean {
@@ -28,18 +28,18 @@ export class AssassinPerk extends ActionServiceSpell {
 
 export class BerserkerPerk extends AbstractBuffingSpell {
     cooldown = 60;
-    name = "Berserk";
-    description = "get mad";
+    static sname = "Berserk";
+    static sdescription = "get mad";
     buffName = "GoingBerserk";
     buffDuration = 20;
 }
 
 export class ScholarPerk extends AbstractSpell {
-    name = "Concentrate";
+    static sname = "Concentrate";
     cooldown = 60;
-    private spMultiplier = 3.0;
-    description = `Increase the SP gains from the current action by
-        ${100*(1+this.spMultiplier)}%`;
+    static spMultiplier = 3.0;
+    static sdescription = `Increase the SP gains from the current action by
+        ${100*(1+ScholarPerk.spMultiplier)}%`;
     diTokens = [di_tokens.actionservice];
     onCast(AS: IActionService) {
         let action: LiveZoneAction = AS.currentAction;
@@ -47,7 +47,7 @@ export class ScholarPerk extends AbstractSpell {
             return false;
         }
         AS.protoActionOutcomeSubject.take(1).subscribe( (proto: ProtoActionOutcome) => {
-            proto.spMultiplier += this.spMultiplier;
+            proto.spMultiplier += ScholarPerk.spMultiplier;
         });
         return true;
     }
