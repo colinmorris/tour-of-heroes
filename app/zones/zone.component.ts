@@ -85,6 +85,7 @@ export class ZoneComponent implements OnInit, OnDestroy, OnChanges {
         private Stats: StatsService
     ) { }
     ngOnInit() {
+        console.assert(this.actionsub === undefined);
         this.actionsub = this.AS.postActionSubject
             .filter( (post: PostActionInfo) => {
                 return post.nextAction.zid == this.zone.zid;
@@ -93,6 +94,8 @@ export class ZoneComponent implements OnInit, OnDestroy, OnChanges {
                 next: (post: PostActionInfo) => {
                     if (post.nextAction.active) {
                         this.currentAction = post.nextAction;
+                    } else {
+                        console.log("Action was DoA");
                     }
                     this.lastOutcome = post.outcome;
                 }
@@ -112,9 +115,12 @@ export class ZoneComponent implements OnInit, OnDestroy, OnChanges {
     ngOnChanges(changes: {[propertyName: string]: SimpleChange}) {
         console.assert("zone" in changes);
         if (this.currentAction) {
+            console.log("Zone change. Nulling out current action and last outcome.");
             this.currentAction = undefined;
             this.lastOutcome = undefined;
         } else {
+            // possible this is causing a race condition?
+            console.log("Zone change. Grabbing last action");
             this.AS.postActionSubject.take(1).subscribe( {
                 next: (post: PostActionInfo) => {
                     if (post.nextAction.active &&

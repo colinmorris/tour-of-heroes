@@ -11,7 +11,8 @@ export class SkillGainsPipe implements PipeTransform {
                 gainstr += ', ';
             }
             let skillName: string = SkillType[skill];
-            gainstr += `${skillName}+${gains[skill]}`;
+            // TODO: probably makes more sense as a component to make use of builtin pipes?
+            gainstr += `${skillName}+${gains[skill].toFixed(1)}`;
         }
         return gainstr;
     }
