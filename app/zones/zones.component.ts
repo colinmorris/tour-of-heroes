@@ -6,7 +6,7 @@ import { ZoneSummaryComponent } from './zone-summary.component';
 
 interface SuperzonePane {
     name: string;
-    expanded: boolean;
+    expanded: boolean; // not currently used
     zones: Zone[];
 }
 
@@ -19,33 +19,35 @@ interface SuperzonePane {
         }`,
     ],
     template: `
-    <div class="superzones panel-group">
-        <div *ngFor="let pane of panes" class="panel panel-default">
+    <div>
 
-            <div (click)="pane.expanded = !pane.expanded"
-                class="panel-heading"
-            >
-                <h4 class="panel-title">
-                <a role="button">
-                {{pane.name}}
-                </a>
-                </h4>
-            </div>
+    <ul class="nav nav-tabs">
+        <li *ngFor="let pane of panes"
+        [class.active]="activePane==pane"
+         >
+            <a (click)="activePane=pane">{{pane.name}}</a>
+        </li>
+    </ul>
 
-            <div *ngIf="pane.expanded" class="panel-body">
-                <ul class="list-group">
-                    <li *ngFor="let zone of pane.zones" class="list-group-item">
-                        <zone-summary [zone]="zone">
-                        </zone-summary>
-                    </li>
-                </ul>
-            </div>
-
+    <div class="tab-content">
+        <div *ngFor="let pane of panes"
+         class="tab-pane"
+         [class.active]="activePane==pane"
+         >
+            <ul *ngIf="activePane==pane" class="list-group">
+                <li *ngFor="let zone of pane.zones" class="list-group-item">
+                    <zone-summary [zone]="zone">
+                    </zone-summary>
+                </li>
+            </ul>
         </div>
+    </div>
+
     </div>
     `
 })
 export class ZonesComponent implements OnInit {
+    activePane: SuperzonePane;
     panes: SuperzonePane[] = new Array<SuperzonePane>();
 
     constructor(
@@ -60,6 +62,7 @@ export class ZonesComponent implements OnInit {
                 zones: this.zones.zonesInSuperzone(superz)
             });
         }
+        this.activePane = this.panes[0];
     }
 
 }
