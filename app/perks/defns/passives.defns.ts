@@ -76,7 +76,8 @@ export class AncestryPerk extends AbstractPassive {
 
 export class ClericPerk extends AbstractPassive {
     name = "Grace";
-    description = "zooozozozozzzzz";
+    description = `Reduces speed penalty for difficult zones by
+        ${(1 - this.inexpMultiplier)*100}%`;
     diTokens = [di_tokens.actionservice];
     private inexpMultiplier = .5;
     onCast(AS: IActionService) {
@@ -140,7 +141,7 @@ export class FarmerPerk extends WatcherPassive {
 
 export class SkeletonPerk extends AbstractPassive {
     name = "Strong Phalanges";
-    private clickMultiplier = 2;
+    private clickMultiplier = .5;
     description = `Base clicking power increased by
         ${this.clickMultiplier * 100}%`;
     diTokens = [di_tokens.playerservice];
@@ -157,7 +158,7 @@ export class PeasantPerk extends OnOffPerk {
     // TODO: wish there was a way I could get the compiler to bug me if
     // name/desc isn't given (i.e. make them "abstract" properties)
     name = "Underdog";
-    private levelThreshold = 2;
+    private levelThreshold = 10;
     description = `Base aptitudes are doubled until level ${this.levelThreshold}`;
     diTokens = [di_tokens.playerservice];
     private sub: any;
@@ -189,7 +190,7 @@ export class PeasantPerk extends OnOffPerk {
 
 export class GladiatorPerk extends WatcherPassive {
     name = "Pit Fighter";
-    private spMultiplier = 5;
+    private spMultiplier = .5;
     description = `SP gains increased by
         ${this.spMultiplier*100}% when adventuring in the Colloseum`;
     diTokens = [di_tokens.actionservice];
@@ -206,7 +207,7 @@ export class GladiatorPerk extends WatcherPassive {
 
 export class HorsemanPerk extends WatcherPassive {
     name = "Stability";
-    private spMultiplier = 5;
+    private spMultiplier = .5;
     description = `SP gains increased by
         ${this.spMultiplier*100}% when adventuring in the Colloseum`;
     diTokens = [di_tokens.actionservice];

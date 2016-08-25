@@ -39,7 +39,7 @@ export class ScholarPerk extends AbstractSpell {
     cooldown = 60;
     private spMultiplier = 3.0;
     description = `Increase the SP gains from the current action by
-        ${this.spMultiplier}%`;
+        ${100*(1+this.spMultiplier)}%`;
     diTokens = [di_tokens.actionservice];
     onCast(AS: IActionService) {
         let action: LiveZoneAction = AS.currentAction;

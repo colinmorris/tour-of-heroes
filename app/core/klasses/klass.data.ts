@@ -34,7 +34,7 @@ export const KLASSES : Klass[] =[
         aptitudes: mostlyUniformSkillMap(.7, {[SkillType.Intellect]: 1.1}),
         img: 'mage.png',
         criteria: (s: IStatsService) => {
-            return s.current(Stat.ActionsTaken) / 10;
+            return s.current(Stat.ActionsTaken) / 500;
         }
     },
     {
@@ -88,7 +88,7 @@ export const KLASSES : Klass[] =[
             }),
             img: 'skeleton.png',
             criteria: (s: IStatsService) => {
-                return s.lifetimeSum(Stat.Clicks) / 5;
+                return s.lifetimeSum(Stat.Clicks) / 200;
             }
     },
     {
@@ -101,7 +101,7 @@ export const KLASSES : Klass[] =[
         }),
         img: 'pikeman.png',
         criteria: (s: IStatsService) => {
-            return s.lifetimeSumActionsTaken('Colloseum') / 3;
+            return s.lifetimeSumActionsTaken('Colloseum') / 50;
         }
     },
     {
@@ -122,7 +122,7 @@ export const KLASSES : Klass[] =[
         }),
         img: 'horseman.png',
         criteria: (s: IStatsService) => {
-            return s.lifetimeSumActionsTaken('Stables') / 3;
+            return s.lifetimeSumActionsTaken('Stables') / 150;
         }
     }
 
