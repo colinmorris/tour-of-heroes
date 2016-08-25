@@ -3,6 +3,8 @@ export const GLOBALS = {
     skillLevelBaseCost: 10,
     skillLevelExpPointCostBase: 1.1487,
 
+    reincarnationMinLevel: 10,
+
     // TODO: Probably need compatibility versions at some point. Bleh.
     localStorageToken: 'joat',
     backgroundSaveFrequency_ms: 1000 * 60,

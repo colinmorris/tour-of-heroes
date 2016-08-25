@@ -55,7 +55,8 @@ import { GLOBALS } from '../globals';
             </p>
             </div>
 
-            <button *ngIf="selected.unlocked || cheatMode"
+            <button *ngIf="(selected.unlocked && PS.player.level >= reincMinLevel)
+                            || cheatMode"
                 class="btn btn-default reincarnate-button center-block"
                 (click)="reincarnate()">
                     Reincarnate!
@@ -87,6 +88,7 @@ import { GLOBALS } from '../globals';
     `
 })
 export class KlassesComponent {
+    reincMinLevel = GLOBALS.reincarnationMinLevel;
     selected: LiveKlass;
     ST = SkillType;
     cheatMode = GLOBALS.cheatMode;
