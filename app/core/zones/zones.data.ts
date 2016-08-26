@@ -118,7 +118,10 @@ function zamFromJSON(j: ActionData, parentZone: ZoneData) : ZoneAction {
 
 function masteryForDifficulty(diff: number) : number {
     // (maybe rounding should happen upstream?)
-    return Math.ceil(XpFormulas.benchmarkSkillLevelForPlevel(diff));
+    /** I feel like I've consistently set difficulties a bit too low, so just
+    going to play with a tweak here and see how it feels.
+    **/
+    return Math.ceil(XpFormulas.benchmarkSkillLevelForPlevel(diff+5));
 }
 
 function gainsForDifficulty(diff: number,

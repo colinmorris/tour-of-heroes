@@ -135,6 +135,7 @@ import { GLOBALS } from '../globals';
         <p *ngIf="selected.progress !== undefined">
             Unlock progress: {{selected.progress | percent:'1.0-0'}}
         </p>
+        <p><b>Hint:</b> {{selected.hint}}</p>
 
     </div>
 </div>

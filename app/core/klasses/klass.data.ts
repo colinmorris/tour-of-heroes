@@ -14,6 +14,7 @@ export const KLASSES : Klass[] =[
         name: 'Peasant',
         aptitudes: uniformSkillMap(.5),
         img: 'ruffian.png',
+        hint: "??? You shouldn't be reading this...",
         criteria: (s: IStatsService) => true
     },
     {
@@ -25,6 +26,7 @@ export const KLASSES : Klass[] =[
                             [SkillType.Riding]: 1.0
                         }),
         img: 'peasant.png',
+        hint: `Train your Farming skill`,
         criteria: (s: IStatsService) => {
             return s.skillLevel(SkillType.Farming) / low_skill_lvl;
         }
@@ -33,6 +35,7 @@ export const KLASSES : Klass[] =[
         name: 'Student',
         aptitudes: mostlyUniformSkillMap(.7, {[SkillType.Intellect]: 1.1}),
         img: 'mage.png',
+        hint: `Work hard`,
         criteria: (s: IStatsService) => {
             return s.current(Stat.ActionsTaken) / 1500;
         }
@@ -45,6 +48,7 @@ export const KLASSES : Klass[] =[
             [SkillType.Combat]: .9
         }),
         img: 'assassin+female.png',
+        hint: `Train your Stealth skill`,
         criteria: (s: IStatsService) => {
             return s.skillLevel(SkillType.Stealth) / med_skill_lvl;
         }
@@ -58,6 +62,7 @@ export const KLASSES : Klass[] =[
             [SkillType.Intellect]: 1.0
         }),
         img: 'white-mage.png',
+        hint: `Live a life free from violence`,
         criteria: (s: IStatsService) => {
             return s.unlocked(NU.Pacifist);
         }
@@ -72,6 +77,7 @@ export const KLASSES : Klass[] =[
             [SkillType.Survival]: .9
         }),
         img: 'berserker.png',
+        hint: `Train your combat skill`,
         criteria: (s: IStatsService) => {
             /** TODO: Maybe criteria should be something like complete X actions
             in Y seconds? **/
@@ -87,6 +93,7 @@ export const KLASSES : Klass[] =[
                 [SkillType.Survival]: 1.0
             }),
             img: 'skeleton.png',
+            hint: `Clickety-clack go the spooky Skeleton bones`,
             criteria: (s: IStatsService) => {
                 return s.lifetimeSum(Stat.Clicks) / 400;
             }
@@ -100,6 +107,7 @@ export const KLASSES : Klass[] =[
             [SkillType.Piety]: .6
         }),
         img: 'pikeman.png',
+        hint: `Practice in the Colloseum`,
         criteria: (s: IStatsService) => {
             return s.lifetimeSumActionsTaken('Colloseum') / 50;
         }
@@ -108,6 +116,7 @@ export const KLASSES : Klass[] =[
         name: 'Scholar',
         aptitudes: mostlyUniformSkillMap(.9, {[SkillType.Intellect]: 1.5}),
         img: 'red-mage.png',
+        hint: `Get at least a '20' on your report card`,
         criteria: (s: IStatsService) => {
             return s.playerLevel('Student') / 20;
         }
@@ -121,6 +130,7 @@ export const KLASSES : Klass[] =[
             [SkillType.Survival]: 0.8
         }),
         img: 'horseman.png',
+        hint: `Show great stability`,
         criteria: (s: IStatsService) => {
             return s.lifetimeSumActionsTaken('Stables') / 1000;
         }
