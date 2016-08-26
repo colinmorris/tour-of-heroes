@@ -134,6 +134,12 @@ export class LivePlayer implements Player {
 
     // How many skill levels needed to reach the level after the given one?
     static skillLevelsForNextLevel(level: number) : number {
-        return GLOBALS.playerLevelIncrement * level;
+        /** Experimenting with a few options here. SP/skill lvl already scales
+        non-linearly, so maybe we don't need an additional form of scaling in
+        skill-lvls/plvl. Using a constant makes reasoning about some other stuff
+        easier.
+        **/
+        return 5;
+        //return GLOBALS.playerLevelIncrement * level;
     }
 }

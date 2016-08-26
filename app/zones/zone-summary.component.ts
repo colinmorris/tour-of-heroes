@@ -17,7 +17,7 @@ import { SkillComponent } from '../shared/skill.component';
     <div class="row">
 
     <div class="col-xs-3">
-    {{zone.name}}
+    <span title="DEBUG: difficulty={{zone.difficulty}}">{{zone.name}}</span>
     </div>
 
     <div class="col-xs-4">

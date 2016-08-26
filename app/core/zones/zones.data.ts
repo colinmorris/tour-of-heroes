@@ -7,7 +7,10 @@ import { SUPERZONEDATA } from './zones.constants';
 import { GLOBALS } from '../../globals';
 
 import { Zone, ConcreteZone, SuperZone } from './zone.interface';
-import { SkillType, SkillMap, JSONtoSkillMap, dictToSkillMap } from '../skills/index';
+import { SkillType,
+    SkillMap, JSONtoSkillMap, dictToSkillMap,
+    XpFormulas
+ } from '../skills/index';
 import { ZoneAction } from './zoneaction.interface';
 import { VerbalZoneAction } from './zoneaction';
 import { Verb, verbLookup } from './verb';
@@ -83,6 +86,7 @@ function zamFromJSON(j: ActionData, parentZone: ZoneData) : ZoneAction {
         }
     } else if (j.bonusLevel) {
         // TODO: Scale with bonusLevel?
+        // TODO2: With the new difficulty scale, simply adding 1 is probably too weak
         difficulty = Math.min(10, difficulty+1);
     }
     // mastery
@@ -112,20 +116,21 @@ function zamFromJSON(j: ActionData, parentZone: ZoneData) : ZoneAction {
     );
 }
 
-let DIFFICULTY_MASTERIES = [3, 5, 10, 15, 20, 25, 30, 40, 50, 65];
 function masteryForDifficulty(diff: number) : number {
-    console.assert(0 <= diff && diff < 10);
-    return DIFFICULTY_MASTERIES[diff];
+    // (maybe rounding should happen upstream?)
+    return Math.ceil(XpFormulas.benchmarkSkillLevelForPlevel(diff));
 }
 
-function gainsForDifficulty(diff: number, skills: SkillType[], skillRatios: {[skill:string] : number}) : {[skill:string]: number} {
-    console.assert(0 <= diff && diff < 10);
+function gainsForDifficulty(diff: number,
+                            skills: SkillType[],
+                            skillRatios: {[skill:string] : number}
+                        ) : {[skill:string]: number} {
     // The more skills an action involves, the more total skill points it should
     // award (for a given difficulty). But the skill points awarded per skill should
     // decrease monotonically as #skills increases.
     //
     // For now, let's say that the total skill gain is multiplied by .5 + (.5 * #skills)
-    let baseSP = 1 + Math.pow(diff, 2);
+    let baseSP = XpFormulas.standardSpServing(diff);
     let totalSP = baseSP * (.5 + .5*(skills.length));
     let gains: {[skill:string]: number} = {};
     for (let skillName in skillRatios) {
@@ -144,7 +149,8 @@ for (let superzone of SUPERZONEDATA) {
     let supz: SuperZone = {
         name: superzone.name,
         zones: zones,
-        unlockCondition: (level: number) => level > superzone.minLevel
+        unlockDescription: `Unlocked at level ${superzone.minLevel}`,
+        unlockCondition: (level: number) => level >= superzone.minLevel
     };
     SUPERZONES.push(supz);
 }

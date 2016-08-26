@@ -30,6 +30,10 @@ export interface ZoneData {
         15 means that this zone will be reasonably challenging for a player at
         level 15 (more or less, depending on their particular skill specializations),
         and SP gains will be around the 'standard serving' for level 15.
+        (Can go below 1 if you really want)
+
+        TODO: Would be cool to have this be an override wrt superzone difficulty.
+        Easier to rejig numbers in the future. But let's set that aside for now.
     **/
     difficulty: number;
 }
@@ -62,7 +66,7 @@ export interface ActionData {
     // to all (non-zero) skill point gains
     //gainz?: {[skillName: string] : Override} | Override;
     // let's wait to complicate it until it's necessary
-    
+
     gains? : Override;
 
     /** Sets mastery levels and SP gains for this action according to the given

@@ -21,6 +21,7 @@ export interface Zone {
 export interface SuperZone {
     name: string;
     zones: Zone[];
+    unlockDescription: string;
     unlockCondition: (level: number) => boolean;
 }
 

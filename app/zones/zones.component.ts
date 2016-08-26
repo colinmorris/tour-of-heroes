@@ -8,6 +8,7 @@ import { PlayerService } from '../player/player.service';
 interface SuperzonePane {
     name: string;
     unlocked: boolean;
+    unlockDescription: string;
     zones: Zone[];
 }
 
@@ -33,7 +34,9 @@ interface SuperzonePane {
         [class.active]="activePane==pane"
         [class.locked]="!pane.unlocked"
          >
-            <a (click)="setActivePane(pane)">{{pane.name}}</a>
+            <a (click)="setActivePane(pane)"
+            [title]="pane.unlockDescription"
+            >{{pane.name}}</a>
         </li>
     </ul>
 
@@ -77,7 +80,7 @@ export class ZonesComponent implements OnInit {
         for (let superz of this.zones.superzones) {
             this.panes.push({
                 name: superz.name, unlocked: superz.unlockCondition(this.PS.player.level),
-                zones: superz.zones
+                zones: superz.zones, unlockDescription: superz.unlockDescription
             });
         }
         this.activePane = this.panes[0];

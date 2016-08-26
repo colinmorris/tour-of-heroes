@@ -97,6 +97,7 @@ export class ZoneComponent implements OnInit, OnDestroy, OnChanges {
                     } else {
                         console.log("Action was DoA");
                     }
+                    console.assert(post.nextAction.zid == this.zone.zid);
                     this.lastOutcome = post.outcome;
                 }
             });

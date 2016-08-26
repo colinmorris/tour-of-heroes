@@ -16,9 +16,21 @@ export function ancestryBonusForLevel(level: number) {
 
 // Return a multiplier in range [1,inf) (where 1 means no bonus)
 export function ancestryBonus(levels: number[]) {
-    let multiplier = 0;
-    for (let klassLevel of levels) {
-        multiplier += ancestryBonusForLevel(klassLevel);
+    if (GLOBALS.ancestryBonusGrowthRate == 'lin') {
+        let multiplier = 0;
+        for (let klassLevel of levels) {
+            multiplier += ancestryBonusForLevel(klassLevel);
+        }
+        return multiplier;
+    } else if (GLOBALS.ancestryBonusGrowthRate == 'exp') {
+        let multiplier = 1;
+        for (let klassLevel of levels) {
+            multiplier *= (1+
+                ancestryBonusForLevel(klassLevel)
+            );
+        }
+        return (multiplier-1);
+    } else {
+        console.assert(false, "Unrecognized growth rate for ancestry bonus");
     }
-    return multiplier;
 }

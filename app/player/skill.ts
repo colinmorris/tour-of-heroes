@@ -1,5 +1,6 @@
 import { GLOBALS } from '../globals';
 import { Skill, RawSkill } from './skill.interface';
+import { XpFormulas } from '../core/index';
 
 export interface SkillDelta {
     pointsGained: number;
@@ -26,12 +27,12 @@ export class LiveSkill implements Skill {
         let usedPoints = 0;
         let floatingPoints = this.points;
         let lvl = 0;
-        let nextLump = LiveSkill.pointsForNextLevel(lvl);
+        let nextLump = XpFormulas.skillPointsToAdvanceLevel(lvl);
         while (nextLump <= floatingPoints) {
             floatingPoints -= nextLump;
             usedPoints += nextLump;
             lvl++;
-            nextLump = LiveSkill.pointsForNextLevel(lvl);
+            nextLump = XpFormulas.skillPointsToAdvanceLevel(lvl);
         }
         this.baseLevel = lvl;
         this.floatingPoints = floatingPoints;
@@ -77,14 +78,7 @@ export class LiveSkill implements Skill {
     }
 
     get pointsForNextLevel() : number {
-        return LiveSkill.pointsForNextLevel(this.baseLevel);
-    }
-
-    static pointsForNextLevel(level: number) : number {
-        let raw = Math.floor(GLOBALS.skillLevelBaseCost *
-            Math.pow(GLOBALS.skillLevelExpPointCostBase, level));
-        let remainder = raw % 5;
-        return raw - remainder;
+        return XpFormulas.skillPointsToAdvanceLevel(this.baseLevel);
     }
 
 }

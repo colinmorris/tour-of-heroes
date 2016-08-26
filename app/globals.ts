@@ -1,9 +1,17 @@
 export const GLOBALS = {
     playerLevelIncrement:  1,
     skillLevelBaseCost: 10,
+    /** Going from skill level n to n+1 takes (this^n * skillLevelBaseCost)
+    skill points.
+    10 for level 1, doubling every 5 levels.
+    **/
     skillLevelExpPointCostBase: 1.1487,
 
     reincarnationMinLevel: 10,
+
+    /** One of 'exp' or 'lin'.
+    Determines whether ancestry bonus grows linearly or exponentially. **/
+    ancestryBonusGrowthRate: 'exp',
 
     // TODO: Probably need compatibility versions at some point. Bleh.
     localStorageToken: 'joat',
