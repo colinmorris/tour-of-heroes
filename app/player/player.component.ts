@@ -84,7 +84,7 @@ import { Player } from './player.interface';
             </div>
 
             <div class="col-xs-2">
-            <buffed-stat [base]="skill.baseLevel" [buffed]="skill.level">
+            <buffed-stat [base]="skill.baseLevel" [buffed]="skill.level" [toast]="true">
             </buffed-stat>
             </div>
 
