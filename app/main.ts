@@ -1,9 +1,9 @@
-import { bootstrap }    from '@angular/platform-browser-dynamic';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
-import { AppComponent } from './shared/index';
-import { appRouterProviders } from './shared/app.routes';
+//import { platformBrowser } from '@angular/platform-browser';
+//import { AppModuleNgFactory } from './app.module.ngfactory';
+import { AppModule } from './app.module';
 
-bootstrap(AppComponent, [
-    appRouterProviders
-]);
+platformBrowserDynamic().bootstrapModule(AppModule);
+//platformBrowser().bootstrapModuleFactory(AppModuleNgFactory);
 

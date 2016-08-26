@@ -33,6 +33,10 @@ TECHNICAL
 +?- profile the thing
 - should think about trying to reconcile passives and buffs (so that it's easy to make one out of the other)
 - consider adding a 'debug' component where you can dump a bunch of extra information that's useful for debugging (e.g. player metadata)
+- complete migration to RC5
+    - http://angularjs.blogspot.ca/2016/08/angular-2-rc5-ngmodules-lazy-loading.html
+    - https://angular.io/docs/ts/latest/cookbook/rc4-to-rc5.html
+- ahead of time compilation
 
 MECHANICS
 =========

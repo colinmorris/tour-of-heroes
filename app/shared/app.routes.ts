@@ -1,10 +1,11 @@
-import { provideRouter, RouterConfig } from '@angular/router';
+import { ModuleWithProviders } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
 
 import { HomeComponent } from './home.component';
 import { KlassesComponent } from '../klasses/klasses.component';
 import { StatsComponent } from '../stats/stats.component';
 
-const routes : RouterConfig = [
+const routes : Routes = [
     {
         path: '',
         component: HomeComponent
@@ -18,8 +19,6 @@ const routes : RouterConfig = [
         component: StatsComponent
     }
     
-]
-
-export const appRouterProviders = [
-    provideRouter(routes)
 ];
+
+export const routing: ModuleWithProviders = RouterModule.forRoot(routes);
