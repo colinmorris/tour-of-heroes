@@ -41,15 +41,15 @@ zones:
     ],
     difficulty: 2,
 },
-{
-    name: 'Cheatzone',
-    description: 'Cheatz',
-    actions: [
-        {vb: 'cheat', obj: 'the game', skills: [S.Farming, S.Riding, S.Charm, S.Stealth, S.Piety],
-            gains: PLUS(CHEAT_POINTS)}
-        ],
-    difficulty: 0,
-},
+// {
+//     name: 'Cheatzone',
+//     description: 'Cheatz',
+//     actions: [
+//         {vb: 'cheat', obj: 'the game', skills: [S.Farming, S.Riding, S.Charm, S.Stealth, S.Piety],
+//             gains: PLUS(CHEAT_POINTS)}
+//         ],
+//     difficulty: 0,
+// },
 {
     name: 'Mushroom Cave',
     description: 'A grotto where mycologists cultivate mushrooms with curative, poisonous, or psychedelic properties',

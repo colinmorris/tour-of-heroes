@@ -126,11 +126,11 @@ export class PerkService implements IPerkService {
     }
     ancestryBonusWithSub(stats: IStatsService, subklass: string, level: number) {
         let maxLevels:number[] = new Array<number>();
+        maxLevels.push(level);
         let perKlass = stats.maxLevelPerKlass();
         for (let klass in perKlass) {
-            if (klass == subklass) {
-                maxLevels.push(level);
-            } else {
+            // Ignore any previous max level for the given class
+            if (klass != subklass) {
                 maxLevels.push(perKlass[klass]);
             }
         }

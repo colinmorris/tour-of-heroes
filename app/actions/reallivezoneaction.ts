@@ -51,8 +51,6 @@ export class RealLiveZoneAction implements LiveZoneAction {
         setTimeout(()=> {
             if (this.observer) {
                 this.observer.next(0);
-            } else {
-                console.warn("No observer!");
             }
             setTimeout(()=> {
                 this.animationClass = "";

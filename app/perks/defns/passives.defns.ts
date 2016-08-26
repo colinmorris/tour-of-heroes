@@ -54,7 +54,6 @@ export class AncestryPerk extends AbstractPassive {
         attained for each class`;
     onCast(SS: IStatsService, PS: IPlayerService) : boolean {
         let multiplier = ancestryBonus(SS.maxLevels());
-        multiplier -= 1;
         if (multiplier <= 0) {
             return false;
         }
