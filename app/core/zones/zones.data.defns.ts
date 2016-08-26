@@ -16,21 +16,21 @@ export function additiveOverride(bias: number) : Override {
     return (dflt:number) => { return dflt + bias; };
 }
 
-
-// TODO: Consider a generosity/bonus/efficiency option for zones and actions,
-// which would apply some standard transformations to mastery and point gains -
-// and maybe even to probability weight?
-// (as a nice, consistent shortcut for the common use case of 'this is a rare
-// 'bonus' action you should be happy to get, or this is a high-quality zone
-// that's only available under some limited circumstances)
 export interface ZoneData {
     name: string;
     description: string;
     actions: ActionData[];
     // Default action delay for this zone. (In practice not used yet)
     baseDelay?: number;
-    // Integer in range 0-9. This is used to set some reasonable default values for
-    // mastery levels and SP gains (which can be overriden per zone/action)
+    /** This is used to set default values for mastery levels and SP gains of
+        this zone's actions. When actions do provide overrides, they're pretty
+        much always functions of those default values.
+
+        Exists on a scale comparable to player level. e.g. a difficulty score of
+        15 means that this zone will be reasonably challenging for a player at
+        level 15 (more or less, depending on their particular skill specializations),
+        and SP gains will be around the 'standard serving' for level 15.
+    **/
     difficulty: number;
 }
 
@@ -61,8 +61,8 @@ export interface ActionData {
     // Second type option is a convenience - if given, that override will apply
     // to all (non-zero) skill point gains
     //gainz?: {[skillName: string] : Override} | Override;
-
     // let's wait to complicate it until it's necessary
+    
     gains? : Override;
 
     /** Sets mastery levels and SP gains for this action according to the given
