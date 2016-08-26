@@ -42,8 +42,8 @@ abstract class ActionWatcherPassive extends WatcherPassive {
     diTokens = [di_tokens.actionservice];
     onCast(AS: IActionService) {
         this.sub = AS.protoActionOutcomeSubject
-            .filter( this.filter.bind(this) )
-            .subscribe( this.onAction.bind(this) );
+            .filter( (proto) => this.filter(proto) )
+            .subscribe( (proto) => this.onAction(proto) );
     }
     abstract filter(outcome: ProtoActionOutcome) : boolean;
     abstract onAction(proto: ProtoActionOutcome);
@@ -304,6 +304,7 @@ export class HorsemanPerk extends WatcherPassive {
 }
 
 export class WoodsmanPerk extends HomeZonePassive {
+    static sname = `Dendrophile`;
     static zone = "Woody Woods";
     static spMultiplier = .5;
     static get sdescription() {
