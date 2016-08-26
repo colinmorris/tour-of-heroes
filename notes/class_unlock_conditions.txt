@@ -1,0 +1,19 @@
+Examples of unlock conditions to plan for:
+
+- Reach plevel X
+- Reach level X in skill Y
+- Reach plevel X without training skill Y
+- Spend X actions in zone Y (overall / in one lifetime)
+- Experience random rare action X in zone Y
+- Pick up X items (overall / one lifetime)
+- Reach level X in all skills
+- Reach plvl X as class Y
+- Cast X spells (overall / lifetime)
+- Have X buffs active at once
+- Perform X actions in Y seconds
+- Click X times (overall / one life)
+- Use X items of type Y (potion, book, etc.)
+- Have total buffed skill levels of X before level Y
+- Reincarnate X times
+- spend X time in game
+- reincarnate with all skills at the same level

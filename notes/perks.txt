@@ -1,0 +1,34 @@
+
+- double speed in zone X
+- perspicacity: 'ineptitude' penalty halved for difficult zones
+- Archaeologist: 10x chance to discover artifacts that greatly increase one of your skills (unlock req't: discover one artifact)
+- berserking
+- combat encounters use the greater of combat and dance skill to determine speed
+- similar: for actions that train multiple skills, inexp penalty determined by higher of the skills (or lowest skill dropped from the calculation)
+- randomly shuffle apts
+    - mudcrawler
+- drop rate ++
+- click boost
+    - skeleton
+- critical clicks
+- half action duration if training skill X
+- tome effect++
+- skill lvl floor
+- flat skill lvl bonus
+- active: boost gains from next/current action X times
+- active: boost speed of next/current action X times
+- more inv. space
+- 'questing': randomly gain 'quests' that call for visiting a particular zone. Manifests as a timed buff improving outcomes in that zone. (Maybe also some big lump sum SP gain for achieving some simple goal, like performing X actions there, or seeing some particular action, e.g. huge turnip)
+- sp gains increased after idling (remaining in the same zone for X minutes)
+- better outcome for single-skill actions
+- better outcome for multi-skill actions
+- better outcomes on Sundays
+- fewer skill levels needed per plvl
+- every time you gain a skill level... do something
+- SP gains multiplied by X for skills that are 10 levels less than your highest
+- add 60s to current action
+- spell buffing clicking power
+- find 'potions' that randomly alter stats (positively or negatively)
+- every 10s, increase power of next click
+- double action speed, but cut skill gains in half
+- certain zones unlocked early
