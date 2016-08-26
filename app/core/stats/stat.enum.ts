@@ -5,5 +5,6 @@ export enum Stat {
     Clicks, // (klass)
     SkillLevel, // skill (basically obligatory)
     ActionsTaken, // zone
+    CriticalActions,
     MAX
 }

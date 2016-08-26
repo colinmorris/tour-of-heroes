@@ -11,10 +11,11 @@ import { LiveSkill } from './skill';
 import { Skill, RawSkill } from './skill.interface';
 
 import { GLOBALS } from '../globals';
-import { Player, RawPlayer } from './player.interface'
+import { Player, RawPlayer, PlayerMetadata } from './player.interface'
 
 export class LivePlayer implements Player {
     level$: BehaviorSubject<number>;
+    public meta: PlayerMetadata;
     constructor(
         public name: string,
         // Starts from 1 (unlike skills)
@@ -31,6 +32,7 @@ export class LivePlayer implements Player {
         this._totalSkillLevels = this.calculateTotalSkills();
         // TODO: Possible to use only the subject, and not even need level ivar?
         this.level$ = new BehaviorSubject<number>(this.level);
+        this.meta = new PlayerMetadata();
     }
 
     private calculateTotalSkills() : number {

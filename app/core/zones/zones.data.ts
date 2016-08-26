@@ -89,6 +89,12 @@ function zamFromJSON(j: ActionData, parentZone: ZoneData) : ZoneAction {
         // TODO2: With the new difficulty scale, simply adding 1 is probably too weak
         difficulty = Math.min(10, difficulty+1);
     }
+
+    /** XXX: I feel like I've consistently set difficulties a bit too low, so just
+    going to play with a tweak here and see how it feels.
+    **/
+    difficulty += 3;
+
     // mastery
     let mastery:number = masteryForDifficulty(difficulty);
     if (j.mastery) {
@@ -118,10 +124,7 @@ function zamFromJSON(j: ActionData, parentZone: ZoneData) : ZoneAction {
 
 function masteryForDifficulty(diff: number) : number {
     // (maybe rounding should happen upstream?)
-    /** I feel like I've consistently set difficulties a bit too low, so just
-    going to play with a tweak here and see how it feels.
-    **/
-    return Math.ceil(XpFormulas.benchmarkSkillLevelForPlevel(diff+5));
+    return Math.ceil(XpFormulas.benchmarkSkillLevelForPlevel(diff));
 }
 
 function gainsForDifficulty(diff: number,

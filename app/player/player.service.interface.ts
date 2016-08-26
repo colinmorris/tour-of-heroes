@@ -1,10 +1,12 @@
 import { SkillMap, SkillType } from '../core/index';
 import { Observable } from 'rxjs/Observable';
 
+import { Player } from './player.interface';
+
 export interface IPlayerService {
+    player: Player;
 
     playerLevel$: Observable<number>;
-    clickMultiplier: number;
 
     getBaseAptitudes(): SkillMap;
 

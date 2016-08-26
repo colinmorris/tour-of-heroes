@@ -1,16 +1,12 @@
 
 - double speed in zone X
-- perspicacity: 'ineptitude' penalty halved for difficult zones
 - Archaeologist: 10x chance to discover artifacts that greatly increase one of your skills (unlock req't: discover one artifact)
-- berserking
 - combat encounters use the greater of combat and dance skill to determine speed
 - similar: for actions that train multiple skills, inexp penalty determined by higher of the skills (or lowest skill dropped from the calculation)
 - randomly shuffle apts
     - mudcrawler
 - drop rate ++
-- click boost
-    - skeleton
-- critical clicks
+    - critical clicks
 - half action duration if training skill X
 - tome effect++
 - skill lvl floor

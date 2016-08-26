@@ -137,6 +137,12 @@ export class ActionService implements IActionService {
         // (by adding secondary effects), before we apply. Probably before.
         // Still not clear on the rxjs scheduler stuff.
         this.protoActionOutcomeSubject.next(proto);
+        let crit = this.checkCrits(proto);
+        // TODO: XXX: Probably want to pass this on in some more structured way
+        // to the UI, and maybe some perk listeners or something. Being lazy for now.
+        if (crit) {
+            mainDesc += ' CRIT!';
+        }
         let spBoost = (s: SkillMap, mlt: number) => s.map((sp) => sp*mlt);
         let mainEvent = {description: mainDesc,
             pointsGained: this.PS.trainSkills(
@@ -154,6 +160,17 @@ export class ActionService implements IActionService {
         }
         let outcome:ActionOutcome = {main: mainEvent, secondary:kickerEvents};
         return outcome;
+    }
+
+    private checkCrits(proto: ProtoActionOutcome) : boolean {
+        if (Math.random() < this.PS.player.meta.critChance) {
+            /** TODO: seems like the crit multiplier should probably only
+                apply to SP from the main outcome, and not from kickers. **/
+            proto.spMultiplier *= this.PS.player.meta.critMultiplier;
+            return true;
+        } else {
+            return false;
+        }
     }
 
     // TODO: Used to be a method of zone, and now feels kind of weird here

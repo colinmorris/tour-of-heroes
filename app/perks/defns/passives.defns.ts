@@ -7,6 +7,7 @@ import { SkillMap, zeroSkillMap, SkillType,
 } from '../../core/index';
 import { Observable } from 'rxjs/Observable';
 import { BUFFS } from './buffs.defns';
+import { PlayerMetadata } from '../../player/player.interface';
 
 import { IPlayerService } from '../../player/player.service.interface';
 import { IStatsService } from '../../stats/stats.service.interface';
@@ -35,6 +36,53 @@ abstract class WatcherPassive extends AbstractPassive {
     cleanUp(...args) {
         this.sub.unsubscribe();
     }
+}
+
+abstract class ActionWatcherPassive extends WatcherPassive {
+    diTokens = [di_tokens.actionservice];
+    onCast(AS: IActionService) {
+        this.sub = AS.protoActionOutcomeSubject
+            .filter( this.filter.bind(this) )
+            .subscribe( this.onAction.bind(this) );
+    }
+    abstract filter(outcome: ProtoActionOutcome) : boolean;
+    abstract onAction(proto: ProtoActionOutcome);
+}
+
+/** Passives that boost actions performed in a particular zone. **/
+abstract class HomeZonePassive extends ActionWatcherPassive {
+    static zone: string;
+    static spMultiplier: number;
+    filter(proto: ProtoActionOutcome) : boolean {
+        return proto.zone.name == (<typeof HomeZonePassive>this.constructor).zone;
+    }
+    onAction(proto: ProtoActionOutcome) {
+        proto.spMultiplier += (<typeof HomeZonePassive>this.constructor).spMultiplier;
+    }
+    /** Copy-paste this into all child classes. Because fuck typescript. (Or
+        me for making bad design choices?)
+    static get sdescription() {
+        return `SP gains increased by
+        ${this.spMultiplier*100}% when adventuring in the
+        ${this.zone}`;
+    }
+    **/
+}
+
+/** It's interesting to note that passives that modify the player object don't
+    actually need to worry about a cleanup phase (as long as we assume that passives
+    will never be dismissed until reincarnation, which is sort of their definition),
+    because the player object is destroyed and reborn on reincarnation.
+**/
+abstract class MetadataPassive extends AbstractPassive {
+    diTokens = [di_tokens.playerservice];
+    onCast(PS: IPlayerService) {
+        this.fiddle(PS.player.meta);
+    }
+    cleanUp(...args) {
+        // Yay, nothing to do here.
+    }
+    abstract fiddle(meta: PlayerMetadata);
 }
 
 export namespace PASSIVES {
@@ -135,19 +183,51 @@ export class FarmerPerk extends WatcherPassive {
     }
 }
 
-export class SkeletonPerk extends AbstractPassive {
+export class ChocobonePerk extends MetadataPassive {
+    static sname = ``;
+    static critRate = .1;
+    static critMultiplier = 5;
+    static sdescription = `${ChocobonePerk.critRate*100}% chance of a critical
+        click with ${ChocobonePerk.critMultiplier*100}% increased power`;
+    fiddle(meta: PlayerMetadata) {
+        meta.clickCritRate = ChocobonePerk.critRate;
+        meta.clickCritMultiplier = ChocobonePerk.critMultiplier;
+    }
+}
+
+export class SkeletonPerk extends MetadataPassive {
     static sname = "Strong Phalanges";
     static clickMultiplier = .5;
     static sdescription = `Base clicking power increased by
         ${SkeletonPerk.clickMultiplier * 100}%`;
-    diTokens = [di_tokens.playerservice];
-    onCast(PS: IPlayerService) {
-        PS.clickMultiplier += SkeletonPerk.clickMultiplier;
-    }
-    cleanUp(PS: IPlayerService) {
-        PS.clickMultiplier -= SkeletonPerk.clickMultiplier;
-    }
 
+    fiddle(meta: PlayerMetadata) {
+        meta.clickMultiplier += SkeletonPerk.clickMultiplier;
+    }
+}
+
+export class RangerPerk extends MetadataPassive {
+    static sname = "Keen Eyes";
+    static critChance = .31;
+    static sdescription = `${RangerPerk.critChance * 100}% increased
+        chance for critical actions (SP gains doubled)`;
+
+    fiddle(meta: PlayerMetadata) {
+        meta.critChance += RangerPerk.critChance;
+    }
+}
+
+export class ArcherPerk extends MetadataPassive {
+    static sname = "Elf Eyes";
+    static critChance = .105;
+    static critMultiplierPlus =  1.0;
+    static sdescription = `${ArcherPerk.critChance * 100}% increased
+        chance for critical actions and increases critical action multiplier
+        another 200%`;
+    fiddle(meta: PlayerMetadata) {
+        meta.critChance += ArcherPerk.critChance;
+        meta.critMultiplier += ArcherPerk.critMultiplierPlus;
+    }
 }
 
 export class PeasantPerk extends OnOffPerk {
@@ -210,7 +290,7 @@ export class HorsemanPerk extends WatcherPassive {
     static sname = "Stability";
     static spMultiplier = .5;
     static sdescription = `SP gains increased by
-        ${HorsemanPerk.spMultiplier*100}% when adventuring in the Colloseum`;
+        ${HorsemanPerk.spMultiplier*100}% when adventuring in the Stables`;
     diTokens = [di_tokens.actionservice];
     onCast(AS: IActionService) {
         this.sub = AS.protoActionOutcomeSubject
@@ -223,4 +303,13 @@ export class HorsemanPerk extends WatcherPassive {
     }
 }
 
+export class WoodsmanPerk extends HomeZonePassive {
+    static zone = "Woody Woods";
+    static spMultiplier = .5;
+    static get sdescription() {
+        return `SP gains increased by
+        ${this.spMultiplier*100}% when adventuring in the
+        ${this.zone}`;
+    }
+}
 }

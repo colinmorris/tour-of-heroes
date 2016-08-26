@@ -32,6 +32,7 @@ TECHNICAL
 - switch to attributive components?
 +?- profile the thing
 - should think about trying to reconcile passives and buffs (so that it's easy to make one out of the other)
+- consider adding a 'debug' component where you can dump a bunch of extra information that's useful for debugging (e.g. player metadata)
 
 MECHANICS
 =========

@@ -91,9 +91,25 @@ export class StatsService implements IStatsService {
 
     // ----------------------- Read --------------------------------
     current(s: Stat) {
+        if (!(s in this.stats.simpleStats)) {
+            console.warn(`Couldn't find ${s} in simpleStats. Save version
+            incompatibility? Adding an empty cell for it.`);
+            if (s > this.stats.simpleStats.length) {
+                console.error("TODO: Ugh I should fix this.");
+            }
+            this.stats.simpleStats[s] = {current: 0, sum: 0};
+        }
         return this.stats.simpleStats[s].current;
     }
     lifetimeSum(s: Stat) {
+        if (!(s in this.stats.simpleStats)) {
+            console.warn(`Couldn't find ${s} in simpleStats. Save version
+            incompatibility? Adding an empty cell for it.`);
+            if (s > this.stats.simpleStats.length) {
+                console.error("TODO: Ugh I should fix this.");
+            }
+            this.stats.simpleStats[s] = {current: 0, sum: 0};
+        }
         return this.stats.simpleStats[s].sum;
     }
     unlocked(u: NamedUnlock) {

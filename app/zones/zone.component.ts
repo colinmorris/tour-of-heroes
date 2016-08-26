@@ -138,7 +138,7 @@ export class ZoneComponent implements OnInit, OnDestroy, OnChanges {
     actionClick() {
         // TODO: Throttle these to thwart evil auto-clickers
         let skip = 500;
-        let buffedSkip = skip * this.PS.clickMultiplier;
+        let buffedSkip = skip * this.PS.player.meta.clickMultiplier;
         if (buffedSkip != skip) {
             console.log(`Click power buffed from ${skip} to ${buffedSkip}`);
         }

@@ -32,6 +32,57 @@ export const KLASSES : Klass[] =[
         }
     },
     {
+        name: 'Woodsman',
+        aptitudes: mostlyUniformSkillMap(.5, {
+            [SkillType.Survival]: 2.0,
+            [SkillType.Farming]: 1.0,
+            [SkillType.Stealth]: 1.3,
+            [SkillType.Piety]: 1.0,
+            [SkillType.Charm]: .4,
+            [SkillType.Intellect]: .4
+
+        }),
+        img: 'woodsman.png',
+        hint: 'Explore the woods',
+        criteria: (s: IStatsService) => {
+            return s.lifetimeSumActionsTaken('Woody Woods') / 400;
+        }
+    },
+    {
+        name: 'Ranger',
+        aptitudes: mostlyUniformSkillMap(.6, {
+            [SkillType.Survival]: 3.0,
+            [SkillType.Farming]: .7,
+            [SkillType.Stealth]: 2.0,
+            [SkillType.Piety]: 0.3,
+            [SkillType.Charm]: .6,
+            [SkillType.Intellect]: 1.0,
+            [SkillType.Combat]: 1.0
+        }),
+        img: 'ranger.png',
+        hint: `Become an experienced Woodsman`,
+        criteria: (s: IStatsService) => {
+            return s.playerLevel('Woodsman') / 20;
+        }
+    },
+    {
+        name: 'Archer',
+        aptitudes: mostlyUniformSkillMap(.6, {
+            [SkillType.Survival]: 1.0,
+            [SkillType.Farming]: .4,
+            [SkillType.Stealth]: 1.5,
+            [SkillType.Piety]: 0.6,
+            [SkillType.Charm]: .8,
+            [SkillType.Intellect]: 1.2,
+            [SkillType.Combat]: 2.0
+        }),
+        img: 'archer.png',
+        hint: `Score lots of crits`,
+        criteria: (s: IStatsService) => {
+            return s.lifetimeSum(Stat.CriticalActions) / 500;
+        }
+    },
+    {
         name: 'Student',
         aptitudes: mostlyUniformSkillMap(.7, {[SkillType.Intellect]: 1.1}),
         img: 'mage.png',
