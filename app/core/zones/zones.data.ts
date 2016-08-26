@@ -51,7 +51,8 @@ function zoneFromJSON(j: ZoneData, id: number, superzone: string) : Zone {
     z.difficulty = j.difficulty;
     z.actions = new Array<ZoneAction>();
     console.assert(j.actions.length > 0);
-    // Postcondition: each action in j.actions will have a prob member, and they'll sum to 1
+    /** Postcondition: each action in j.actions will have a prob member, and
+        they'll sum to 1 **/
     setProbabilities(j.actions);
     for (let a of j.actions) {
         let zam: ZoneAction = zamFromJSON(a, j);
@@ -81,6 +82,7 @@ function zamFromJSON(j: ActionData, parentZone: ZoneData) : ZoneAction {
             difficulty = (<Override>j.difficulty)(difficulty);
         }
     } else if (j.bonusLevel) {
+        // TODO: Scale with bonusLevel?
         difficulty = Math.min(10, difficulty+1);
     }
     // mastery

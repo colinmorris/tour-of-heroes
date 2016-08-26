@@ -19,7 +19,8 @@ zones:
         the land - turnips are a pretty forgiving crop.`,
     actions: [
         {vb: "pull", obj:"a turnip", skills: S.Farming, weight: .9},
-        {vb: "pull", obj:"a HUGE turnip", skills: S.Farming, weight: .05, gains: MULT(10), mastery: PLUS(3)},
+        {vb: "pull", obj:"a HUGE turnip", skills: S.Farming, weight: .05,
+            gains: MULT(10), mastery: PLUS(3)},
     ],
     difficulty: 0,
 },
@@ -28,8 +29,10 @@ zones:
     description: `A young-growth forest with small trees suitable for amateur
         lumberjacks. Small critters are known to occasionally attack.`,
     actions: [
-        {vb: "chop", obj:"a young __X", opts:["oak", "spruce", "pine"], skills: S.Survival, weight: .8},
-        {vb: "ax", obj:"a __X", opts:["rat", "rabid deer", "badger", "spider"], skills: S.Combat, weight: .2},
+        {vb: "chop", obj:"a young __X", opts:["oak", "spruce", "pine"],
+            skills: S.Survival, weight: .8},
+        {vb: "ax", obj:"a __X", opts:["rat", "rabid deer", "badger", "spider"],
+            skills: S.Combat, weight: .2},
     ],
     difficulty: 1,
 },
