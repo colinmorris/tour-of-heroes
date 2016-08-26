@@ -4,6 +4,7 @@ export interface IStatsService {
     // TODO: clarify semantix
     current(s: Stat) : number;
     lifetimeSum(s: Stat) : number;
+    classUnlocked(klass: string) : boolean;
     unlocked(u: NamedUnlock) : boolean;
 
     playerLevel(klass: string) : number;

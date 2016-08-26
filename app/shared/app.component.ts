@@ -23,6 +23,7 @@ import { GLOBALS } from '../globals';
         }
     `],
     template: `
+    <simple-notifications></simple-notifications>
     <div class="container">
     <nav>
         <a [routerLink]="['/']">Home</a>

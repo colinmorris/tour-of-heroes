@@ -9,6 +9,7 @@ export interface StatsData {
     // Indexed by Stat enum
     simpleStats : StatCell[];
     unlocks: boolean[];
+    klassUnlocks: {[klass:string] : any};
     // Map from klass to name to max plvl attained (recorded upon reincarnation)
     // TODO: Clarify expectations for classes not unlocked/reincarnated from
     klassLevels: {[klass:string] : number};

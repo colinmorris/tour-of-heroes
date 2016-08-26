@@ -18,6 +18,10 @@ export class StatsService implements IStatsService {
         let saved:StatsData = serials.loadStats();
         if (saved && GLOBALS.loadSaves) {
             this.stats = saved;
+            // XXX: Compat hack. Remove later.
+            if (!this.stats.klassUnlocks) {
+                this.stats.klassUnlocks = <{[klass:string] : any}>{};
+            }
         } else {
             this.stats = this.freshStats();
         }
@@ -30,6 +34,7 @@ export class StatsService implements IStatsService {
         let stats:StatsData = {
            simpleStats: new Array<StatCell>(),
            unlocks: new Array<boolean>(),
+           klassUnlocks: <{[klass:string] : any}>{},
            klassLevels: <{[klass:string] : number}>{},
            skillLevels: uniformSkillMap(0),
            actionStats: <{[zone: string] : StatCell}>{}
@@ -88,6 +93,9 @@ export class StatsService implements IStatsService {
     unlock(u: NamedUnlock) {
         this.stats.unlocks[u] = true;
     }
+    setClassUnlocked(klass: string) {
+        this.stats.klassUnlocks[klass] = true;
+    }
 
     // ----------------------- Read --------------------------------
     current(s: Stat) {
@@ -111,6 +119,9 @@ export class StatsService implements IStatsService {
             this.stats.simpleStats[s] = {current: 0, sum: 0};
         }
         return this.stats.simpleStats[s].sum;
+    }
+    classUnlocked(klass: string) : boolean {
+        return klass in this.stats.klassUnlocks;
     }
     unlocked(u: NamedUnlock) {
         return this.stats.unlocks[u];

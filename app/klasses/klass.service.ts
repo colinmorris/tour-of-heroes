@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
+import { NotificationsService } from 'angular2-notifications';
+
 import { SkillMap, Klass, KLASSES } from '../core/index';
 import { StatsService } from '../stats/stats.service';
 
@@ -17,12 +19,13 @@ export class KlassService {
     private unlockCheckInterval = 5 * 1000;
 
     constructor(
-        private stats: StatsService
+        private stats: StatsService,
+        private Toasts: NotificationsService
     ) {
         this.klassMap = <{[name:string] : LiveKlass}>{};
         for (let klass of KLASSES) {
             let k: LiveKlass = klass as LiveKlass;
-            k.unlocked = false;
+            k.unlocked = stats.classUnlocked(k.name);
             this.klassMap[klass.name] = k;
         }
         // Set up unlock checks
@@ -44,6 +47,11 @@ export class KlassService {
         for (let k of KLASSES) {
             let klass: LiveKlass = this.klassMap[k.name];
             if (klass.unlocked) {
+                /** It's possible that the unlocked flag was set before the
+                unlock requirements changed, and that the player shouldn't
+                actually have this class unlocked in their current state.
+                But let's just give it to them anyways.
+                **/
                 continue;
             }
             let unlockScore = klass.criteria(this.stats);
@@ -60,6 +68,11 @@ export class KlassService {
             }
             if (didUnlock) {
                 console.log(`Wow!! Unlocked ${klass.name}`);
+                this.stats.setClassUnlocked(klass.name);
+                this.Toasts.success(
+                    "New class!",
+                    `Unlocked the ${klass.name} class.`
+                );
                 klass.progress = undefined;
             }
             klass.unlocked = didUnlock;
