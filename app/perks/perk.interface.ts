@@ -29,6 +29,10 @@ export interface Buff extends BaseBuff {
     /** Returns a promise which resolves when this buff completes (e.g. because
     the timer ran out or some other condition was fulfilled). **/
     apply() : Promise<void>;
+    /** Called when there's an attempt to add another instance of this buff
+    when one is already running. May want to update the duration, or whatever.
+    **/
+    refresh(buff: Buff);
 }
 
 export interface Passive extends BaseBuff {

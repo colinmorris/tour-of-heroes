@@ -71,7 +71,7 @@ export abstract class AbstractBuffingSpell extends AbstractSpell {
     }
 }
 
-export abstract class AbstractBuff extends AbstractBonus implements BaseBuff {
+export abstract class AbstractBaseBuff extends AbstractBonus implements BaseBuff {
     abstract apply() : Promise<void>;
     onDestroy() {
         let args = this.injectionArgs();
@@ -79,6 +79,11 @@ export abstract class AbstractBuff extends AbstractBonus implements BaseBuff {
     }
     abstract onCast(...services: any[]);
     abstract cleanUp(...services: any[]);
+}
+
+// AKA temporary buff
+export abstract class AbstractBuff extends AbstractBaseBuff implements Buff {
+    abstract refresh(buff: Buff);
 }
 
 export abstract class AbstractTimedBuff extends AbstractBuff implements TimedBuff {
@@ -104,9 +109,19 @@ export abstract class AbstractTimedBuff extends AbstractBuff implements TimedBuf
         });
         return promise;
     }
+    refresh(buff: Buff) {
+        /** This would seem to pose a problem for many-flavoured buffs like
+        Fruity, but keep in mind that equivalence will be determined by perk
+        service according to buff *names*. So as long as fundamentally different
+        instances of a buff type get different names, they shouldn't overwrite
+        each other.
+        **/
+        console.log(`Refreshing duration of ${this.name}`);
+        this.remainingTime = this.duration*1000;
+    }
 }
 
-export abstract class AbstractPassive extends AbstractBuff implements Passive {
+export abstract class AbstractPassive extends AbstractBaseBuff implements Passive {
     // (Sort of a hack. I'm toying with the idea of passives being able to return
     // success/failure. Makes sense for ancestry perk, possibly for others.)
     apply() : any {

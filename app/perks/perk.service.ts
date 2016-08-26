@@ -159,15 +159,19 @@ export class PerkService implements IPerkService {
         let buff:AbstractBuff = new BUFFS[buffName](this.injector, ...buffArgs);
         this.addBuffObject(buff);
     }
+    /** If we're given a dupe of a currently-active buff, we'll refresh the
+    duration, but not add a new instance of the buff.
+    **/
     public addBuffObject(buff: Buff) {
-        // kind of a hack - want to allow multiple instances of the same buff
-        // TODO: but this still isn't really settled (maybe applying a dupe buff
-        // should just extend or refresh the duration of the existing one?)
-        let buffid:string = buff.name + Math.random();
-        this.buffs[buffid] = buff;
-        buff.apply().then( () => {
-            delete this.buffs[buffid];
-        });
+        let buffid = buff.name;
+        if (buffid in this.buffs) {
+            this.buffs[buffid].refresh(buff);
+        } else {
+            this.buffs[buffid] = buff;
+            buff.apply().then( (resolved) => {
+                delete this.buffs[buffid];
+            });
+        }
     }
 
 }
