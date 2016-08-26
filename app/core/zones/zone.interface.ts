@@ -18,6 +18,12 @@ export interface Zone {
     // TODO: Move ChooseAction here
 }
 
+export interface SuperZone {
+    name: string;
+    zones: Zone[];
+    unlockCondition: (level: number) => boolean;
+}
+
 export interface SkillDifficulty {
     penalty: number;
     masteredAt: number;
@@ -28,6 +34,7 @@ export interface ZoneDifficulty {
     perSkill: SkillMapOf<SkillDifficulty>;
 }
 
+// TODO: move to separate file
 export class ConcreteZone implements Zone {
     zid: number;
     superzone: string;

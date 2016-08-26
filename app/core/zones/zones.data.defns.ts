@@ -17,11 +17,11 @@ export function additiveOverride(bias: number) : Override {
 }
 
 
-// TODO: Consider a generosity/bonus/efficiency option for zones and actions, 
+// TODO: Consider a generosity/bonus/efficiency option for zones and actions,
 // which would apply some standard transformations to mastery and point gains -
 // and maybe even to probability weight?
 // (as a nice, consistent shortcut for the common use case of 'this is a rare
-// 'bonus' action you should be happy to get, or this is a high-quality zone 
+// 'bonus' action you should be happy to get, or this is a high-quality zone
 // that's only available under some limited circumstances)
 export interface ZoneData {
     name: string;
@@ -48,11 +48,11 @@ export interface ActionData {
     // Like above, but represents an absolute probability.
     prob?: number;
     // TODO: Originally, there was an option to override delay. I'm not convinced
-    // that that extra degree of freedom is necessary, but may want to consider 
+    // that that extra degree of freedom is necessary, but may want to consider
     // reviving it later.
 
     mastery?: Override;
-    // Second type option is a convenience - if given, that override will apply 
+    // Second type option is a convenience - if given, that override will apply
     // to all (non-zero) skill point gains
     //gainz?: {[skillName: string] : Override} | Override;
 
@@ -73,7 +73,9 @@ export interface ActionData {
     bonusLevel?: number;
 }
 
-export interface SuperZone {
+// TODO: I wish I'd made a firm decision on whether to capitalize the 'z' :(
+export interface SuperZoneData {
     name: string;
+    minLevel: number;
     zones: ZoneData[];
 }

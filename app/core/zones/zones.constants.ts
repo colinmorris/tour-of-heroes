@@ -1,4 +1,4 @@
-import { SuperZone,
+import {    SuperZoneData,
             multiplicativeOverride as MULT,
             additiveOverride as PLUS
         } from './zones.data.defns';
@@ -7,9 +7,10 @@ import { SkillType as S } from '../skills/index';
 let CHEAT_POINTS = 5000;
 let FLOWERS = ["poppies", "daisies", "roses", "orchids", "violets", "begonias"];
 
-export const ZONEDATA: SuperZone[] = [
+export const SUPERZONEDATA: SuperZoneData[] = [
 {
 name: 'fields',
+minLevel: 0,
 zones:
     [
 {
@@ -74,6 +75,7 @@ zones:
 
 {
 name: 'city',
+minLevel: 5,
 zones: [
 {
     name: 'Library',
@@ -124,6 +126,7 @@ zones: [
 
 {
 name: 'hinterlands',
+minLevel: 10,
 zones: [
 {
     name: 'Gryphon Nest',

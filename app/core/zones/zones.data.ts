@@ -1,20 +1,18 @@
 import { multiplicativeOverride,
     Override,
     ZoneData,
-    ActionData,
-    SuperZone } from './zones.data.defns';
-import { ZONEDATA } from './zones.constants';
+    ActionData
+    } from './zones.data.defns';
+import { SUPERZONEDATA } from './zones.constants';
 import { GLOBALS } from '../../globals';
 
-import { Zone, ConcreteZone } from './zone.interface';
+import { Zone, ConcreteZone, SuperZone } from './zone.interface';
 import { SkillType, SkillMap, JSONtoSkillMap, dictToSkillMap } from '../skills/index';
 import { ZoneAction } from './zoneaction.interface';
 import { VerbalZoneAction } from './zoneaction';
 import { Verb, verbLookup } from './verb';
 
-export const ZONES : Object = {}; //{string: Zone[]} = {};
-export const ZONESARR : Zone[] = [];
-export const SUPERZONES: string[] = [];
+export const SUPERZONES: SuperZone[] = [];
 
 function setProbabilities(actions: ActionData[]) {
     let freeWeight = 0;
@@ -135,13 +133,16 @@ function gainsForDifficulty(diff: number, skills: SkillType[], skillRatios: {[sk
 }
 
 let id = 0;
-for (let superzone of ZONEDATA) {
-    SUPERZONES.push(superzone.name);
-    ZONES[superzone.name] = [];
-    for (let obj of superzone.zones) {
-        let z: Zone = zoneFromJSON(obj, id++, superzone.name);
-        // ZZZZZZZ
-        ZONES[superzone.name].push(z);
-        ZONESARR.push(z);
+for (let superzone of SUPERZONEDATA) {
+    let zones: Zone[] = new Array<Zone>();
+    for (let zoneData of superzone.zones) {
+        let z: Zone = zoneFromJSON(zoneData, id++, superzone.name);
+        zones.push(z);
     }
+    let supz: SuperZone = {
+        name: superzone.name,
+        zones: zones,
+        unlockCondition: (level: number) => level > superzone.minLevel
+    };
+    SUPERZONES.push(supz);
 }

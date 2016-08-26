@@ -23,7 +23,7 @@ type SkillType = number;
 @Injectable()
 export class PlayerService implements IPlayerService {
     private _player: LivePlayer;
-    playerLevel$ : Observable<number>;
+    public playerLevel$ : Observable<number>;
     public clickMultiplier = 1.0;
 
     constructor(

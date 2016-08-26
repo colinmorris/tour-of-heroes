@@ -1,28 +1,19 @@
 import { Injectable } from '@angular/core';
 
-import { ZONESARR, ZONES, SUPERZONES,
+import { SUPERZONES, SuperZone,
     Zone } from '../core/index';
 
 
+/** This is a pretty sorry excuse for a service at this point. Will probably
+    find more uses for it later though.
+**/
 @Injectable()
 export class Zones {
 
     // TODO: Should probably be a subject?
-    public focalZone: Zone = ZONESARR[0];
+    public focalZone: Zone = SUPERZONES[0].zones[0];
 
-    get superzones() : string[] {
+    get superzones() : SuperZone[] {
         return SUPERZONES;
-    }
-
-    get allZones() : Zone[] {
-        let zones: Zone[] = new Array<Zone>();
-        for (let superz of this.superzones) {
-            zones = zones.concat(this.zonesInSuperzone(superz));
-        }
-        return zones;
-    }
-
-    zonesInSuperzone(superzone: string) : Zone[] {
-        return ZONES[superzone];
     }
 }

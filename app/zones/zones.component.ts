@@ -3,10 +3,11 @@ import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Zone } from '../core/index';
 import { Zones } from './zones.service';
 import { ZoneSummaryComponent } from './zone-summary.component';
+import { PlayerService } from '../player/player.service';
 
 interface SuperzonePane {
     name: string;
-    expanded: boolean; // not currently used
+    unlocked: boolean;
     zones: Zone[];
 }
 
@@ -20,6 +21,9 @@ interface SuperzonePane {
         .zone-header {
             font-weight: bold;
         }
+        .locked {
+            opacity: .5; /* placeholder */
+        }
         `,],
     template: `
     <div>
@@ -27,8 +31,9 @@ interface SuperzonePane {
     <ul class="nav nav-tabs">
         <li *ngFor="let pane of panes"
         [class.active]="activePane==pane"
+        [class.locked]="!pane.unlocked"
          >
-            <a (click)="activePane=pane">{{pane.name}}</a>
+            <a (click)="setActivePane(pane)">{{pane.name}}</a>
         </li>
     </ul>
 
@@ -63,18 +68,36 @@ export class ZonesComponent implements OnInit {
     panes: SuperzonePane[] = new Array<SuperzonePane>();
 
     constructor(
-        private zones: Zones
+        private zones: Zones,
+        private PS: PlayerService
     ) {}
 
     ngOnInit() {
         console.assert(this.panes.length == 0);
         for (let superz of this.zones.superzones) {
             this.panes.push({
-                name: superz, expanded: false,
-                zones: this.zones.zonesInSuperzone(superz)
+                name: superz.name, unlocked: superz.unlockCondition(this.PS.player.level),
+                zones: superz.zones
             });
         }
         this.activePane = this.panes[0];
+        console.assert(this.activePane.unlocked);
+
+        // On level up, check whether any new superzones have been unlocked.
+        this.PS.playerLevel$.subscribe( (lvl:number) => {
+            for (let i=0; i < this.panes.length; i++) {
+                this.panes[i].unlocked = this.zones.superzones[i].
+                    unlockCondition(this.PS.player.level)
+            }
+        });
+    }
+
+    setActivePane(pane: SuperzonePane) {
+        if (pane.unlocked) {
+            this.activePane = pane;
+        } else {
+            console.warn(`${pane.name} is locked!`);
+        }
     }
 
 }

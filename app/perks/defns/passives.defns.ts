@@ -153,15 +153,12 @@ export class SkeletonPerk extends AbstractPassive {
 export class PeasantPerk extends OnOffPerk {
     // TODO: wish there was a way I could get the compiler to bug me if
     // name/desc isn't given (i.e. make them "abstract" properties)
-    name = "Underdog";
     static sname = "Underdog";
     static levelThreshold = 10;
     static aptMultiplier = 3.0;
     // TODO: Is it possible to store a string property that uses something like
     // angular's templating syntax, and sort of 'eval' that in a template?
     // In particular, it'd be nice to be able to use pipes here.
-    description = `Base aptitudes increased by ${PeasantPerk.aptMultiplier*100}%
-        until level ${PeasantPerk.levelThreshold}`;
     static sdescription = `Base aptitudes increased by ${PeasantPerk.aptMultiplier*100}%
         until level ${PeasantPerk.levelThreshold}`;
     diTokens = [di_tokens.playerservice];
