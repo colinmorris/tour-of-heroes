@@ -10,7 +10,7 @@ import { StatsService } from '../stats/stats.service';
 import { SkillComponent } from '../shared/skill.component';
 import { MultiplierPipe } from '../shared/multiplier.pipe';
 
-import { SkillType, NamedUnlock } from '../core/index';
+import { SkillType, NamedUnlock, SkillMap } from '../core/index';
 import { GLOBALS } from '../globals';
 
 @Component({
@@ -115,6 +115,7 @@ import { GLOBALS } from '../globals';
         <skill [skill]="i"></skill>{{apt}}
         <br *ngIf="i==3">
         </span>
+        <p>DEBUG: Sum of apts={{sumapts(selected.aptitudes) | number:'1.1-1'}}</p>
     </div>
 
     <div *ngIf="selected.unlocked">
@@ -172,6 +173,10 @@ export class KlassesComponent {
         private Stats: StatsService,
         private router: Router
     ) {
+    }
+
+    sumapts(apts: SkillMap) {
+        return apts.reduce( (acc, val) => acc+val, 0);
     }
 
     displayName(klass: LiveKlass) {
