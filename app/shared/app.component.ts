@@ -21,6 +21,10 @@ import { GLOBALS } from '../globals';
         .save {
             margin-top: 15px;
         }
+        /* TODO: this is hacky in every respect */
+        >>> .toast-klassname {
+            margin-left: 110px;
+        }
     `],
     template: `
     <simple-notifications></simple-notifications>

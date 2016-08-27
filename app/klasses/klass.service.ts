@@ -69,14 +69,28 @@ export class KlassService {
             if (didUnlock) {
                 console.log(`Wow!! Unlocked ${klass.name}`);
                 this.stats.setClassUnlocked(klass.name);
-                this.Toasts.success(
-                    "New class!",
-                    `Unlocked the ${klass.name} class.`
-                );
+                this.klassUnlockToast(klass);
                 klass.progress = undefined;
             }
             klass.unlocked = didUnlock;
         }
+    }
+
+    private klassUnlockToast(klass: LiveKlass) {
+        // this seems like overkill, but...
+        /** TODO: icons are a little small. Would be good to define some
+        global style rules for mini/medium/big class icons. **/
+        let html = `<div class="row">
+        <div class="col-xs-4">
+        <img src="/assets/units/${klass.img}">
+        </div>
+        <div class="col-cs-8">
+        <p>New class unlocked!</p>
+        <h3 class="toast-klassname">${klass.name}</h3>
+        </div>
+        </div>
+        `;
+        this.Toasts.html(html, "success");
     }
 
     aptitudesForKlass(klass: string) : SkillMap {
