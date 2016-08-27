@@ -24,7 +24,7 @@ export const GLOBALS = {
     // code is therefore pretty prone to breaking out of version compat issues
     loadSaves: true,
 
-    autoSave: false,
+    autoSave: true,
     autoSaveIntervalMs: 60*1000,
 
     actionBarUpdateInterval: 300,

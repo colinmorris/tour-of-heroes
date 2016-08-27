@@ -155,7 +155,7 @@ export const KLASSES : Klass[] =[
     },
     {
         name: 'Skeleton',
-        aptitudes: mostlyUniformSkillMap(t2_apt, {
+        aptitudes: mostlyUniformSkillMap(t1_apt+.5, {
             [SkillType.Stealth]: .3,
             [SkillType.Piety]: .3,
             [SkillType.Charm]: .4,
@@ -269,6 +269,24 @@ export const KLASSES : Klass[] =[
         hint: 'Reincarnate many times',
         criteria: (s: IStatsService) => {
             return s.lifetimeSum(Stat.Reincarnations) / 10;
+        }
+    },
+    {
+        name: 'Juggler', // TODO: Perk
+        aptitudes: mostlyUniformSkillMap(t2_apt, {
+            [SkillType.Farming]: 1.0,
+            [SkillType.Intellect]: 1.5,
+            [SkillType.Piety]: 1.1,
+            [SkillType.Stealth]: 1.4,
+            [SkillType.Survival]: 0.7,
+            [SkillType.Riding]: .8,
+            [SkillType.Combat]: .5,
+            [SkillType.Charm]: 2.5
+        }),
+        img: 'juggler.png',
+        hint: 'Grab three eggs in a row',
+        criteria: (s: IStatsService) => {
+            return s.unlocked(NU.ThreeEggs);
         }
     },
     {

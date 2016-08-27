@@ -64,6 +64,7 @@ export namespace XpFormulas {
         /** 5 skill lvls per plevel. Let's assume a perfectly virtuous player
         who distributes SP evenly across all skills.
         **/
-        return (plevel*5)/8.0; // I sure hope the set of skills never changes...
+        // Let's say a *mostly* virtuous player
+        return (plevel*5)/6.0; // I sure hope the set of skills never changes...
     }
 }

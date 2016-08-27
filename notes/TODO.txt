@@ -22,6 +22,7 @@ BALANCE
     - if we want high level zones to only be tractable with a high ancestry bonus (and/or more advanced classes), then lower level zones will be blazingly fast when those conditions are met. Is this a problem? Maybe not.
     - what if ancestry bonus was an aptitude multiplier *per player level*?
 - it'd be useful to have some debug UI in the class view showing sum of apts for a class, or other useful ways for comparing apts across classes
+- consider making fruity buff a bit more powerful and more rare
 
 TECHNICAL
 =========
@@ -36,6 +37,7 @@ TECHNICAL
     - https://angular.io/docs/ts/latest/cookbook/rc4-to-rc5.html
 - ahead of time compilation
 - consider propagating 'bonus'-ness up. Might be interesting to show it in the UI, and to have it interact with some perks.
+- ability to export to/load from string. Would make testing a lot easier.
 
 MECHANICS
 =========

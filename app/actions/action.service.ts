@@ -17,7 +17,7 @@ import { Zone,
     ZoneAction,
     ZoneActionDescription,
     ActionEvent,
-    SkillMap, getTruthySkills,
+    SkillMap, getTruthySkills, SkillType,
     NamedUnlock
  } from '../core/index';
 import { RealLiveZoneAction } from './reallivezoneaction';
@@ -44,6 +44,7 @@ export class ActionService implements IActionService {
     private _actionSpeedMultiplier = 1.0;
     // Inexperience penalty multiplied by this amount
     public inexpMultiplier = 1.0;
+    private eggs = 0;
 
     // Experimental
     protoActionOutcomeSubject: Subject<ProtoActionOutcome> =
@@ -150,6 +151,16 @@ export class ActionService implements IActionService {
         // of a method
         if (this.currentAction.slowdown > 10.0) {
             this.stats.unlock(NamedUnlock.SuperSlowAction);
+        }
+        // Such a hack
+        if (this.activeZone.name == "Gryphon Nest" &&
+            action.skillDeltas[SkillType.Stealth] > 0) {
+                this.eggs++;
+                if (this.eggs == 3) {
+                    this.stats.unlock(NamedUnlock.ThreeEggs);
+                }
+        } else {
+            this.eggs = 0;
         }
 
         let crit = this.checkCrits(proto);

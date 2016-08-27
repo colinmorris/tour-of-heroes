@@ -225,7 +225,7 @@ export class SkeletonPerk extends MetadataPassive {
 
 export class RangerPerk extends MetadataPassive {
     static sname = "Keen Eyes";
-    static critChance = .31;
+    static critChance = .1;
     static sdescription = `${RangerPerk.critChance * 100}% increased
         chance for critical actions (SP gains doubled)`;
 
@@ -236,11 +236,11 @@ export class RangerPerk extends MetadataPassive {
 
 export class ArcherPerk extends MetadataPassive {
     static sname = "Elf Eyes";
-    static critChance = .105;
+    static critChance = .05;
     static critMultiplierPlus =  1.0;
     static sdescription = `${ArcherPerk.critChance * 100}% increased
         chance for critical actions and increases critical action multiplier
-        another 200%`;
+        another 100%`;
     fiddle(meta: PlayerMetadata) {
         meta.critChance += ArcherPerk.critChance;
         meta.critMultiplier += ArcherPerk.critMultiplierPlus;

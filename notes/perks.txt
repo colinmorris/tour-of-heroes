@@ -29,3 +29,4 @@
 - double action speed, but cut skill gains in half
 - certain zones unlocked early
 - necromancer with 'summon skeleton' spell: auto-clicks once every second for n seconds
+- spell that just gives you some random SP
