@@ -7,6 +7,10 @@ let low_skill_lvl = 15;
 let med_skill_lvl = 30;
 let hi_skill_lvl = 75;
 
+let t1_apt = .5;
+let t2_apt = .6;
+let t3_apt = .7;
+
 // TODO: Specify perks here
 export const KLASSES : Klass[] =[
     {
@@ -19,11 +23,14 @@ export const KLASSES : Klass[] =[
     },
     {
         name: 'Farmer',
-        aptitudes: mostlyUniformSkillMap(.5,
+        aptitudes: mostlyUniformSkillMap(t1_apt,
                         {
-                            [SkillType.Farming]: 1.3,
-                            [SkillType.Survival]: .9,
-                            [SkillType.Riding]: 1.0
+                            [SkillType.Farming]: 3.0,
+                            [SkillType.Survival]: .7,
+                            [SkillType.Riding]: 1.0,
+                            [SkillType.Combat]: .3,
+                            [SkillType.Piety]: .7,
+                            [SkillType.Intellect]: .4
                         }),
         img: 'peasant.png',
         hint: `Train your Farming skill`,
@@ -33,11 +40,12 @@ export const KLASSES : Klass[] =[
     },
     {
         name: 'Woodsman',
-        aptitudes: mostlyUniformSkillMap(.5, {
-            [SkillType.Survival]: 2.0,
+        aptitudes: mostlyUniformSkillMap(t1_apt, {
+            [SkillType.Survival]: 2.5,
             [SkillType.Farming]: 1.0,
-            [SkillType.Stealth]: 1.3,
-            [SkillType.Piety]: 1.0,
+            [SkillType.Stealth]: 1.5,
+            [SkillType.Combat]: .7,
+            [SkillType.Piety]: .6,
             [SkillType.Charm]: .4,
             [SkillType.Intellect]: .4
 
@@ -50,9 +58,9 @@ export const KLASSES : Klass[] =[
     },
     {
         name: 'Ranger',
-        aptitudes: mostlyUniformSkillMap(.6, {
+        aptitudes: mostlyUniformSkillMap(t2_apt, {
             [SkillType.Survival]: 3.0,
-            [SkillType.Farming]: .7,
+            [SkillType.Farming]: .4,
             [SkillType.Stealth]: 2.0,
             [SkillType.Piety]: 0.3,
             [SkillType.Charm]: .6,
@@ -67,14 +75,14 @@ export const KLASSES : Klass[] =[
     },
     {
         name: 'Archer',
-        aptitudes: mostlyUniformSkillMap(.6, {
+        aptitudes: mostlyUniformSkillMap(t2_apt, {
             [SkillType.Survival]: 1.0,
             [SkillType.Farming]: .4,
-            [SkillType.Stealth]: 1.5,
+            [SkillType.Stealth]: 1.1,
             [SkillType.Piety]: 0.6,
-            [SkillType.Charm]: .8,
-            [SkillType.Intellect]: 1.2,
-            [SkillType.Combat]: 2.0
+            [SkillType.Charm]: 1.2,
+            [SkillType.Intellect]: 1.1,
+            [SkillType.Combat]: 2.5
         }),
         img: 'archer.png',
         hint: `Score lots of crits`,
@@ -84,7 +92,14 @@ export const KLASSES : Klass[] =[
     },
     {
         name: 'Student',
-        aptitudes: mostlyUniformSkillMap(.7, {[SkillType.Intellect]: 1.1}),
+        aptitudes: mostlyUniformSkillMap(t1_apt, {
+            [SkillType.Intellect]: 2.5,
+            [SkillType.Combat]: .3,
+            [SkillType.Survival]: .3,
+            [SkillType.Charm]: 1.0,
+            [SkillType.Stealth]: 1.0,
+            [SkillType.Riding]: .5,
+        }),
         img: 'mage.png',
         hint: `Work hard`,
         criteria: (s: IStatsService) => {
@@ -93,10 +108,11 @@ export const KLASSES : Klass[] =[
     },
     {
         name: 'Assassin',
-        aptitudes: mostlyUniformSkillMap(.7, {
-            [SkillType.Stealth]: 1.5,
-            [SkillType.Intellect]: 1.2,
-            [SkillType.Combat]: .9
+        aptitudes: mostlyUniformSkillMap(t2_apt, {
+            [SkillType.Stealth]: 2.5,
+            [SkillType.Intellect]: 1.1,
+            [SkillType.Combat]: 1.5,
+            [SkillType.Piety]: .3
         }),
         img: 'assassin+female.png',
         hint: `Train your Stealth skill`,
@@ -106,11 +122,12 @@ export const KLASSES : Klass[] =[
     },
     {
         name: 'Cleric',
-        aptitudes: mostlyUniformSkillMap(.7, {
-            [SkillType.Piety]: 1.5,
-            [SkillType.Combat]: 0.4,
-            [SkillType.Survival]: 0.6,
-            [SkillType.Intellect]: 1.0
+        aptitudes: mostlyUniformSkillMap(t2_apt, {
+            [SkillType.Piety]: 2.5,
+            [SkillType.Combat]: 0.1,
+            [SkillType.Survival]: 0.5,
+            [SkillType.Intellect]: 1.3,
+            [SkillType.Stealth]: 1.2
         }),
         img: 'white-mage.png',
         hint: `Live a life free from violence`,
@@ -120,12 +137,12 @@ export const KLASSES : Klass[] =[
     },
     {
         name: 'Berserker',
-        aptitudes: mostlyUniformSkillMap(.8, {
-            [SkillType.Combat]: 1.6,
+        aptitudes: mostlyUniformSkillMap(t1_apt, {
+            [SkillType.Combat]: 2.6,
             [SkillType.Charm]: .6,
-            [SkillType.Intellect]: .5,
+            [SkillType.Intellect]: .2,
             [SkillType.Stealth]: .5,
-            [SkillType.Survival]: .9
+            [SkillType.Survival]: 1.3
         }),
         img: 'berserker.png',
         hint: `Train your combat skill`,
@@ -138,10 +155,11 @@ export const KLASSES : Klass[] =[
     },
     {
         name: 'Skeleton',
-        aptitudes: mostlyUniformSkillMap(.7, {
-            [SkillType.Stealth]: .5,
-            [SkillType.Piety]: .5,
-            [SkillType.Survival]: 1.0
+        aptitudes: mostlyUniformSkillMap(t2_apt, {
+            [SkillType.Stealth]: .3,
+            [SkillType.Piety]: .3,
+            [SkillType.Charm]: .4,
+            [SkillType.Survival]: 1.8
         }),
         img: 'skeleton.png',
         hint: `Clickety-clack go the spooky Skeleton bones`,
@@ -151,12 +169,12 @@ export const KLASSES : Klass[] =[
     },
     {
         name: 'Chocobone', // That name was too good not to steal. Thanks Wesnoth.
-        aptitudes: mostlyUniformSkillMap(.8, {
+        aptitudes: mostlyUniformSkillMap(t3_apt, {
             [SkillType.Stealth]: 0.1,
             [SkillType.Riding]: 3.0,
-            [SkillType.Survival]: 1.0,
-            [SkillType.Piety]: 0.5,
-            [SkillType.Combat]: 1.0
+            [SkillType.Survival]: 1.5,
+            [SkillType.Piety]: 0.3,
+            [SkillType.Combat]: 2.0
         }),
         img: 'chocobone.png',
         /** TODO: Maybe the unlock criteria should be having *reincarnated* as
@@ -176,7 +194,7 @@ export const KLASSES : Klass[] =[
     **/
     {
         name: 'Jouster', // is 'Lancer' a better name?
-        aptitudes: mostlyUniformSkillMap(.8, {
+        aptitudes: mostlyUniformSkillMap(t2_apt, {
             [SkillType.Stealth]: .5,
             [SkillType.Riding]: 3.0,
             [SkillType.Charm]: 2.5,
@@ -192,11 +210,12 @@ export const KLASSES : Klass[] =[
     },
     {
         name: 'Gladiator',
-        aptitudes: mostlyUniformSkillMap(.7, {
-            [SkillType.Combat]: 1.2,
-            [SkillType.Charm]: 1.2,
+        aptitudes: mostlyUniformSkillMap(t2_apt, {
+            [SkillType.Combat]: 2.0,
+            [SkillType.Charm]: 2.0,
             [SkillType.Farming]: .6,
-            [SkillType.Piety]: .6
+            [SkillType.Piety]: 1.0,
+            [SkillType.Stealth]: .7
         }),
         img: 'pikeman.png',
         hint: `Practice in the Colloseum`,
@@ -206,7 +225,14 @@ export const KLASSES : Klass[] =[
     },
     {
         name: 'Scholar',
-        aptitudes: mostlyUniformSkillMap(.9, {[SkillType.Intellect]: 1.5}),
+        aptitudes: mostlyUniformSkillMap(t2_apt, { // copy-paste of student
+            [SkillType.Intellect]: 2.5,
+            [SkillType.Combat]: .3,
+            [SkillType.Survival]: .3,
+            [SkillType.Charm]: 1.0,
+            [SkillType.Stealth]: 1.0,
+            [SkillType.Riding]: .5,
+        }),
         img: 'red-mage.png',
         hint: `Get at least a '20' on your report card`,
         criteria: (s: IStatsService) => {
@@ -215,11 +241,12 @@ export const KLASSES : Klass[] =[
     },
     {
         name: 'Blob',
-        aptitudes: mostlyUniformSkillMap(.7, { // TODO: placeholder
-            [SkillType.Riding]: 1.3,
-            [SkillType.Combat]: 0.9,
-            [SkillType.Stealth]: 0.5,
-            [SkillType.Survival]: 0.8
+        aptitudes: mostlyUniformSkillMap(t2_apt, {
+            [SkillType.Riding]: .3,
+            [SkillType.Charm]: .1,
+            [SkillType.Combat]: 1.2,
+            [SkillType.Stealth]: 1.5,
+            [SkillType.Survival]: 1.8
         }),
         img: 'mudcrawler.png',
         hint: 'Take it reeeeeeal slow',
@@ -229,11 +256,14 @@ export const KLASSES : Klass[] =[
     },
     {
         name: 'Shaman',
-        aptitudes: mostlyUniformSkillMap(.7, { // TODO: placeholder
-            [SkillType.Riding]: 1.3,
-            [SkillType.Combat]: 0.9,
-            [SkillType.Stealth]: 0.5,
-            [SkillType.Survival]: 0.8
+        aptitudes: mostlyUniformSkillMap(t2_apt, {
+            [SkillType.Farming]: 1.0,
+            [SkillType.Intellect]: 1.7,
+            [SkillType.Piety]: 1.7,
+            [SkillType.Stealth]: 1.0,
+            [SkillType.Survival]: 1.1,
+            [SkillType.Riding]: .6,
+            [SkillType.Combat]: .7
         }),
         img: 'shaman.png',
         hint: 'Reincarnate many times',
@@ -243,10 +273,10 @@ export const KLASSES : Klass[] =[
     },
     {
         name: 'Horseman',
-        aptitudes: mostlyUniformSkillMap(.7, {
-            [SkillType.Riding]: 1.3,
+        aptitudes: mostlyUniformSkillMap(t1_apt, {
+            [SkillType.Riding]: 2.5,
             [SkillType.Combat]: 0.9,
-            [SkillType.Stealth]: 0.5,
+            [SkillType.Stealth]: 0.4,
             [SkillType.Survival]: 0.8
         }),
         img: 'horseman.png',

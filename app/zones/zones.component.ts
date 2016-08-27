@@ -4,6 +4,7 @@ import { Zone } from '../core/index';
 import { Zones } from './zones.service';
 import { ZoneSummaryComponent } from './zone-summary.component';
 import { PlayerService } from '../player/player.service';
+import { GLOBALS } from '../globals';
 
 interface SuperzonePane {
     name: string;
@@ -96,7 +97,7 @@ export class ZonesComponent implements OnInit {
     }
 
     setActivePane(pane: SuperzonePane) {
-        if (pane.unlocked) {
+        if (pane.unlocked || GLOBALS.cheatMode) {
             this.activePane = pane;
         } else {
             console.warn(`${pane.name} is locked!`);

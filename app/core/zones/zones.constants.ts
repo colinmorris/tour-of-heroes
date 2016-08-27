@@ -183,6 +183,14 @@ zones: [
         difficulty: 35,
     },
 ]
+},
+
+{
+name: 'Coast',
+minLevel: 40,
+zones: [
+
+]
 }
 
 ];

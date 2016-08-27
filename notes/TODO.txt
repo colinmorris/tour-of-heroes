@@ -21,6 +21,7 @@ BALANCE
 - Seems like ancestry bonus is basically just a linear multiplier on your progress speed throughout your lifetime. It follows that...
     - if we want high level zones to only be tractable with a high ancestry bonus (and/or more advanced classes), then lower level zones will be blazingly fast when those conditions are met. Is this a problem? Maybe not.
     - what if ancestry bonus was an aptitude multiplier *per player level*?
+- it'd be useful to have some debug UI in the class view showing sum of apts for a class, or other useful ways for comparing apts across classes
 
 TECHNICAL
 =========
@@ -71,4 +72,5 @@ UI
 - unit animations
 - "unlocked x/Y classes" text in classes view
 - show greyed-out reincarnate button for unlocked classes when level < 10
+- rework the UI for aptitudes in the klass view. I think bars would be nicer (and colored, since they'll all be on the same scale)
 
