@@ -73,7 +73,7 @@ export class Fruity extends AbstractTimedBuff {
         return "Grapes of " + g;
     }
     duration = 120;
-    private buffAmt = 5;
+    private buffAmt = 10;
     static sdescription = "zzz";
     get description() {
         return SkillType[this.buffedSkill] + ` boosted by ${this.buffAmt}`;
