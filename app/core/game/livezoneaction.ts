@@ -10,9 +10,7 @@ export interface LiveZoneAction {
     active: boolean;
     // Where is this action taking place?
     zid: number;
-    /** TODO: attributes to be added later
-    inexperiencePenalty: number;
-    */
+    slowdown: number;
     completeEarly();
     // Advance the progress of this action by the given amount of time.
     advanceProgress(skipMillis: number);

@@ -214,6 +214,20 @@ export const KLASSES : Klass[] =[
         }
     },
     {
+        name: 'Blob',
+        aptitudes: mostlyUniformSkillMap(.7, { // TODO: placeholder
+            [SkillType.Riding]: 1.3,
+            [SkillType.Combat]: 0.9,
+            [SkillType.Stealth]: 0.5,
+            [SkillType.Survival]: 0.8
+        }),
+        img: 'mudcrawler.png',
+        hint: 'Take it reeeeeeal slow',
+        criteria: (s: IStatsService) => {
+            return s.unlocked(NU.SuperSlowAction);
+        }
+    },
+    {
         name: 'Horseman',
         aptitudes: mostlyUniformSkillMap(.7, {
             [SkillType.Riding]: 1.3,

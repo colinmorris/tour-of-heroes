@@ -28,3 +28,4 @@
 - every 10s, increase power of next click
 - double action speed, but cut skill gains in half
 - certain zones unlocked early
+- necromancer with 'summon skeleton' spell: auto-clicks once every second for n seconds

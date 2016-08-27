@@ -20,7 +20,10 @@ export class RealLiveZoneAction implements LiveZoneAction {
         public description: string,
         public duration: number,
         private callback: () => void,
-        public zid: number
+        public zid: number,
+        /** The slowdown penalty (aka inexperience penalty, aka ineptitude penalty)
+        applied to this action when it was started. **/
+        public slowdown: number
     ) {
 
         /** Match the cadence of our emissions to the speed of the transitions

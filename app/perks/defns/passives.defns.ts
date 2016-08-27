@@ -118,7 +118,7 @@ export class AncestryPerk extends AbstractPassive {
 export class ClericPerk extends AbstractPassive {
     static sname = "Grace";
     static inexpMultiplier = .5;
-    static sdescription = `Reduces speed penalty for difficult zones by
+    static sdescription = `Reduces slowdown for difficult zones by
             ${(1 - ClericPerk.inexpMultiplier)*100}%`;
     diTokens = [di_tokens.actionservice];
 
@@ -127,6 +127,23 @@ export class ClericPerk extends AbstractPassive {
     }
     cleanUp(AS: IActionService) {
         AS.inexpMultiplier = 1.0; // TODO: brittle
+    }
+}
+
+export class BlobPerk extends WatcherPassive {
+    static sname = "Sessile";
+    static spMultiplier = .5;
+    static sdescription = `Increase skill gains by ${BlobPerk.spMultiplier*100}%
+        for actions with a slowdown penalty`;
+    diTokens = [di_tokens.actionservice];
+
+    onCast(AS: IActionService) {
+        this.sub = AS.protoActionOutcomeSubject.subscribe( (proto: ProtoActionOutcome) => {
+            if (AS.currentAction.slowdown > 1) {
+                console.log("Getting blobby");
+                proto.spMultiplier += BlobPerk.spMultiplier;
+            }
+        });
     }
 }
 

@@ -17,13 +17,19 @@ import { Zone,
     ZoneAction,
     ZoneActionDescription,
     ActionEvent,
-    SkillMap, getTruthySkills
+    SkillMap, getTruthySkills,
+    NamedUnlock
  } from '../core/index';
 import { RealLiveZoneAction } from './reallivezoneaction';
 
 export interface PostActionInfo {
     outcome: ActionOutcome;
     nextAction: LiveZoneAction;
+}
+
+interface DelayCalc {
+    delay: number;
+    slowdown: number;
 }
 
 @Injectable()
@@ -105,14 +111,13 @@ export class ActionService implements IActionService {
             this.stats.actionTaken(this.activeZone.name);
         };
         let action: RealLiveZoneAction = new RealLiveZoneAction(
-            desc.present, delay, cb, this.activeZone.zid);
+            desc.present, delay.delay, cb, this.activeZone.zid, delay.slowdown);
         this.currentAction = action;
         return action;
     }
 
     // ------------------- ACTION MECHANICS --------------------------
-
-    private getDelay(action: ZoneAction): number {
+    private getDelay(action: ZoneAction): DelayCalc {
         let delay = action.delay(this.PS.getSkillLevels());
         let inexp = 1.0 + (this.inexpMultiplier * (delay.inexperiencePenalty - 1));
         if (inexp != delay.inexperiencePenalty) {
@@ -124,7 +129,7 @@ export class ActionService implements IActionService {
         if (skillAdjustedDelay != buffedDelay) {
             console.log(`Buffed: ${buffedDelay}`);
         }
-        return buffedDelay;
+        return {delay: buffedDelay, slowdown: delay.inexperiencePenalty};
     }
 
     private getOutcome(action: ZoneAction, mainDesc: string): ActionOutcome {
@@ -140,6 +145,11 @@ export class ActionService implements IActionService {
 
         if (action.unlocks) {
             this.stats.unlock(action.unlocks);
+        }
+        // I can already tell this is going to turn into a fucking monster
+        // of a method
+        if (this.currentAction.slowdown > 10.0) {
+            this.stats.unlock(NamedUnlock.SuperSlowAction);
         }
 
         let crit = this.checkCrits(proto);
@@ -172,6 +182,7 @@ export class ActionService implements IActionService {
             /** TODO: seems like the crit multiplier should probably only
                 apply to SP from the main outcome, and not from kickers. **/
             proto.spMultiplier *= this.PS.player.meta.critMultiplier;
+            this.stats.crittedAction();
             return true;
         } else {
             return false;

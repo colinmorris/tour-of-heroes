@@ -16,5 +16,13 @@ Examples of unlock conditions to plan for:
 - Have total buffed skill levels of X before level Y
 - Reincarnate X times
 - spend X time in game
-- reincarnate with all skills at the same level
+- reincarnate with all skills at the same level (or within X of each other)
+    - this one is cool, but also really hard to satisfy right now with the sporadic skill coverage of actions.
+- reincarnate having highest skill > 5x higher than next-highest
 - retreat from N encounters
+- reincarnate without leaving the starting superzone
+- reincarnate without going outside the turnip farm
+- pull three huge turnips in a row
+- get 3 crits in a row
+- sneak 3 eggs out of the gryphon nest in a row
+    - now I want a 'juggler' class :(

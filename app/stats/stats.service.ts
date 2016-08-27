@@ -73,6 +73,9 @@ export class StatsService implements IStatsService {
     itemFound() {
 
     }
+    crittedAction() {
+        this.incrementSimpleStat(Stat.CriticalActions)
+    }
     clicked() {
         this.incrementSimpleStat(Stat.Clicks);
     }
@@ -91,6 +94,9 @@ export class StatsService implements IStatsService {
         cell.sum += 1;
     }
     unlock(u: NamedUnlock) {
+        if (!this.stats.unlocks[u]) {
+            console.log(`New named unlock! ${NamedUnlock[u]}`);
+        }
         this.stats.unlocks[u] = true;
     }
     setClassUnlocked(klass: string) {
