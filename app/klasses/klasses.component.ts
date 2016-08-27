@@ -148,7 +148,9 @@ import { GLOBALS } from '../globals';
             class="col-xs-2"
         >
             <img [src]="'/assets/units/' + klass.img"
-                [class.locked]="!klass.unlocked">
+                [class.locked]="!klass.unlocked"
+                (click)="selected=klass"
+                >
             <div>
             <a (click)="selected=klass">{{displayName(klass)}}</a>
             </div>
