@@ -3,6 +3,7 @@ import {    SuperZoneData,
             additiveOverride as PLUS
         } from './zones.data.defns';
 import { SkillType as S } from '../skills/index';
+import { NamedUnlock } from '../stats/index';
 
 let CHEAT_POINTS = 5000;
 let FLOWERS = ["poppies", "daisies", "roses", "orchids", "violets", "begonias"];
@@ -102,7 +103,17 @@ zones:
         name: 'Tournament',
         description: 'Win a medal',
         actions: [
-            {vb: "joust", obj:"", skills: [S.Combat, S.Riding]},
+            {vb: "joust", obj: "in an exhibition match",
+            skills: [S.Riding, S.Charm], weight: 3.0},
+            {vb: "joust", obj:"in a qualifying match",
+            skills: [S.Riding, S.Charm], bonusLevel:.3},
+            {vb: "joust", obj:"in a quarterfinal match",
+            skills: [S.Riding, S.Charm], bonusLevel:1},
+            {vb: "joust", obj:"in a semifinal match",
+            skills: [S.Riding, S.Charm], bonusLevel:2},
+            {vb: "joust", obj:"in the *grand final* match",
+            skills: [S.Riding, S.Charm], bonusLevel:3,
+            unlocks: NamedUnlock.JoustingChampion},
         ],
         difficulty: 8,
     }

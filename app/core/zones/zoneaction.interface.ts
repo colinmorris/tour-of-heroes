@@ -1,4 +1,5 @@
 import { SkillMap, SkillType } from '../skills/index';
+import { NamedUnlock } from '../stats/index';
 
 export interface ZoneActionDescription {
     present: string;
@@ -17,6 +18,7 @@ export interface ZoneAction {
     // Your skill levels must be at least this high to avoid an 'inexperience penalty'
     // TODO: Does it make sense to expose this as part of the interface? Prolly not.
     mastery: number;
+    unlocks?: NamedUnlock;
 
     // Possibly not idempotent because of randomness
     chooseDescription() : ZoneActionDescription;

@@ -137,17 +137,58 @@ export const KLASSES : Klass[] =[
         }
     },
     {
-            name: 'Skeleton',
-            aptitudes: mostlyUniformSkillMap(.7, {
-                [SkillType.Stealth]: .5,
-                [SkillType.Piety]: .5,
-                [SkillType.Survival]: 1.0
-            }),
-            img: 'skeleton.png',
-            hint: `Clickety-clack go the spooky Skeleton bones`,
-            criteria: (s: IStatsService) => {
-                return s.lifetimeSum(Stat.Clicks) / 400;
-            }
+        name: 'Skeleton',
+        aptitudes: mostlyUniformSkillMap(.7, {
+            [SkillType.Stealth]: .5,
+            [SkillType.Piety]: .5,
+            [SkillType.Survival]: 1.0
+        }),
+        img: 'skeleton.png',
+        hint: `Clickety-clack go the spooky Skeleton bones`,
+        criteria: (s: IStatsService) => {
+            return s.lifetimeSum(Stat.Clicks) / 400;
+        }
+    },
+    {
+        name: 'Chocobone', // That name was too good not to steal. Thanks Wesnoth.
+        aptitudes: mostlyUniformSkillMap(.8, {
+            [SkillType.Stealth]: 0.1,
+            [SkillType.Riding]: 3.0,
+            [SkillType.Survival]: 1.0,
+            [SkillType.Piety]: 0.5,
+            [SkillType.Combat]: 1.0
+        }),
+        img: 'chocobone.png',
+        /** TODO: Maybe the unlock criteria should be having *reincarnated* as
+        each of those classes? As it is, this unlock will always be right on
+        the tail of another one. Would be nice to space out those dopamine hits. **/
+        hint: 'Discover the Skeleton and Jouster classes',
+        criteria: (s: IStatsService) => {
+            return s.classUnlocked('Skeleton') && s.classUnlocked('Jouster');
+        }
+    },
+    /** TODO: I like the idea of the jouster having high riding and charm aptitudes, but
+    abysmal combat aptitudes because he's never actually seen real battle.
+    Passive idea: Brave Sir Robin - gain some stats when retreating from a
+    combat encounter (maybe on a cooldown)
+    Might be easier to define it as an actual spell, separate from the retreat
+    mechanic.
+    **/
+    {
+        name: 'Jouster', // is 'Lancer' a better name?
+        aptitudes: mostlyUniformSkillMap(.8, {
+            [SkillType.Stealth]: .5,
+            [SkillType.Riding]: 3.0,
+            [SkillType.Charm]: 2.5,
+            [SkillType.Survival]: .5,
+            [SkillType.Piety]: .8,
+            [SkillType.Combat]: 0.1
+        }),
+        img: 'lancer.png',
+        hint: 'Become a champion jouster',
+        criteria: (s: IStatsService) => {
+            return s.unlocked(NU.JoustingChampion);
+        }
     },
     {
         name: 'Gladiator',

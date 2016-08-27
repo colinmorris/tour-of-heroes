@@ -313,4 +313,18 @@ export class WoodsmanPerk extends HomeZonePassive {
         ${this.zone}`;
     }
 }
+
+/** TODO: This is really just a placeholder. Would like to replace it with
+something less lame (see todo in klass.data.ts). **/
+export class JousterPerk extends HomeZonePassive {
+    static sname = `Jousty`;
+    static zone = "Tournament";
+    static spMultiplier = .5;
+    static get sdescription() {
+        return `SP gains increased by
+        ${this.spMultiplier*100}% when adventuring in the
+        ${this.zone}`;
+    }
+}
+
 }

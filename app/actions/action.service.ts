@@ -137,6 +137,11 @@ export class ActionService implements IActionService {
         // (by adding secondary effects), before we apply. Probably before.
         // Still not clear on the rxjs scheduler stuff.
         this.protoActionOutcomeSubject.next(proto);
+
+        if (action.unlocks) {
+            this.stats.unlock(action.unlocks);
+        }
+
         let crit = this.checkCrits(proto);
         // TODO: XXX: Probably want to pass this on in some more structured way
         // to the UI, and maybe some perk listeners or something. Being lazy for now.

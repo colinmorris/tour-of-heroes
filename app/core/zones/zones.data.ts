@@ -118,7 +118,8 @@ function zamFromJSON(j: ActionData, parentZone: ZoneData) : ZoneAction {
         dictToSkillMap(skillGains),
         j.prob,
         delay,
-        mastery
+        mastery,
+        j.unlocks
     );
 }
 

@@ -3,6 +3,7 @@ import { SkillType, SkillMap, getTruthySkills } from '../skills/index';
 import { ZoneAction, ZoneActionDescription, ActionDelay } from './zoneaction.interface';
 import { randomChoice } from '../utils';
 import { GLOBALS } from '../../globals';
+import { NamedUnlock } from '../stats/index';
 
 const ACTION_METAVAR: string = "__X";
 
@@ -14,7 +15,8 @@ export class VerbalZoneAction implements ZoneAction {
         public skillDeltas: SkillMap,
         public weight: number,
         public minDelay: number,
-        public mastery: number
+        public mastery: number,
+        public unlocks?: NamedUnlock
     ) {
 
     }

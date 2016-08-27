@@ -17,3 +17,4 @@ Examples of unlock conditions to plan for:
 - Reincarnate X times
 - spend X time in game
 - reincarnate with all skills at the same level
+- retreat from N encounters
