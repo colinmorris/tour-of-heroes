@@ -16,6 +16,7 @@ export interface StatsData {
     // Map from klass to name to max plvl attained (recorded upon reincarnation)
     // TODO: Clarify expectations for classes not unlocked/reincarnated from
     klassLevels: {[klass:string] : number};
+    currSkillLevels: SkillMap;
     // Max level attained per skill
     skillLevels: SkillMap;
     actionStats: {[zone: string] : StatCell};

@@ -17,4 +17,5 @@ export interface IStatsService {
     // TODO: Would be nice if this were not stringly typed :(
     actionsTaken(zone: string) : number;
     lifetimeSumActionsTaken(zone: string) : number;
+    checkSkillUnlock(skill: SkillType, threshold: number) : (boolean | number);
 }
