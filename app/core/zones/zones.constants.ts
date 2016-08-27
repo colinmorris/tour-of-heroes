@@ -280,4 +280,44 @@ zones: [
 ]
 },
 
+{
+name: 'Cheatz',
+minLevel: 999,
+zones: [
+    {
+        name: 'Cheat 1',
+        description: 'zz',
+        actions: [
+            {vb: "zz", obj:"",skills:[
+                S.Farming, S.Combat, S.Survival, S.Charm, S.Stealth, S.Riding,
+                S.Intellect, S.Piety
+            ], bonusLevel:2}
+        ],
+        difficulty: 1,
+    },
+    {
+        name: 'Cheat 2',
+        description: 'zz',
+        actions: [
+            {vb: "zz", obj:"",skills:[
+                S.Farming, S.Combat, S.Survival, S.Charm, S.Stealth, S.Riding,
+                S.Intellect, S.Piety
+            ], bonusLevel:3}
+        ],
+        difficulty: 1,
+    },
+    {
+        name: 'Cheat 4',
+        description: 'zz',
+        actions: [
+            {vb: "zz", obj:"",skills:[
+                S.Farming, S.Combat, S.Survival, S.Charm, S.Stealth, S.Riding,
+                S.Intellect, S.Piety
+            ], bonusLevel:4}
+        ],
+        difficulty: 1,
+    }
+]
+}
+
 ];

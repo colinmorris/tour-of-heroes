@@ -51,7 +51,7 @@ export const KLASSES : Klass[] =[
 
         }),
         img: 'woodsman.png',
-        hint: 'Explore the woods',
+        hint: 'Spend time in the woods',
         criteria: (s: IStatsService) => {
             return s.lifetimeSumActionsTaken('Woody Woods') / 400;
         }
@@ -68,7 +68,7 @@ export const KLASSES : Klass[] =[
             [ST.Combat]: 1.0
         }),
         img: 'ranger.png',
-        hint: `Become an experienced Woodsman`,
+        hint: `Become a level 20 Woodsman`,
         criteria: (s: IStatsService) => {
             return s.playerLevel('Woodsman') / 20;
         }
@@ -101,7 +101,7 @@ export const KLASSES : Klass[] =[
             [ST.Riding]: .5,
         }),
         img: 'mage.png',
-        hint: `Work hard`,
+        hint: `Live an active life`,
         criteria: (s: IStatsService) => {
             return s.current(Stat.ActionsTaken) / 1500;
         }
@@ -203,7 +203,7 @@ export const KLASSES : Klass[] =[
             [ST.Combat]: 0.1
         }),
         img: 'lancer.png',
-        hint: 'Become a champion jouster',
+        hint: 'Beat the reigning jousting champion',
         criteria: (s: IStatsService) => {
             return s.unlocked(NU.JoustingChampion);
         }
@@ -234,7 +234,7 @@ export const KLASSES : Klass[] =[
             [ST.Riding]: .5,
         }),
         img: 'red-mage.png',
-        hint: `Get at least a '20' on your report card`,
+        hint: `Reach level 20 as a Student`,
         criteria: (s: IStatsService) => {
             return s.playerLevel('Student') / 20;
         }
@@ -249,7 +249,7 @@ export const KLASSES : Klass[] =[
             [ST.Survival]: 1.8
         }),
         img: 'mudcrawler.png',
-        hint: 'Take it reeeeeeal slow',
+        hint: 'Complete a reeeeeeallly slow action',
         criteria: (s: IStatsService) => {
             return s.unlocked(NU.SuperSlowAction);
         }
