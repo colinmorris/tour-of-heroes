@@ -1,4 +1,5 @@
 import { SkillMap, SkillType } from '../skills/index';
+import { OneShotAction } from './action-oneshots.enum';
 import { NamedUnlock } from '../stats/index';
 
 export interface ZoneActionDescription {
@@ -19,6 +20,7 @@ export interface ZoneAction {
     // TODO: Does it make sense to expose this as part of the interface? Prolly not.
     mastery: number;
     unlocks?: NamedUnlock;
+    oneshot?: OneShotAction;
 
     // Possibly not idempotent because of randomness
     chooseDescription() : ZoneActionDescription;

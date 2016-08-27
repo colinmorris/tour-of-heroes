@@ -201,17 +201,26 @@ export class ActionService implements IActionService {
         }
     }
 
-    // TODO: Used to be a method of zone, and now feels kind of weird here
     private chooseActionType(zone: Zone) : ZoneAction {
-        let dice: number = Math.random();
-        let sofar = 0;
-        for (let action of zone.actions) {
-            sofar += action.weight;
-            if (sofar > dice) {
-                return action;
-            }
+        let action: ZoneAction = zone.chooseAction();
+        let tries = 1;
+        let maxTries = 20;
+        /** Note: This is a good reason to not use the oneshot property for
+            high-probability actions. Could work around this cleanly, but it's
+            a little tedious, so I'm just doing this the lazy way.
+        **/
+        while (
+            (action.oneshot && this.stats.performedOneShot(action.oneshot))
+            && tries++ < maxTries
+        ) {
+            action = zone.chooseAction();
         }
-        console.assert(false, "Shouldnt have reached here.");
+        if (tries == maxTries) {
+            console.error(`Got a used oneshot action every time after
+                ${maxTries} tries. Either this is a bug or we got spectacularly
+                unlucky.`);
+        }
+        return action;
     }
 
 }

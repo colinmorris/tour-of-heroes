@@ -8,6 +8,9 @@ export interface StatCell {
 export interface StatsData {
     // Indexed by Stat enum
     simpleStats : StatCell[];
+    // Indexed by OneShotAction
+    oneShots: boolean[];
+    // Indexed by NamedUnlock
     unlocks: boolean[];
     klassUnlocks: {[klass:string] : any};
     // Map from klass to name to max plvl attained (recorded upon reincarnation)

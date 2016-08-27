@@ -30,3 +30,5 @@
 - certain zones unlocked early
 - necromancer with 'summon skeleton' spell: auto-clicks once every second for n seconds
 - spell that just gives you some random SP
+- temporarily buff all skills to be equal to skill X
+- increase likelihood of some particular rare/oneshot action.

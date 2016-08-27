@@ -1,5 +1,6 @@
 import { SkillType } from '../skills/index';
 import { NamedUnlock } from '../stats/index';
+import { OneShotAction } from './action-oneshots.enum';
 
 // defines some useful interfaces for defining zones and actions as (mostly) json files.
 
@@ -85,7 +86,7 @@ export interface ActionData {
     /** Bonus actions appear less often, are slightly more difficult, but have higher
         SP gains (even relative to their difficulty level). Higher 'bonus levels'
         exaggerate all of these traits. Namely, for bonus level b:
-        - weight is set to 10^(-b)
+        - weight is set to 10^(-b) (unless explicitly specified)
         - difficulty is increased by 1 (should probably scale)
         - SP gains are multiplied by 10^b
     Bonus levels may be fractional - anywhere in the range (0, inf)
@@ -96,6 +97,10 @@ export interface ActionData {
     /** This action unlocks the given thing when completed. (This will usually
     apply to rare actions, which serve to unlock classes). **/
     unlocks?: NamedUnlock;
+
+    /** If set, then this action can only occur once per lifetime.
+    **/
+    oneShot?: OneShotAction;
 }
 
 // TODO: I wish I'd made a firm decision on whether to capitalize the 'z' :(

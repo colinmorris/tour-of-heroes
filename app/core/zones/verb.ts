@@ -24,15 +24,16 @@ class FinalEVerb extends BaseVerb {
     get past() { return this.base.slice(0,-1) + "ed"; }
 }
 
-let doubleConsonantVerbs: Set<string> = new Set(["chop"]);
+let doubleConsonantVerbs: Set<string> = new Set(["chop", "swim", "ham", "chat"]);
 let finalEVerbs: Set<string> = new Set([
-    "bale", "dance", "decode"
+    "bale", "dance", "decode", "exorcise", "dodge",
 ]);
 let irregularVerbs: {[base: string] : Verb} = {
     "ride" : {base: "ride", pres: "riding", past: "rode"},
     "read" : {base: "read", pres: "reading", past: "read"},
     "fight": {base: "fight", pres: "fighting", past: "fought"},
     "tiptoe":{base: "tiptoe", pres: "tiptoeing", past: "tiptoed"},
+    "light": {base: "light", pres: "lighting", past: "lit"},
 };
 
 export function verbLookup(base: string) : Verb {

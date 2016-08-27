@@ -73,6 +73,7 @@ UI
 - ticker. Where to put it, what to say in it. Current thinking: modal alerts for significant one-time-ish events? And a small scrolling action log in the focal zone view for more spammy stuff?
 - unit animations
 - "unlocked x/Y classes" text in classes view
+    - maybe that's also a nice place to show max levels reached + ancestry
 - show greyed-out reincarnate button for unlocked classes when level < 10
 - rework the UI for aptitudes in the klass view. I think bars would be nicer (and colored, since they'll all be on the same scale)
 

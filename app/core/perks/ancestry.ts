@@ -11,7 +11,7 @@ export function ancestryBonusForLevel(level: number) {
     // Level 32 => 10%, Level 96 => 20%, 567=> 40%
     // Trying to hit a nice balance between rewarding exploration and concentration
     let loglvl = Math.log(level - (thresh-2));
-    return (loglvl * loglvl)/100;
+    return (loglvl * loglvl)/20; // reduced from 100
 }
 
 // Return a multiplier in range [1,inf) (where 1 means no bonus)

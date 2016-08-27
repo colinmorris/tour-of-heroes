@@ -1,6 +1,7 @@
 import { ZoneAction } from './zoneaction.interface';
 import { SkillMap, SkillMapOf, SkillType,
-    uniformSkillMap, getTruthySkills } from '../skills/index';
+    uniformSkillMap, getTruthySkills
+ } from '../skills/index';
 
 export interface Zone {
     zid: number;
@@ -10,12 +11,13 @@ export interface Zone {
     description: string;
     difficulty: number; // TODO: Not clear whether this really needs to be exposed?
 
+
     // Return a per-skill 'difficulty score' for this zone, given a player's
     // skill levels. This score incorporates all potential actions in this zone.
     // A score of 0 means "N/A". Otherwise, scores currently reflect something like
     // expected inexperience penalty (1 = mastered).
     difficultyPerSkill(skillLevels: SkillMap) : ZoneDifficulty;
-    // TODO: Move ChooseAction here
+    chooseAction() : ZoneAction;
 }
 
 export interface SuperZone {
@@ -80,4 +82,15 @@ export class ConcreteZone implements Zone {
         return {score: overallExpectedPenalty, perSkill: diffObjs};
     }
 
+    chooseAction() {
+        let dice: number = Math.random();
+        let sofar = 0;
+        for (let action of this.actions) {
+            sofar += action.weight;
+            if (sofar > dice) {
+                return action;
+            }
+        }
+        console.assert(false, "Shouldnt have reached here.");
+    }
 }

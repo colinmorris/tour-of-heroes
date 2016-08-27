@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IStatsService } from './stats.service.interface';
 import { SkillType, SkillMap, SkillMapOf, uniformSkillMap,
-    Stat, NamedUnlock
+    Stat, NamedUnlock, OneShotAction
  } from '../core/index';
 import { SerializationService } from '../shared/serialization.service';
 import { StatsData, StatCell } from './stats-data.interface';
@@ -33,6 +33,7 @@ export class StatsService implements IStatsService {
     private freshStats() : StatsData {
         let stats:StatsData = {
            simpleStats: new Array<StatCell>(),
+           oneShots: new Array<boolean>(),
            unlocks: new Array<boolean>(),
            klassUnlocks: <{[klass:string] : any}>{},
            klassLevels: <{[klass:string] : number}>{},
@@ -44,6 +45,9 @@ export class StatsService implements IStatsService {
         }
         for (let s = 0; s < NamedUnlock.MAX; s++) {
             stats.unlocks[s] = false;
+        }
+        for (let s = 0; s < OneShotAction.MAX; s++) {
+            stats.oneShots[s] = false;
         }
         return stats;
     }
@@ -93,6 +97,10 @@ export class StatsService implements IStatsService {
         this.incrementStatCell(this.stats.simpleStats[stat]);
     }
      incrementStatCell(cell: StatCell) {
+         /** TODO XXX FIXME
+         Haha, current never gets reset does it? We should make sure that happens
+         on reincarnation.
+         **/
         cell.current += 1;
         cell.sum += 1;
     }
@@ -104,6 +112,9 @@ export class StatsService implements IStatsService {
     }
     setClassUnlocked(klass: string) {
         this.stats.klassUnlocks[klass] = true;
+    }
+    setOneShot(oneshot: OneShotAction) {
+        this.stats.oneShots[oneshot] = true;
     }
 
     // ----------------------- Read --------------------------------
@@ -134,6 +145,9 @@ export class StatsService implements IStatsService {
     }
     unlocked(u: NamedUnlock) {
         return this.stats.unlocks[u];
+    }
+    performedOneShot(oneshot: OneShotAction) {
+        return this.stats.oneShots[oneshot];
     }
     playerLevel(klass: string) {
         return this.stats.klassLevels[klass] || 0;

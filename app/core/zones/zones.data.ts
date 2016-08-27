@@ -85,9 +85,8 @@ function zamFromJSON(j: ActionData, parentZone: ZoneData) : ZoneAction {
             difficulty = (<Override>j.difficulty)(difficulty);
         }
     } else if (j.bonusLevel) {
-        // TODO: Scale with bonusLevel?
-        // TODO2: With the new difficulty scale, simply adding 1 is probably too weak
-        difficulty = Math.min(10, difficulty+1);
+        // Still experimenting with this
+        difficulty = difficulty + Math.ceil(2*j.bonusLevel);
     }
 
     /** XXX: I feel like I've consistently set difficulties a bit too low, so just
