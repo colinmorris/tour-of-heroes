@@ -8,6 +8,18 @@ abstract class ActionServiceSpell extends AbstractSpell {
     diTokens = [di_tokens.actionservice];
 }
 
+abstract class CurrentActionSpell extends AbstractSpell {
+    diTokens = [di_tokens.actionservice];
+    onCast(AS: IActionService) : boolean {
+        let action: LiveZoneAction = AS.currentAction;
+        if (!action || !action.active) {
+            return false;
+        }
+        return this.actionEffect(action);
+    }
+    abstract actionEffect(action: LiveZoneAction) : boolean;
+}
+
 export namespace SPELLS {
 
 export class AssassinPerk extends ActionServiceSpell {
@@ -22,6 +34,19 @@ export class AssassinPerk extends ActionServiceSpell {
             return false;
         }
         action.completeEarly();
+        return true;
+    }
+}
+
+export class ShamanPerk extends CurrentActionSpell {
+    cooldown = 60;
+    static sname = "Meditate";
+    static spMultiplier = 1.0;
+    static sdescription = `Increase the SP gained from the current
+        action by 100%`;
+
+    actionEffect(action: LiveZoneAction) : boolean {
+        action.spMultiplier += ShamanPerk.spMultiplier;
         return true;
     }
 }

@@ -16,6 +16,10 @@ export class RealLiveZoneAction implements LiveZoneAction {
     /** One of "reset" or "". reset removes any transitions. We start in
     that mode so we can hop back to 0 from the 100 of the prev action. **/
     animationClass: string = "reset";
+    /** SP gains from this action are multiplied by this amount. Basically
+    another vector for perks to inject bonus effects.
+    **/
+    public spMultiplier = 1;
     constructor(
         public description: string,
         public duration: number,

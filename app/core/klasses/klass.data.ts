@@ -228,6 +228,20 @@ export const KLASSES : Klass[] =[
         }
     },
     {
+        name: 'Shaman',
+        aptitudes: mostlyUniformSkillMap(.7, { // TODO: placeholder
+            [SkillType.Riding]: 1.3,
+            [SkillType.Combat]: 0.9,
+            [SkillType.Stealth]: 0.5,
+            [SkillType.Survival]: 0.8
+        }),
+        img: 'shaman.png',
+        hint: 'Reincarnate many times',
+        criteria: (s: IStatsService) => {
+            return s.lifetimeSum(Stat.Reincarnations) / 10;
+        }
+    },
+    {
         name: 'Horseman',
         aptitudes: mostlyUniformSkillMap(.7, {
             [SkillType.Riding]: 1.3,

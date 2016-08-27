@@ -6,5 +6,6 @@ export enum Stat {
     SkillLevel, // skill (basically obligatory)
     ActionsTaken, // zone
     CriticalActions,
+    Reincarnations,
     MAX
 }

@@ -86,6 +86,9 @@ export class StatsService implements IStatsService {
         }
         this.incrementStatCell(this.stats.actionStats[zone]);
     }
+    reincarnated() {
+        this.incrementSimpleStat(Stat.Reincarnations);
+    }
      incrementSimpleStat(stat: Stat) {
         this.incrementStatCell(this.stats.simpleStats[stat]);
     }

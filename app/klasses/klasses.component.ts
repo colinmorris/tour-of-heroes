@@ -199,6 +199,7 @@ export class KlassesComponent {
             this.Stats.unlock(NamedUnlock.Pacifist);
         }
         this.Stats.setLevel(this.PS.player.level, this.PS.player.klass);
+        this.Stats.reincarnated();
 
         this.Perks.resetAllPerks();
         this.PS.reincarnate(this.selected.name);

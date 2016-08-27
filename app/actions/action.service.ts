@@ -161,7 +161,8 @@ export class ActionService implements IActionService {
         let spBoost = (s: SkillMap, mlt: number) => s.map((sp) => sp*mlt);
         let mainEvent = {description: mainDesc,
             pointsGained: this.PS.trainSkills(
-                spBoost(action.skillDeltas, proto.spMultiplier)
+                spBoost(action.skillDeltas,
+                    proto.spMultiplier * this.currentAction.spMultiplier)
             )};
         let kickerEvents:ActionEvent[] = new Array<ActionEvent>();
         for (let secondary of proto.kickers) {

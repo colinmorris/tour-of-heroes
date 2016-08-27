@@ -11,6 +11,7 @@ export interface LiveZoneAction {
     // Where is this action taking place?
     zid: number;
     slowdown: number;
+    spMultiplier: number;
     completeEarly();
     // Advance the progress of this action by the given amount of time.
     advanceProgress(skipMillis: number);

@@ -7,7 +7,6 @@ MISC/TRIAGE
 - I think the buff constructor stuff was actually unnecessary? should probably walk it back? Bleh
 +- figure out hosting/exoprting
 +?- review code TODOs
-+ zone/superzone unlocking
 - show ancestry buff calculations in stats page
 - classes/farmer style routes
     - (and have some default - either the current class, or whatever was viewed last)
@@ -15,10 +14,8 @@ MISC/TRIAGE
 
 BALANCE
 =======
-- extra perks (other classes) as fn of max lvl with current class (or even just current lvl)
+- extra perks (other classes) as fn of max lvl with current class (or even just current lvl). Maybe one extra perk at level 100, then 200, etc.
 - bonus gains for zones that train multiple skills (right now I think this happens for individual *actions* that train multiple skills, but not across zones)
-- concern with exponential ancestry bonus: it may quickly erase aptitudes as a distinguisher between classes
-    - actually, I don't think this is a legit concern. Double is double. Whether it's 2*x or 2*100000*x.
 +?- it's annoying that if my skill level in X is such that all X actions are red, there's not really anything I can do about it, other than grin and bear it. Maybe this is a good argument for cross-skill bootstrapping for multi-skill actions (i.e. really good combat skill should offset some of my bad stealth skill in a combat/stealth zone).
 - Make aptitudes more divergent between classes, to encourage different strategies.
 - Seems like ancestry bonus is basically just a linear multiplier on your progress speed throughout your lifetime. It follows that...
@@ -37,6 +34,7 @@ TECHNICAL
     - http://angularjs.blogspot.ca/2016/08/angular-2-rc5-ngmodules-lazy-loading.html
     - https://angular.io/docs/ts/latest/cookbook/rc4-to-rc5.html
 - ahead of time compilation
+- consider propagating 'bonus'-ness up. Might be interesting to show it in the UI, and to have it interact with some perks.
 
 MECHANICS
 =========
@@ -48,17 +46,13 @@ BUGS
 ====
 +- have seen at least one instance where an action got 'stuck' (but was able to finish it by clicking). That's a little scary. I have a fear that my code is crawling with race conditions.
 +- fill in descriptions of spells/perks
-    - make 'Fruity' buffs descriptive of which skills they're buffing
-+- It's questionable whether 'Fruity' should stack. It definitely shouldn't stack two instances that buff the same skill type.
 
 IDEAS
 ======
 - more immediate benefits/sense of progression associated with leveling up?
 - actual prestiging
 - associate a color with each skill?
-- zone presentation. Superzones or no? Ability to sort/filter by difficulty, skills trained, etc.?
 - class homages to other games (hack, FFT, disgaea)
-- - allow multiple buffs of same name?
 - 'second-tier' classes (with branching options, like Wesnoth, Fire Emblem, etc.)
 
 UI
@@ -68,20 +62,13 @@ UI
 - would also be nice to have keyboard shortcuts for spells
 +?- distinguish in the UI between a permanently buffed stat and a temp buffed one (light green vs. dark green?)
 +?- there's a weird bug where like 5% of the time the progress bar doesn't reset to 0, but uses a long transition
-+?- animation when leveling up (plvl or skill). Maybe just a nice '+1' toast.
 - add a nice CSS transition to progress bar when clicked
 - zone difficulty UI should probably incorporate cleric perk
 +- klass component: make icons in grid clickable
 - color action bars by inexp. penalty?
 - icons for perks?
 - ticker. Where to put it, what to say in it. Current thinking: modal alerts for significant one-time-ish events? And a small scrolling action log in the focal zone view for more spammy stuff?
-+ modal alerts for unlocks (and/or badge)
 - unit animations
 - "unlocked x/Y classes" text in classes view
 - show greyed-out reincarnate button for unlocked classes when level < 10
 
-Usability
-=====
-- show hints and % progress for class unlocks
-    - (% progress is kind of tedious to implement, but would be really helpful)
-    - Also, maybe % progress should be calculated wrt your current stats rather than lifetime best, for unlock criteria like 'reach level X in skill Y'

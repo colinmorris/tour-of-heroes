@@ -26,3 +26,4 @@ Examples of unlock conditions to plan for:
 - get 3 crits in a row
 - sneak 3 eggs out of the gryphon nest in a row
     - now I want a 'juggler' class :(
+- complete an action having a slowdown of over 1000%
