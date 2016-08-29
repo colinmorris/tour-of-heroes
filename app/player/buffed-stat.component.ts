@@ -30,6 +30,8 @@ import { Component, Input,
         will maybe take priority cause they have greater specificity?).
         **/
         trigger('baseValueToast', [
+            transition('void => *',
+            []),
             transition('* => *', [
                 animate('200ms ease-in', style({
                     opacity: 1.0,
@@ -43,6 +45,8 @@ import { Component, Input,
             ])
         ]),
         trigger('baseValue', [
+            transition('void => *',
+            []),
             transition('* => *', [
                 style({
                     opacity: 0.0
