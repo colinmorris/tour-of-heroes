@@ -67,12 +67,18 @@ export class PlayerService implements IPlayerService {
             // player publish to level$ whenever skill levels go up
             this.stats.setSkills(this._player.baseSkillLevels());
         });
+        // This is a pretty arbitrary place to put this.
+        // Also, this is pretty hacky. But tested and seems to work.
+        let first = true;
+        this.playerLevel$.subscribe( (lvl) => {
+            if (first) {
+                first = false;
+            } else if (lvl >= GLOBALS.zoneLevelingMinLevel && (lvl % 5) == 0) {
+                console.log("You earned a Zi token. Yay.");
+                this.stats.gainZiToken();
+            }
+        });
         this.perks.addPerkForKlass(this.player.klass, defer);
-        /** TODO: XXX: BUG: This sucks. If the player reaches level X for
-        the first time with class Y, then saves and loads, they should not
-        get the ancestry benefit from Y when their save is restored (they should
-        have to wait until reincarnation.) Can probably fix this via stats service
-        behavior. **/
         this.perks.addAncestryPerk(defer);
     }
 
@@ -90,11 +96,13 @@ export class PlayerService implements IPlayerService {
             return skill.level;
         });
     }
-
     getBaseAptitudes() : SkillMap {
         return this._player.skills.map( (s: Skill) => {
             return s.baseAptitude;
         })
+    }
+    canLevelZones() : boolean {
+        return this._player.level >= GLOBALS.zoneLevelingMinLevel;
     }
 
     // ---------------------- Mutators -------------------------

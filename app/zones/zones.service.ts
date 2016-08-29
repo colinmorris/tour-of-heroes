@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 
-import { SUPERZONES, SuperZone,
+import { SuperZone, loadSuperZones,
     Zone } from '../core/index';
+
+import { StatsService } from '../stats/stats.service';
 
 
 /** This is a pretty sorry excuse for a service at this point. Will probably
@@ -11,9 +13,14 @@ import { SUPERZONES, SuperZone,
 export class Zones {
 
     // TODO: Should probably be a subject?
-    public focalZone: Zone = SUPERZONES[0].zones[0];
-
-    get superzones() : SuperZone[] {
-        return SUPERZONES;
+    /** The zone that was last "focal" in the homeComponent
+    **/
+    public focalZone: Zone;
+    public superzones: SuperZone[];
+    constructor(
+        private Stats: StatsService
+    ) {
+        this.superzones = loadSuperZones(Stats.stats.current.zoneLevels);
+        this.focalZone = this.superzones[0].zones[0];
     }
 }

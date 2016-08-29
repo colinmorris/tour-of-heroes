@@ -8,7 +8,9 @@ import { Inject,
 import { Observable } from 'rxjs/Observable';
 
 import { Zones } from './zones.service';
-import { Zone, ActionOutcome, LiveZoneAction } from '../core/index';
+import { Zone, ActionOutcome, LiveZoneAction,
+    levelUpZone
+ } from '../core/index';
 import { ActionService, PostActionInfo } from '../actions/action.service';
 import { PlayerService } from '../player/player.service';
 import { StatsService } from '../stats/stats.service';
@@ -82,6 +84,9 @@ import { GLOBALS } from '../globals';
 
         <div *ngIf="!currentAction">
             <p>{{zone.description}}</p>
+            <div *ngIf="PS.canLevelZones() || cheatMode">
+                <button (click)="levelZone()">Level up...</button>
+            </div>
         </div>
     </div>
 
@@ -102,6 +107,7 @@ export class ZoneComponent implements OnInit, OnDestroy, OnChanges {
     currentAction: LiveZoneAction;
     lastOutcome: ActionOutcome;
     loaded: boolean = false;
+    cheatMode = GLOBALS.cheatMode;
 
     private actionsub: any;
 
@@ -170,6 +176,13 @@ export class ZoneComponent implements OnInit, OnDestroy, OnChanges {
         }
         this.currentAction.advanceProgress(buffedSkip);
         this.Stats.clicked();
+    }
+
+    levelZone() {
+        // TODO: Token stuff
+        let level = this.zone.level + 1;
+        levelUpZone(this.zone, level);
+        this.Stats.leveledZone(this.zone.name, level);
     }
 
     select() {

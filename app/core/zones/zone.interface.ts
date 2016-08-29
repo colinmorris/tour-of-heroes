@@ -11,6 +11,8 @@ export interface Zone {
     description: string;
     difficulty: number; // TODO: Not clear whether this really needs to be exposed?
 
+    // Relating to zone leveling. Starts at 0 for all zones.
+    level: number;
 
     // Return a per-skill 'difficulty score' for this zone, given a player's
     // skill levels. This score incorporates all potential actions in this zone.
@@ -45,7 +47,7 @@ export class ConcreteZone implements Zone {
     name: string;
     description: string;
     difficulty: number; // TODO: Not clear whether this really needs to be exposed?
-
+    level: number = 0;
     difficultyPerSkill(skillLevels: SkillMap) : ZoneDifficulty {
         let skillWeights = uniformSkillMap(0);
         let totalSkillWeight = 0;

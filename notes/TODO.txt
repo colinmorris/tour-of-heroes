@@ -17,12 +17,10 @@ BALANCE
 - extra perks (other classes) as fn of max lvl with current class (or even just current lvl). Maybe one extra perk at level 100, then 200, etc.
 - bonus gains for zones that train multiple skills (right now I think this happens for individual *actions* that train multiple skills, but not across zones)
 +?- it's annoying that if my skill level in X is such that all X actions are red, there's not really anything I can do about it, other than grin and bear it. Maybe this is a good argument for cross-skill bootstrapping for multi-skill actions (i.e. really good combat skill should offset some of my bad stealth skill in a combat/stealth zone).
-- Make aptitudes more divergent between classes, to encourage different strategies.
 - Seems like ancestry bonus is basically just a linear multiplier on your progress speed throughout your lifetime. It follows that...
     - if we want high level zones to only be tractable with a high ancestry bonus (and/or more advanced classes), then lower level zones will be blazingly fast when those conditions are met. Is this a problem? Maybe not.
     - what if ancestry bonus was an aptitude multiplier *per player level*?
 - it'd be useful to have some debug UI in the class view showing sum of apts for a class, or other useful ways for comparing apts across classes
-- consider making fruity buff a bit more powerful and more rare
 - tutorial-y stuff
 - maybe, like, double base action speed and SP gains across the board? seems like a fair bit of time is spent in green zones, and those actions feel like they blaze by, faster than my hilarious action text can be read.
     - Another option: make the slowdown curve kind of S-shaped.
@@ -46,6 +44,7 @@ TECHNICAL
 MECHANICS
 =========
 +?- zone leveling
+    - one important aspect of this is to make sure the difficulty jumps between levels are quite high. This should help discourage the behavior of just focusing on one or two zones and leveling them to the exclusion of all others.
 - item drops
 - bonus zones
 

@@ -33,6 +33,7 @@ import { GLOBALS } from '../globals';
         <a [routerLink]="['/']">Home</a>
         <a [routerLink]="['/classes']">Classes</a>
         <a [routerLink]="['/stats']">Stats</a>
+        <a [routerLink]="['/debug']" *ngIf="cheatMode">Debug</a>
     </nav>
     <router-outlet></router-outlet>
     <div class="row save">
@@ -54,6 +55,7 @@ import { GLOBALS } from '../globals';
 })
 
 export class AppComponent implements OnInit {
+    cheatMode: boolean = GLOBALS.cheatMode;
     constructor(
         private serials: SerializationService
     ) {

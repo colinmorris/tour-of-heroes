@@ -17,7 +17,7 @@ import { SkillComponent } from '../shared/skill.component';
     <div class="row">
 
     <div class="col-xs-3">
-    <span title="DEBUG: difficulty={{zone.difficulty}}">{{zone.name}}</span>
+    <span title="DEBUG: difficulty={{zone.difficulty}}">{{nameString(zone)}}</span>
     </div>
 
     <div class="col-xs-4">
@@ -59,6 +59,14 @@ export class ZoneSummaryComponent {
         private zones: Zones,
         private PS: PlayerService
     ) {
+    }
+
+    nameString(zone: Zone) {
+        let name = zone.name;
+        if (zone.level > 0) {
+            name += ` (${zone.level})`;
+        }
+        return name;
     }
 
     explore() {

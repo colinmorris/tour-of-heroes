@@ -15,7 +15,56 @@ import { ZoneAction } from './zoneaction.interface';
 import { VerbalZoneAction } from './zoneaction';
 import { Verb, verbLookup } from './verb';
 
-export const SUPERZONES: SuperZone[] = [];
+let difficulty_bonus_per_zone_level = 20;
+
+export function levelUpZone(zone: Zone, toLevel: number) {
+    var z: ZoneData;
+    // Find the corresponding ZoneData template
+    for (let superz of SUPERZONEDATA) {
+        for (let zd of superz.zones) {
+            if (zd.name == zone.name) {
+                z = zd;
+                break;
+            }
+        }
+        if (z) {
+            break;
+        }
+    }
+    console.assert(z != undefined);
+    let newDiff = leveledZoneDifficulty(z, toLevel);
+    console.assert(z.name == zone.name);
+    for (let i=0; i<z.actions.length; i++) {
+        zone.actions[i] = zamFromJSON(z.actions[i], z, newDiff);
+    }
+    zone.difficulty = newDiff;
+    zone.level = toLevel;
+}
+
+function leveledZoneDifficulty(zone: ZoneData, level: number) : number {
+    return zone.difficulty + (level * difficulty_bonus_per_zone_level);
+}
+
+export function loadSuperZones(zoneLevels: {[zoneName:string]: number}) : SuperZone[] {
+    let superzones: SuperZone[] = [];
+    let id = 0;
+    for (let superzone of SUPERZONEDATA) {
+        let zones: Zone[] = new Array<Zone>();
+        for (let zoneData of superzone.zones) {
+            let z: Zone = zoneFromJSON(zoneData, id++, superzone.name,
+                zoneLevels[zoneData.name] || 0);
+            zones.push(z);
+        }
+        let supz: SuperZone = {
+            name: superzone.name,
+            zones: zones,
+            unlockDescription: `Unlocked at level ${superzone.minLevel}`,
+            unlockCondition: (level: number) => level >= superzone.minLevel
+        };
+        superzones.push(supz);
+    }
+    return superzones;
+}
 
 function setProbabilities(actions: ActionData[]) {
     let freeWeight = 0;
@@ -44,7 +93,7 @@ function setProbabilities(actions: ActionData[]) {
     }
 }
 
-function zoneFromJSON(j: ZoneData, id: number, superzone: string) : Zone {
+function zoneFromJSON(j: ZoneData, id: number, superzone: string, level: number) : Zone {
     // Is this giving up type safety?
     let z: Zone = new ConcreteZone();
     z.superzone = superzone;
@@ -58,13 +107,17 @@ function zoneFromJSON(j: ZoneData, id: number, superzone: string) : Zone {
         they'll sum to 1 **/
     setProbabilities(j.actions);
     for (let a of j.actions) {
-        let zam: ZoneAction = zamFromJSON(a, j);
+        let zam: ZoneAction = zamFromJSON(a, j, leveledZoneDifficulty(j, level));
         z.actions.push(zam);
     }
     return z;
 }
 
-function zamFromJSON(j: ActionData, parentZone: ZoneData) : ZoneAction {
+function zamFromJSON(
+        j: ActionData,
+        parentZone: ZoneData,
+        surrogateDifficulty?: number) : ZoneAction
+{
     let skills: SkillType[] = j.skills instanceof Array ? <SkillType[]>j.skills : [<SkillType>j.skills];
     let delay = parentZone.baseDelay ? parentZone.baseDelay : GLOBALS.defaultBaseZoneDelay;
     // skill ratios
@@ -77,13 +130,9 @@ function zamFromJSON(j: ActionData, parentZone: ZoneData) : ZoneAction {
         }
     }
     // The difficulty of this action will determine default values for mastery and skill points
-    let difficulty = parentZone.difficulty;
+    let difficulty = surrogateDifficulty ? surrogateDifficulty : parentZone.difficulty;
     if (j.difficulty) {
-        if (j.difficulty instanceof Number) {
-            difficulty = <number>j.difficulty;
-        } else {
-            difficulty = (<Override>j.difficulty)(difficulty);
-        }
+        difficulty = j.difficulty(difficulty);
     } else if (j.bonusLevel) {
         // Still experimenting with this
         difficulty = difficulty + Math.ceil(2*j.bonusLevel);
@@ -144,20 +193,4 @@ function gainsForDifficulty(diff: number,
         gains[skillName] = totalSP * skillRatios[skillName];
     }
     return gains;
-}
-
-let id = 0;
-for (let superzone of SUPERZONEDATA) {
-    let zones: Zone[] = new Array<Zone>();
-    for (let zoneData of superzone.zones) {
-        let z: Zone = zoneFromJSON(zoneData, id++, superzone.name);
-        zones.push(z);
-    }
-    let supz: SuperZone = {
-        name: superzone.name,
-        zones: zones,
-        unlockDescription: `Unlocked at level ${superzone.minLevel}`,
-        unlockCondition: (level: number) => level >= superzone.minLevel
-    };
-    SUPERZONES.push(supz);
 }

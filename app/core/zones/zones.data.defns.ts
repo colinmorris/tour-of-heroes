@@ -74,9 +74,8 @@ export interface ActionData {
     /** Sets mastery levels and SP gains for this action according to the given
         difficulty rather than the difficulty of the containing zone. Above overrides
         are applied after, if present. But it's probably not a good idea to mix
-        and match them.
-        If a number type is passed, this is treated as a staticOverride. **/
-    difficulty?: Override | number;
+        and match them. **/
+    difficulty?: Override;
     /** By default, skill point gains are equal across this.skills. If you don't
         want that, specify the apportionment here. Value should sum to 1.
         Notably this affects SP gains but NOT delay calculations.

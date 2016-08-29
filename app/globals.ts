@@ -11,6 +11,7 @@ export const GLOBALS = {
     skillLevelExpPointCostBase: 1.41421,
 
     reincarnationMinLevel: 10,
+    zoneLevelingMinLevel: 25,
 
     /** One of 'exp' or 'lin'.
     Determines whether ancestry bonus grows linearly or exponentially. **/
@@ -37,6 +38,9 @@ export const GLOBALS = {
     // TODO: Maybe this needs to grow faster than SP/skill level, otherwise
     // it will never make sense to "Warm up" for a high level zone in a lower
     // level one. Also helps 'bonus level' difficulty bump feel more impactful
+    // Actually, the above may not be true. Definitely need to think about this
+    // some more. Seems important that there exists some non-zero slowdown value
+    // below which a zone starts becoming more efficient than a lower-level fullspeed zone.
     inexperiencePenaltyBase: 1.2599,
 
     inventoryCapacity: 5,

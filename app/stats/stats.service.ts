@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
 import { IStatsService } from './stats.service.interface';
 import { SkillType, SkillMap, SkillMapOf, uniformSkillMap,
-    Stat, NamedUnlock, OneShotAction
+    Stat, NamedUnlock, OneShotAction,
+    Zone
  } from '../core/index';
 import { SerializationService } from '../shared/serialization.service';
-import { StatsData, StatCell } from './stats-data.interface';
+import { StatsData, StatCell, CurrentLifetimeData } from './stats-data.interface';
 import { GLOBALS } from '../globals';
 
 @Injectable()
 export class StatsService implements IStatsService {
     // This makes serialization/deserialization a lot easier
-    private stats: StatsData;
+    stats: StatsData;
 
     constructor(
          serials: SerializationService
@@ -20,13 +21,6 @@ export class StatsService implements IStatsService {
             this.stats = saved;
             // TODO: Come up with some nice, general, low-maintenance way of
             // healing version mismatches
-            // XXX: Compat hack. Remove later.
-            if (!this.stats.klassUnlocks) {
-                this.stats.klassUnlocks = <{[klass:string] : any}>{};
-            }
-            if (!this.stats.currSkillLevels) {
-                this.stats.currSkillLevels = uniformSkillMap(0);
-            }
         } else {
             this.stats = this.freshStats();
         }
@@ -38,13 +32,12 @@ export class StatsService implements IStatsService {
     private freshStats() : StatsData {
         let stats:StatsData = {
            simpleStats: new Array<StatCell>(),
-           oneShots: new Array<boolean>(),
            unlocks: new Array<boolean>(),
            klassUnlocks: <{[klass:string] : any}>{},
            klassLevels: <{[klass:string] : number}>{},
-           currSkillLevels: uniformSkillMap(0),
            skillLevels: uniformSkillMap(0),
-           actionStats: <{[zone: string] : StatCell}>{}
+           actionStats: <{[zone: string] : StatCell}>{},
+           current: new CurrentLifetimeData()
        };
         for (let s = 0; s < Stat.MAX; s++) {
             stats.simpleStats[s] = {current: 0, sum: 0};
@@ -52,16 +45,13 @@ export class StatsService implements IStatsService {
         for (let s = 0; s < NamedUnlock.MAX; s++) {
             stats.unlocks[s] = false;
         }
-        for (let s = 0; s < OneShotAction.MAX; s++) {
-            stats.oneShots[s] = false;
-        }
         return stats;
     }
 
     // ----------------------- Write --------------------------------
     setSkills(levels: SkillMap) {
         for (let i=0; i < SkillType.MAX; i++) {
-            this.stats.currSkillLevels[i] = levels[i];
+            this.stats.current.skillLevels[i] = levels[i];
             this.stats.skillLevels[i] = Math.max(levels[i],
                 this.stats.skillLevels[i]);
         }
@@ -101,21 +91,22 @@ export class StatsService implements IStatsService {
         this.incrementSimpleStat(Stat.Reincarnations);
         this.resetEphemeralStats();
     }
-     incrementSimpleStat(stat: Stat) {
+    leveledZone(zoneName: string, toLevel: number) {
+        this.stats.current.zoneLevels[zoneName] = toLevel;
+    }
+    private incrementSimpleStat(stat: Stat) {
         this.incrementStatCell(this.stats.simpleStats[stat]);
     }
-     incrementStatCell(cell: StatCell) {
+    private incrementStatCell(cell: StatCell) {
         cell.current += 1;
         cell.sum += 1;
     }
     /** Resets to zero all stats that describe the current lifetime. Called on
     reincarnation. **/
     private resetEphemeralStats() {
+        this.stats.current = new CurrentLifetimeData();
         for (let s=0; s<Stat.MAX; s++) {
             this.stats.simpleStats[s].current = 0;
-        }
-        for (let s=0; s<SkillType.MAX; s++) {
-            this.stats.currSkillLevels[s] = 0;
         }
     }
     unlock(u: NamedUnlock) {
@@ -128,7 +119,10 @@ export class StatsService implements IStatsService {
         this.stats.klassUnlocks[klass] = true;
     }
     setOneShot(oneshot: OneShotAction) {
-        this.stats.oneShots[oneshot] = true;
+        this.stats.current.oneShots[oneshot] = true;
+    }
+    gainZiToken() {
+        this.stats.current.ziTokens++;
     }
 
     // ----------------------- Read --------------------------------
@@ -161,7 +155,7 @@ export class StatsService implements IStatsService {
         return this.stats.unlocks[u];
     }
     performedOneShot(oneshot: OneShotAction) {
-        return this.stats.oneShots[oneshot];
+        return this.stats.current.oneShots[oneshot];
     }
     playerLevel(klass: string) {
         return this.stats.klassLevels[klass] || 0;
@@ -201,8 +195,11 @@ export class StatsService implements IStatsService {
         if (this.stats.skillLevels[skill] >= threshold) {
             return true;
         } else {
-            return this.stats.currSkillLevels[skill] / threshold;
+            return this.stats.current.skillLevels[skill] / threshold;
         }
+    }
+    get ziTokens() : number {
+        return this.stats.current.ziTokens;
     }
 
 

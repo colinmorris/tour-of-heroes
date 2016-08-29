@@ -120,7 +120,7 @@ import { GLOBALS } from '../globals';
             *ngFor="let pair of aptitudePairs(selected)">
             <template ngFor let-apt [ngForOf]="pair">
                 <div class="col-xs-1">
-                    <skill [skill]="apt.i"></skill>
+                    <skill [skill]="apt.i" [title]="ST[apt.i]"></skill>
                 </div>
                 <div class="col-xs-5">
                     <div class="progress"
