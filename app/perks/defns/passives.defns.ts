@@ -133,8 +133,7 @@ export class ClericPerk extends AbstractPassive {
 export class BlobPerk extends WatcherPassive {
     static sname = "Sessile";
     static spMultiplier = .5;
-    static sdescription = `Increase skill gains by ${BlobPerk.spMultiplier*100}%
-        for actions with a slowdown penalty`;
+    static sdescription = `Increase skill gains by ${BlobPerk.spMultiplier*100}% for actions with a slowdown penalty`;
     diTokens = [di_tokens.actionservice];
 
     onCast(AS: IActionService) {
@@ -201,11 +200,10 @@ export class FarmerPerk extends WatcherPassive {
 }
 
 export class ChocobonePerk extends MetadataPassive {
-    static sname = ``;
+    static sname = `Impactful Clicks`;
     static critRate = .1;
     static critMultiplier = 5;
-    static sdescription = `${ChocobonePerk.critRate*100}% chance of a critical
-        click with ${ChocobonePerk.critMultiplier*100}% increased power`;
+    static sdescription = `${ChocobonePerk.critRate*100}% chance of a critical click with ${ChocobonePerk.critMultiplier*100}% increased power`;
     fiddle(meta: PlayerMetadata) {
         meta.clickCritRate = ChocobonePerk.critRate;
         meta.clickCritMultiplier = ChocobonePerk.critMultiplier;

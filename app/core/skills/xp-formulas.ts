@@ -65,6 +65,6 @@ export namespace XpFormulas {
         who distributes SP evenly across all skills.
         **/
         // Let's say a *mostly* virtuous player
-        return (plevel*5)/6.0; // I sure hope the set of skills never changes...
+        return (plevel*5)/8.0; // I sure hope the set of skills never changes...
     }
 }

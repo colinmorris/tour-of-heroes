@@ -92,7 +92,7 @@ function zamFromJSON(j: ActionData, parentZone: ZoneData) : ZoneAction {
     /** XXX: I feel like I've consistently set difficulties a bit too low, so just
     going to play with a tweak here and see how it feels.
     **/
-    difficulty += 0;
+    difficulty += 2;
 
     // mastery
     let mastery:number = masteryForDifficulty(difficulty);

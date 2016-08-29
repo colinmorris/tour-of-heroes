@@ -206,7 +206,7 @@ zones: [
             opts:["radish", "turnip", "parsley", "carrot", "pumpkin"],
             skills:S.Farming},
             {vb: "pluck", obj:"a weed", skills:S.Farming},
-            {vb: "chat", obj:"the head gardener", skills:[S.Farming, S.Charm]}
+            {vb: "chat", obj:"with the head gardener", skills:[S.Farming, S.Charm]}
         ],
         difficulty: 23,
     },

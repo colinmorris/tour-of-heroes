@@ -33,8 +33,11 @@ export const GLOBALS = {
     actionBarUpdateInterval: 300,
     actionBarTransitionMs: 600,
 
-    // Every 5 levels of difference leads to a doubling of time.
-    inexperiencePenaltyBase: 1.1487,
+    // Every 3 levels of difference leads to a doubling of time.
+    // TODO: Maybe this needs to grow faster than SP/skill level, otherwise
+    // it will never make sense to "Warm up" for a high level zone in a lower
+    // level one. Also helps 'bonus level' difficulty bump feel more impactful
+    inexperiencePenaltyBase: 1.2599,
 
     inventoryCapacity: 5,
 
