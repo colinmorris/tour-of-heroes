@@ -118,7 +118,8 @@ function zamFromJSON(j: ActionData, parentZone: ZoneData) : ZoneAction {
         j.prob,
         delay,
         mastery,
-        j.unlocks
+        j.unlocks,
+        j.oneShot
     );
 }
 

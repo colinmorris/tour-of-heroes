@@ -4,6 +4,7 @@ import { ZoneAction, ZoneActionDescription, ActionDelay } from './zoneaction.int
 import { randomChoice } from '../utils';
 import { GLOBALS } from '../../globals';
 import { NamedUnlock } from '../stats/index';
+import { OneShotAction } from './action-oneshots.enum';
 
 const ACTION_METAVAR: string = "__X";
 
@@ -16,7 +17,8 @@ export class VerbalZoneAction implements ZoneAction {
         public weight: number,
         public minDelay: number,
         public mastery: number,
-        public unlocks?: NamedUnlock
+        public unlocks?: NamedUnlock,
+        public oneshot?: OneShotAction
     ) {
 
     }
