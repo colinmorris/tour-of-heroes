@@ -23,6 +23,10 @@ BALANCE
     - what if ancestry bonus was an aptitude multiplier *per player level*?
 - it'd be useful to have some debug UI in the class view showing sum of apts for a class, or other useful ways for comparing apts across classes
 - consider making fruity buff a bit more powerful and more rare
+- tutorial-y stuff
+- maybe, like, double base action speed and SP gains across the board? seems like a fair bit of time is spent in green zones, and those actions feel like they blaze by, faster than my hilarious action text can be read.
+    - Another option: make the slowdown curve kind of S-shaped.
+- the Bat King is great. You should do more stuff like that in lower level zones.
 
 TECHNICAL
 =========
@@ -49,6 +53,7 @@ BUGS
 ====
 +- have seen at least one instance where an action got 'stuck' (but was able to finish it by clicking). That's a little scary. I have a fear that my code is crawling with race conditions.
 +- fill in descriptions of spells/perks
+- fix spurious +1 toasts on component reload
 
 IDEAS
 ======
@@ -60,6 +65,7 @@ IDEAS
 
 UI
 ==
+- forward/back arrows in the classes view 'porthole'
 - nice navbar
 +- spells should be more 'at hand'
 - would also be nice to have keyboard shortcuts for spells
@@ -77,3 +83,6 @@ UI
 - show greyed-out reincarnate button for unlocked classes when level < 10
 - rework the UI for aptitudes in the klass view. I think bars would be nicer (and colored, since they'll all be on the same scale)
 
+USABILITY
+=========
+- might actually be a good idea to make locked superzones expandable, just without the "go" buttons. Would help with planning ahead. Maybe only after it's been unlocked once in a previous lifetime?

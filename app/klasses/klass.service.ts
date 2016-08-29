@@ -43,7 +43,12 @@ export class KlassService {
     }
 
     private checkUnlocks() {
-        console.log("Checking for unlocks");
+        /** TODO: This is too spammy to log. But just cause it's out of sight,
+        doesn't mean it's out of mind. Should return to this at some point and
+        review perf implications, and whether there's a more elegant way to do
+        this.
+        **/
+        //console.log("Checking for unlocks");
         for (let k of KLASSES) {
             let klass: LiveKlass = this.klassMap[k.name];
             if (klass.unlocked) {
@@ -69,7 +74,9 @@ export class KlassService {
             if (didUnlock) {
                 console.log(`Wow!! Unlocked ${klass.name}`);
                 this.stats.setClassUnlocked(klass.name);
-                this.klassUnlockToast(klass);
+                if (klass.name != "Peasant") {
+                    this.klassUnlockToast(klass);
+                }
                 klass.progress = undefined;
             }
             klass.unlocked = didUnlock;

@@ -95,8 +95,8 @@ zones:
         name: 'Tavern',
         description: 'Get sloshed',
         actions: [
-            {vb: "dance", obj: "a jig", skills: S.Charm, weight: .8},
-            {vb: "fight", obj: "a drunken patron", skills: S.Combat, weight: .2},
+            {vb: "dance", obj: "a jig", skills: S.Charm, weight: 1},
+            {vb: "fight", obj: "a drunken patron", skills: S.Combat, weight: 1},
         ],
         difficulty: 7,
     },

@@ -4,8 +4,11 @@ export const GLOBALS = {
     /** Going from skill level n to n+1 takes (this^n * skillLevelBaseCost)
     skill points.
     10 for level 1, doubling every 5 levels.
+    i.e. 2^(1/5) = 1.1487
+    let's try something more extreme, and double every 2 levels,
+    2^(1/2) = 1.41421
     **/
-    skillLevelExpPointCostBase: 1.1487,
+    skillLevelExpPointCostBase: 1.41421,
 
     reincarnationMinLevel: 10,
 

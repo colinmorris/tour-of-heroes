@@ -24,7 +24,7 @@ export class VerbalZoneAction implements ZoneAction {
     delay(skills: SkillMap) : ActionDelay {
         let inexp = this.inexperiencePenalty(skills);
         let delay = this.minDelay * inexp;
-        console.log(`Base delay: ${this.minDelay}; After skill penalty: ${delay}`);
+        //console.log(`Base delay: ${this.minDelay}; After skill penalty: ${delay}`);
         return {base: this.minDelay, inexperiencePenalty: inexp};
     }
 

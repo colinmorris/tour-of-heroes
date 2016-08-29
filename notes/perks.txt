@@ -32,3 +32,4 @@
 - spell that just gives you some random SP
 - temporarily buff all skills to be equal to skill X
 - increase likelihood of some particular rare/oneshot action.
+- reach level 20/50/etc.

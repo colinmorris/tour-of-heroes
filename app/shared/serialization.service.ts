@@ -24,7 +24,6 @@ export class SerializationService {
     }
 
     saveStats(stats: StatsData) {
-        console.log("Saving stats");
         localStorage.setItem(stats_token, JSON.stringify(stats));
     }
     loadStats() : StatsData {
@@ -34,7 +33,6 @@ export class SerializationService {
     }
 
     savePlayer(player: RawPlayer) {
-        console.log("Saving player");
         localStorage.setItem(player_token, JSON.stringify(player));
     }
     loadPlayer() : RawPlayer {

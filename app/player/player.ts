@@ -90,7 +90,7 @@ export class LivePlayer implements Player {
     set totalSkillLevels(newValue: number) {
         let thresh = this.skillLevelsForNextLevel();
         while (newValue >= thresh) {
-            this.level$.next(this.level++);
+            this.level$.next(++this.level);
             newValue -= thresh;
             thresh = this.skillLevelsForNextLevel();
         }

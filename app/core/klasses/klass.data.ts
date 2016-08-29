@@ -180,9 +180,10 @@ export const KLASSES : Klass[] =[
         /** TODO: Maybe the unlock criteria should be having *reincarnated* as
         each of those classes? As it is, this unlock will always be right on
         the tail of another one. Would be nice to space out those dopamine hits. **/
-        hint: 'Discover the Skeleton and Jouster classes',
+        hint: 'Live a life as a Skeleton and a Jouster',
         criteria: (s: IStatsService) => {
-            return s.classUnlocked('Skeleton') && s.classUnlocked('Jouster');
+            return (s.playerLevel('Skeleton') > 1)
+                && (s.playerLevel('Jouster') > 1);
         }
     },
     /** TODO: I like the idea of the jouster having high riding and charm aptitudes, but
