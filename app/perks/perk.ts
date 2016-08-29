@@ -60,13 +60,13 @@ export abstract class AbstractSpell extends AbstractBonus implements Spell {
 
 export abstract class AbstractBuffingSpell extends AbstractSpell {
     buffName: string;
-    buffDuration: number = undefined;
+    //buffDuration: number = undefined;
     diTokens = [di_tokens.perkservice];
     onCast(PS: IPerkService) {
         // You are treading on extremely fucking thin ice here. Have to be super
         // careful about not introducing circular dependencies/infinite loops.
         // XXX: refactor me
-        PS.addBuff(this.buffName, this.buffDuration);
+        PS.addBuff(this.buffName);
         return true;
     }
 }

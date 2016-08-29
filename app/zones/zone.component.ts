@@ -31,17 +31,32 @@ import { GLOBALS } from '../globals';
         }
         .ongoing-text {
             font-weight: bold;
+            font-size: large;
+        }
+        .action-main {
+            min-height: 100px;
+        }
+        .previously {
+            margin-left: 25px;
         }
         `],
     pipes: [SkillGainsPipe],
     template: `
-    <h3>{{zone.name}} {{active ? "(ACTIVE)" : ""}}</h3>
-    <p>{{zone.description}}</p>
-    <div *ngIf="loaded">
+    <div class="row">
+        <div class="col-xs-6">
+            <h3>{{zone.name}}</h3>
+        </div>
+        <div class="col-xs-6">
+            <spell-bar></spell-bar>
+        </div>
+    </div>
+
+    <div class="action-main"
+    *ngIf="loaded">
         <div *ngIf="currentAction">
-            <span class="ongoing-text">
-            {{currentAction.description}}...
-            </span>
+            <p class="ongoing-text text-center">
+                {{currentAction.description}}...
+            </p>
             <div class="progress center-block" (click)="actionClick()">
                 <div
                     class="progress-bar {{currentAction.animationClass}}"
@@ -51,21 +66,32 @@ import { GLOBALS } from '../globals';
             </div>
 
             <div class="previously" *ngIf="lastOutcome">
-                <div class="mainOutcome">{{lastOutcome.main.description}}
-                    <div *ngIf="lastOutcome.main.pointsGained">
+                <p class="mainOutcome">{{lastOutcome.main.description}}
+                    <span *ngIf="lastOutcome.main.pointsGained">
                         ({{lastOutcome.main.pointsGained | skillgains}})
-                    </div>
-                </div>
-                <div *ngFor="let bonus of lastOutcome.secondary" class="secondaryOutcome">
-                    {{bonus.description}}
-                </div>
+                    </span>
+                </p>
+                <p *ngFor="let bonus of lastOutcome.secondary" class="secondaryOutcome">
+                    ... {{bonus.description}}
+                    <span *ngIf="bonus.pointsGained">
+                        ({{bonus.pointsGained | skillgains}})
+                    </span>
+                </p>
             </div>
-            <button (click)="stopAction()" class="btn btn-danger">Stop</button>
         </div>
 
         <div *ngIf="!currentAction">
-            <button (click)="select()" class="btn btn-primary">Explore</button>
+            <p>{{zone.description}}</p>
         </div>
+    </div>
+
+    <div class="action-options">
+        <button (click)="select()"
+            class="btn btn-primary"
+            *ngIf="!currentAction">Explore</button>
+        <button (click)="stopAction()"
+            class="btn btn-danger"
+            *ngIf="currentAction">Stop</button>
     </div>
     `
 })

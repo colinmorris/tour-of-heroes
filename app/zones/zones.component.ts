@@ -17,9 +17,7 @@ interface SuperzonePane {
     selector: 'zones',
     directives: [ ZoneSummaryComponent ],
     styles: [
-        `a {
-            padding: 10px;
-        }
+        `
         .zone-header {
             font-weight: bold;
         }

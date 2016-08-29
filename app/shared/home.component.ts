@@ -20,12 +20,10 @@ import { Zones } from '../zones/zones.service';
             <player-pane></player-pane>
         </div>
         <div class="col-xs-9">
-            <div class="row focalZone">
-                <zone *ngIf="zones.focalZone" [zone]="zones.focalZone"></zone>
-            </div>
-            <div class="row">
+                <div class="focalZone">
+                    <zone *ngIf="zones.focalZone" [zone]="zones.focalZone"></zone>
+                </div>
                 <zones></zones>
-            </div>
         </div>
     </div>
   `
