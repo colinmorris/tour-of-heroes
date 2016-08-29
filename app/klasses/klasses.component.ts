@@ -19,7 +19,8 @@ import { GLOBALS } from '../globals';
     pipes: [MultiplierPipe],
     styles: [
         `.big-icon {
-            width: 216px;
+            /*width: 216px;*/
+            width: 180px;
         }
         img.locked {
             -webkit-filter: contrast(0);
@@ -33,6 +34,10 @@ import { GLOBALS } from '../globals';
         }
         .glyphicon-arrow-right {
             margin-top: 100%;
+        }
+        .progress {
+            /* Match the size of skill icons */
+            height: 32px;
         }
         `
     ],
@@ -111,15 +116,28 @@ import { GLOBALS } from '../globals';
 
     <h3><span class="label label-default">Aptitudes</span></h3>
     <div class="apts">
-        <span *ngFor="let apt of selected.aptitudes; let i = index">
-        <skill [skill]="i"></skill>{{apt}}
-        <br *ngIf="i==3">
-        </span>
-        <p>DEBUG: Sum of apts={{sumapts(selected.aptitudes) | number:'1.1-1'}}</p>
+        <div class="row"
+            *ngFor="let pair of aptitudePairs(selected)">
+            <template ngFor let-apt [ngForOf]="pair">
+                <div class="col-xs-1">
+                    <skill [skill]="apt.i"></skill>
+                </div>
+                <div class="col-xs-5">
+                    <div class="progress"
+                        [title]="aptTitle(apt)"
+                    >
+                        <div class="progress-bar progress-bar-{{aptStyle(apt.apt)}}"
+                        [style.width.%]="100*apt.apt/2.0"
+                        ></div>
+                    </div>
+                </div>
+
+            </template>
+        </div>
+        <p *ngIf="cheatMode">DEBUG: Sum of apts={{sumapts(selected.aptitudes) | number:'1.1-1'}}</p>
     </div>
 
     <div *ngIf="selected.unlocked">
-    <h3><span class="label label-default">Perk</span></h3>
     <p><b>{{Perks.perkForKlass(selected.name).sname}}</b>
         {{Perks.perkForKlass(selected.name).sdescription}}
     </p>
@@ -133,7 +151,7 @@ import { GLOBALS } from '../globals';
             Reincarnate!
     </button>
     <div *ngIf="!selected.unlocked">
-        <p *ngIf="selected.progress !== undefined">
+        <p *ngIf="selected.progress != undefined">
             Unlock progress: {{selected.progress | percent:'1.0-0'}}
         </p>
         <p><b>Hint:</b> {{selected.hint}}</p>
@@ -183,6 +201,33 @@ export class KlassesComponent {
 
     displayName(klass: LiveKlass) {
         return klass.unlocked ? klass.name : "???";
+    }
+
+    // Bleh, hack
+    aptitudePairs(klass: LiveKlass) {
+        let pairs = [];
+        for (let i=0; i < SkillType.MAX; i+=2) {
+            let pair = [
+                {i: i, apt: klass.aptitudes[i]},
+                {i: i+1, apt: klass.aptitudes[i+1]},
+            ];
+            pairs.push(pair);
+        }
+        return pairs;
+    }
+
+    aptTitle(apt: {i: number, apt: number}) {
+        return `Base ${SkillType[apt.i]} aptitude: ${apt.apt}`;
+    }
+
+    aptStyle(apt: number) {
+        if (apt < .5) {
+            return 'danger';
+        } else if (apt <= 1.0) {
+            return 'warning';
+        } else {
+            return 'success';
+        }
     }
 
     reincarnate() {
