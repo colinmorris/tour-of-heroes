@@ -42,6 +42,7 @@ TECHNICAL
 - ahead of time compilation
 - consider propagating 'bonus'-ness up. Might be interesting to show it in the UI, and to have it interact with some perks.
 - ability to export to/load from string. Would make testing a lot easier.
+- redo systemjs.config.js to match the new version in the angular2 quickstart
 
 MECHANICS
 =========

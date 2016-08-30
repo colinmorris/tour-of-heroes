@@ -5,6 +5,9 @@ export interface StatCell {
     sum: number;
 }
 
+/** TODO: Turn this into a class like CLtD, and add a method for healing
+version mismatches (by at least filling in any gaps for new enum values)
+**/
 export interface StatsData {
     // Indexed by Stat enum
     simpleStats : StatCell[];

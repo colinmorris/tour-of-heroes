@@ -3,5 +3,6 @@ export enum NamedUnlock {
     JoustingChampion,
     SuperSlowAction,
     ThreeEggs,
+    ReincarnationAvailableHelp,
     MAX
 }

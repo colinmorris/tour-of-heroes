@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { NotificationsService } from 'angular2-notifications';
 
 import { KlassService } from '../klasses/klass.service';
 import { PerkService } from '../perks/perk.service';
@@ -29,6 +30,7 @@ export class PlayerService implements IPlayerService {
         private klasses: KlassService,
         private perks: PerkService,
         private stats: StatsService,
+        private Toasts: NotificationsService,
         private serials: SerializationService
     ) {
         let saved:RawPlayer = serials.loadPlayer();
@@ -75,7 +77,11 @@ export class PlayerService implements IPlayerService {
                 first = false;
             } else if (lvl >= GLOBALS.zoneLevelingMinLevel && (lvl % 5) == 0) {
                 console.log("You earned a Zi token. Yay.");
-                this.stats.gainZiToken();
+                this.stats.ziTokens++;
+                this.Toasts.info(
+                    `Level ${lvl}`,
+                    `Gained a Zone Improvement token`
+                );
             }
         });
         this.perks.addPerkForKlass(this.player.klass, defer);

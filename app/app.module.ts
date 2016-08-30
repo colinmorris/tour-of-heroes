@@ -4,6 +4,9 @@ import { FormsModule } from '@angular/forms';
 
 import { SimpleNotificationsModule } from 'angular2-notifications';
 
+import { ModalModule } from 'angular2-modal';
+import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap/index';
+
 import { AppComponent } from './shared/app.component';
 import { routing } from './shared/app.routes';
 
@@ -16,6 +19,7 @@ import { DebugComponent } from './shared/debug.component';
 @NgModule({
     imports: [BrowserModule, FormsModule,
         SimpleNotificationsModule,
+        ModalModule.forRoot(), BootstrapModalModule,
         routing
     ],
     declarations: [AppComponent,

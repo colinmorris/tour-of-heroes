@@ -10,7 +10,7 @@ import { StatsService } from '../stats/stats.service';
     <div *ngIf="cheatMode">
 
     ZI Tokens: {{Stats.ziTokens}}
-    <button (click)="Stats.gainZiToken()">Get token</button>
+    <button (click)="Stats.ziTokens = Stats.ziTokens+1">Get token</button>
 
     </div>
     `,

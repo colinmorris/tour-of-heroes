@@ -121,9 +121,6 @@ export class StatsService implements IStatsService {
     setOneShot(oneshot: OneShotAction) {
         this.stats.current.oneShots[oneshot] = true;
     }
-    gainZiToken() {
-        this.stats.current.ziTokens++;
-    }
 
     // ----------------------- Read --------------------------------
     current(s: Stat) {
