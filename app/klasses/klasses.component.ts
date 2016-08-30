@@ -187,6 +187,8 @@ import { GLOBALS } from '../globals';
             </div>
         </div>
     </div>
+    <p>{{KS.nUnlocked}} / {{KS.nKlasses}} classes unlocked</p>
+    <p>TODO: Sum of levels, toggle to show max level inline with cell title</p>
 </div>
 
 </div>

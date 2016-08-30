@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
+import { StatsService } from '../stats/stats.service';
 import { PerkService } from './perk.service';
 import { Spell, Buff, Passive } from './perk.interface';
 
@@ -16,14 +17,15 @@ import { Spell, Buff, Passive } from './perk.interface';
         <button class="btn btn-warning"
         [title]="spell.description"
         [class.disabled]="spell.remainingCooldown > 0"
-        (click)="spell.cast()"
+        (click)="cast(spell)"
         >{{spell.name}} {{cooldownString(spell)}}</button>
     </div>
     `,
 })
 export class SpellsComponent {
     constructor(
-        private Perks: PerkService
+        private Perks: PerkService,
+        private Stats: StatsService
     ) {
 
     }
@@ -34,6 +36,13 @@ export class SpellsComponent {
             return `(${Math.ceil(cd / 1000)})`;
         } else {
             return "";
+        }
+    }
+
+    cast(spell: Spell) {
+        let success = spell.cast();
+        if (success) {
+            this.Stats.spellCast();
         }
     }
 

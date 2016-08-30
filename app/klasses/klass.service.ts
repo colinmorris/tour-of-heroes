@@ -42,6 +42,17 @@ export class KlassService {
         return klasses;
     }
 
+    get nKlasses() {
+        return KLASSES.length;
+    }
+    get nUnlocked() {
+        let n = 0;
+        for (let klassname in this.klassMap) {
+            n += this.klassMap[klassname].unlocked ? 1 : 0;
+        }
+        return n;
+    }
+
     private checkUnlocks() {
         /** TODO: This is too spammy to log. But just cause it's out of sight,
         doesn't mean it's out of mind. Should return to this at some point and
