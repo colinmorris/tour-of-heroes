@@ -11,8 +11,8 @@ export namespace BUFFS {
 export class GoingBerserk extends AbstractTimedBuff {
     diTokens = [di_tokens.actionservice];
     static sname = "Berserk";
-    private speedup = 2.0;
-    static sdescription = "u mad";
+    private speedup = 1.0;
+    static sdescription = "Action speed doubled";
     duration = 20
 
     onCast(AS: IActionService) {
@@ -74,7 +74,7 @@ export class Fruity extends AbstractTimedBuff {
     }
     duration = 120;
     private buffAmt = 10;
-    static sdescription = "zzz";
+    static sdescription = "Temporarily boost a skill";
     get description() {
         return SkillType[this.buffedSkill] + ` boosted by ${this.buffAmt}`;
     }

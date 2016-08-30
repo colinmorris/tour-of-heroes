@@ -84,6 +84,7 @@ UI
     - maybe that's also a nice place to show max levels reached + ancestry
 - show greyed-out reincarnate button for unlocked classes when level < 10
 - rework the UI for aptitudes in the klass view. I think bars would be nicer (and colored, since they'll all be on the same scale)
+- three label colors for buffs. One for HA, one for all other passives, and one for temporary buffs.
 
 USABILITY
 =========

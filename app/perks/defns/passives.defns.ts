@@ -98,8 +98,7 @@ export class AncestryPerk extends AbstractPassive {
     get description() {
         return `Base aptitudes multiplied by ${formatPct(this.multiplier)}`;
     }
-    static sdescription = `Base aptitudes increased according to max level
-        attained for each class`;
+    static sdescription = `Base aptitudes increased according to max level attained for each class`;
     onCast(SS: IStatsService, PS: IPlayerService) : boolean {
         let multiplier = ancestryBonus(SS.maxLevels());
         if (multiplier <= 0) {
@@ -118,8 +117,7 @@ export class AncestryPerk extends AbstractPassive {
 export class ClericPerk extends AbstractPassive {
     static sname = "Grace";
     static inexpMultiplier = .5;
-    static sdescription = `Reduces slowdown for difficult zones by
-            ${(1 - ClericPerk.inexpMultiplier)*100}%`;
+    static sdescription = `Reduces slowdown for difficult zones by ${(1 - ClericPerk.inexpMultiplier)*100}%`;
     diTokens = [di_tokens.actionservice];
 
     onCast(AS: IActionService) {
@@ -150,7 +148,7 @@ export class StudentPerk extends WatcherPassive {
     static sname = "Extra Credit";
     diTokens = [di_tokens.actionservice];
     private prob = .1;
-    static sdescription = "zzzz";
+    static sdescription = "Chance to also increase Intellect when training other skills";
     onCast(AS: IActionService) {
         this.sub = AS.protoActionOutcomeSubject
             .filter( (outcome: ProtoActionOutcome) => {
@@ -176,8 +174,7 @@ export class StudentPerk extends WatcherPassive {
 export class FarmerPerk extends WatcherPassive {
     diTokens = [di_tokens.actionservice, di_tokens.perkservice];
     static sname = "Frugivore";
-    static sdescription = `Chance to eat a piece of fruit after performing a farming
-    action, temporarily boosting the level of a random skill.`;
+    static sdescription = `Chance to eat a piece of fruit after performing a farming action, temporarily boosting the level of a random skill.`;
     private prob = .07;
     onCast(AS: IActionService, PS: IPerkService) {
         this.sub = AS.protoActionOutcomeSubject
@@ -213,8 +210,7 @@ export class ChocobonePerk extends MetadataPassive {
 export class SkeletonPerk extends MetadataPassive {
     static sname = "Strong Phalanges";
     static clickMultiplier = .5;
-    static sdescription = `Base clicking power increased by
-        ${SkeletonPerk.clickMultiplier * 100}%`;
+    static sdescription = `Base clicking power increased by ${SkeletonPerk.clickMultiplier * 100}%`;
 
     fiddle(meta: PlayerMetadata) {
         meta.clickMultiplier += SkeletonPerk.clickMultiplier;
@@ -224,8 +220,7 @@ export class SkeletonPerk extends MetadataPassive {
 export class RangerPerk extends MetadataPassive {
     static sname = "Keen Eyes";
     static critChance = .1;
-    static sdescription = `${RangerPerk.critChance * 100}% increased
-        chance for critical actions (SP gains doubled)`;
+    static sdescription = `${RangerPerk.critChance * 100}% increased chance for critical actions (SP gains doubled)`;
 
     fiddle(meta: PlayerMetadata) {
         meta.critChance += RangerPerk.critChance;
@@ -236,9 +231,7 @@ export class ArcherPerk extends MetadataPassive {
     static sname = "Elf Eyes";
     static critChance = .05;
     static critMultiplierPlus =  1.0;
-    static sdescription = `${ArcherPerk.critChance * 100}% increased
-        chance for critical actions and increases critical action multiplier
-        another 100%`;
+    static sdescription = `${ArcherPerk.critChance * 100}% increased chance for critical actions and increases critical action multiplier another 100%`;
     fiddle(meta: PlayerMetadata) {
         meta.critChance += ArcherPerk.critChance;
         meta.critMultiplier += ArcherPerk.critMultiplierPlus;
@@ -254,8 +247,7 @@ export class PeasantPerk extends OnOffPerk {
     // TODO: Is it possible to store a string property that uses something like
     // angular's templating syntax, and sort of 'eval' that in a template?
     // In particular, it'd be nice to be able to use pipes here.
-    static sdescription = `Base aptitudes increased by ${PeasantPerk.aptMultiplier*100}%
-        until level ${PeasantPerk.levelThreshold}`;
+    static sdescription = `Base aptitudes increased by ${PeasantPerk.aptMultiplier*100}% until level ${PeasantPerk.levelThreshold}`;
     diTokens = [di_tokens.playerservice];
     private sub: any;
     private aptitudeBuffs: SkillMap;
@@ -287,8 +279,7 @@ export class PeasantPerk extends OnOffPerk {
 export class GladiatorPerk extends WatcherPassive {
     static sname = "Pit Fighter";
     static spMultiplier = .5;
-    static sdescription = `SP gains increased by
-        ${GladiatorPerk.spMultiplier*100}% when adventuring in the Colloseum`;
+    static sdescription = `SP gains increased by ${GladiatorPerk.spMultiplier*100}% when adventuring in the Colloseum`;
     diTokens = [di_tokens.actionservice];
     onCast(AS: IActionService) {
         this.sub = AS.protoActionOutcomeSubject
@@ -304,8 +295,7 @@ export class GladiatorPerk extends WatcherPassive {
 export class HorsemanPerk extends WatcherPassive {
     static sname = "Stability";
     static spMultiplier = .5;
-    static sdescription = `SP gains increased by
-        ${HorsemanPerk.spMultiplier*100}% when adventuring in the Stables`;
+    static sdescription = `SP gains increased by ${HorsemanPerk.spMultiplier*100}% when adventuring in the Stables`;
     diTokens = [di_tokens.actionservice];
     onCast(AS: IActionService) {
         this.sub = AS.protoActionOutcomeSubject
@@ -323,9 +313,7 @@ export class WoodsmanPerk extends HomeZonePassive {
     static zone = "Woody Woods";
     static spMultiplier = .5;
     static get sdescription() {
-        return `SP gains increased by
-        ${this.spMultiplier*100}% when adventuring in the
-        ${this.zone}`;
+        return `SP gains increased by ${this.spMultiplier*100}% when adventuring in the ${this.zone}`;
     }
 }
 
@@ -336,9 +324,7 @@ export class JousterPerk extends HomeZonePassive {
     static zone = "Tournament";
     static spMultiplier = .5;
     static get sdescription() {
-        return `SP gains increased by
-        ${this.spMultiplier*100}% when adventuring in the
-        ${this.zone}`;
+        return `SP gains increased by ${this.spMultiplier*100}% when adventuring in the ${this.zone}`;
     }
 }
 

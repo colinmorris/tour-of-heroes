@@ -25,9 +25,9 @@ export namespace SPELLS {
 export class AssassinPerk extends ActionServiceSpell {
     cooldown = 60;
     static sname = "Execute";
-    static sdescription = "Blah blah blah";
-
     private completionThreshold = 50;
+    static sdescription = `Instantly complete the current action if it's more than 50% complete.`;
+
     onCast(AS: IActionService) : boolean {
         let action: LiveZoneAction = AS.currentAction;
         if (!action || action.pctProgress < this.completionThreshold) {
@@ -42,8 +42,7 @@ export class ShamanPerk extends CurrentActionSpell {
     cooldown = 60;
     static sname = "Meditate";
     static spMultiplier = 1.0;
-    static sdescription = `Increase the SP gained from the current
-        action by 100%`;
+    static sdescription = `Increase the SP gained from the current action by 100%`;
 
     actionEffect(action: LiveZoneAction) : boolean {
         action.spMultiplier += ShamanPerk.spMultiplier;
@@ -54,11 +53,13 @@ export class ShamanPerk extends CurrentActionSpell {
 export class BerserkerPerk extends AbstractBuffingSpell {
     cooldown = 60;
     static sname = "Berserk";
-    static sdescription = "get mad";
+    static sdescription = `Go berserk, doubling action speed for a short time`;
     buffName = "GoingBerserk";
     buffDuration = 20;
 }
 
+/** TODO XXX: Haha, I accidentally wrote the same spell twice. I guess the Shaman
+    one wins, since it's a lot more parsimonious. **/
 export class ScholarPerk extends AbstractSpell {
     static sname = "Concentrate";
     cooldown = 60;
