@@ -101,6 +101,7 @@ function zoneFromJSON(j: ZoneData, id: number, superzone: string, level: number)
     z.name = j.name;
     z.description = j.description;
     z.difficulty = j.difficulty;
+    z.level = level;
     z.actions = new Array<ZoneAction>();
     console.assert(j.actions.length > 0);
     /** Postcondition: each action in j.actions will have a prob member, and
