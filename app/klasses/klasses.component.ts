@@ -86,7 +86,7 @@ import { GLOBALS } from '../globals';
                 </div>
                 <div class="col-xs-5">
                     <img class="big-icon"
-                        [src]="KS.iconForKlass(selected.name)">
+                        [src]="KS.iconForKlass(KS.focalKlass.name)">
                 </div>
             </div>
 
@@ -127,16 +127,16 @@ import { GLOBALS } from '../globals';
 <div class="row">
 
 <div class="col-xs-4">
-<div *ngIf="selected" class="focal">
-    <h2>{{displayName(selected)}}</h2>
-    <img [src]="'assets/units/' + selected.img"
+<div *ngIf="KS.focalKlass" class="focal">
+    <h2>{{displayName(KS.focalKlass)}}</h2>
+    <img [src]="'assets/units/' + KS.focalKlass.img"
         class="big-icon"
-        [class.locked]="!selected.unlocked">
+        [class.locked]="!KS.focalKlass.unlocked">
 
     <h3><span class="label label-default">Aptitudes</span></h3>
     <div class="apts">
         <div class="row apt-row"
-            *ngFor="let pair of aptitudePairs(selected)">
+            *ngFor="let pair of aptitudePairs(KS.focalKlass)">
             <template ngFor let-apt [ngForOf]="pair">
                 <div class="col-xs-1">
                     <skill [skill]="apt.i" [title]="ST[apt.i]"></skill>
@@ -153,27 +153,28 @@ import { GLOBALS } from '../globals';
 
             </template>
         </div>
-        <p *ngIf="cheatMode">DEBUG: Sum of apts={{sumapts(selected.aptitudes) | number:'1.1-1'}}</p>
+        <p *ngIf="cheatMode">DEBUG: Sum of apts={{sumapts(KS.focalKlass.aptitudes) | number:'1.1-1'}}</p>
     </div>
 
-    <div *ngIf="selected.unlocked">
-    <p><b>{{Perks.perkForKlass(selected.name).sname}}</b>
-        {{Perks.perkForKlass(selected.name).sdescription}}
+    <div *ngIf="KS.focalKlass.unlocked">
+    <p><b>{{Perks.perkForKlass(KS.focalKlass.name).sname}}</b>
+        {{Perks.perkForKlass(KS.focalKlass.name).sdescription}}
     </p>
-    <p><b>Max level reached:</b>{{Stats.playerLevel(selected.name)}}</p>
+    <p><b>Max level reached:</b>{{Stats.playerLevel(KS.focalKlass.name)}}</p>
     </div>
 
-    <button *ngIf="(selected.unlocked && PS.player.level >= reincMinLevel)
+    <button *ngIf="(KS.focalKlass.unlocked)
                     || cheatMode"
         class="btn btn-default reincarnate-button center-block"
+        [class.disabled]="!cheatMode && PS.player.level < 10"
         (click)="reincarnating=true">
             Reincarnate!
     </button>
-    <div *ngIf="!selected.unlocked">
-        <p *ngIf="selected.progress != undefined">
-            Unlock progress: {{selected.progress | percent:'1.0-0'}}
+    <div *ngIf="!KS.focalKlass.unlocked">
+        <p *ngIf="KS.focalKlass.progress != undefined">
+            Unlock progress: {{KS.focalKlass.progress | percent:'1.0-0'}}
         </p>
-        <p><b>Hint:</b> {{selected.hint}}</p>
+        <p><b>Hint:</b> {{KS.focalKlass.hint}}</p>
 
     </div>
 </div>
@@ -186,10 +187,10 @@ import { GLOBALS } from '../globals';
         >
             <img [src]="'assets/units/' + klass.img"
                 [class.locked]="!klass.unlocked"
-                (click)="selected=klass"
+                (click)="KS.focalKlass=klass"
                 >
             <div>
-            <a (click)="selected=klass">{{displayName(klass)}}</a>
+            <a (click)="KS.focalKlass=klass">{{displayName(klass)}}</a>
             </div>
         </div>
     </div>
@@ -215,7 +216,6 @@ export class KlassesComponent {
     showMaxLevelsInline = false;
     reincarnating: boolean = false;
     reincMinLevel = GLOBALS.reincarnationMinLevel;
-    selected: LiveKlass;
     ST = SkillType;
     cheatMode = GLOBALS.cheatMode;
     constructor (
@@ -296,7 +296,7 @@ export class KlassesComponent {
 
         this.ZS.reloadZones();
         this.Perks.resetAllPerks();
-        this.PS.reincarnate(this.selected.name);
+        this.PS.reincarnate(this.KS.focalKlass.name);
         this.router.navigate(['/']);
     }
 }

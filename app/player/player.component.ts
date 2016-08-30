@@ -48,7 +48,7 @@ import { Player } from './player.interface';
         >
         </div><div class="col-xs-6 charcol chartext">
         <h4>
-        <p class="text-left">{{character.name}}, the level
+        <p class="text-left">Level
         <span class="lvl">{{character.level}}</span>
         {{character.klass}}</p>
         </h4>

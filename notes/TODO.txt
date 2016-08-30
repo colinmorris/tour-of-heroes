@@ -11,6 +11,7 @@ MISC/TRIAGE
 - classes/farmer style routes
     - (and have some default - either the current class, or whatever was viewed last)
 +- add a 'retreat' button next to 'Stop' that ends the current action (giving no benefits) and starts a new one. I don't think it's a bad behavior to enable.
+- Restore character name thing? Maybe just prompt for a name at the very beginning and use that throughout?
 
 BALANCE
 =======
@@ -20,8 +21,6 @@ BALANCE
 - Seems like ancestry bonus is basically just a linear multiplier on your progress speed throughout your lifetime. It follows that...
     - if we want high level zones to only be tractable with a high ancestry bonus (and/or more advanced classes), then lower level zones will be blazingly fast when those conditions are met. Is this a problem? Maybe not.
     - what if ancestry bonus was an aptitude multiplier *per player level*?
-- it'd be useful to have some debug UI in the class view showing sum of apts for a class, or other useful ways for comparing apts across classes
-- tutorial-y stuff
 - maybe, like, double base action speed and SP gains across the board? seems like a fair bit of time is spent in green zones, and those actions feel like they blaze by, faster than my hilarious action text can be read.
     - Another option: make the slowdown curve kind of S-shaped.
 - the Bat King is great. You should do more stuff like that in lower level zones.
@@ -35,7 +34,6 @@ TECHNICAL
 - switch to attributive components?
 +?- profile the thing
 - should think about trying to reconcile passives and buffs (so that it's easy to make one out of the other)
-- consider adding a 'debug' component where you can dump a bunch of extra information that's useful for debugging (e.g. player metadata)
 - complete migration to RC5
     - http://angularjs.blogspot.ca/2016/08/angular-2-rc5-ngmodules-lazy-loading.html
     - https://angular.io/docs/ts/latest/cookbook/rc4-to-rc5.html
@@ -55,7 +53,6 @@ MECHANICS
 BUGS
 ====
 +- have seen at least one instance where an action got 'stuck' (but was able to finish it by clicking). That's a little scary. I have a fear that my code is crawling with race conditions.
-+- fill in descriptions of spells/perks
 - skill icons should be green if slowdown rounds down to 0%.
 
 IDEAS
@@ -68,26 +65,29 @@ IDEAS
 
 UI
 ==
-- reduce top/bottom padding between aptitude bars in klass view
+- the colors for skill difficulty (in zone summary) and apts (class view) are fugly. We can do better.
 - forward/back arrows in the classes view 'porthole'
-- nice navbar
-+- spells should be more 'at hand'
+    - ooh, and keyboard navigation
 - would also be nice to have keyboard shortcuts for spells
 +?- distinguish in the UI between a permanently buffed stat and a temp buffed one (light green vs. dark green?)
 +?- there's a weird bug where like 5% of the time the progress bar doesn't reset to 0, but uses a long transition
 - add a nice CSS transition to progress bar when clicked
 - zone difficulty UI should probably incorporate cleric perk
-+- klass component: make icons in grid clickable
+- klass component: make icons in grid clickable
+    - done, but they should also have clickable cursors
 - color action bars by inexp. penalty?
 - icons for perks?
 - ticker. Where to put it, what to say in it. Current thinking: modal alerts for significant one-time-ish events? And a small scrolling action log in the focal zone view for more spammy stuff?
 - unit animations
-- "unlocked x/Y classes" text in classes view
-    - maybe that's also a nice place to show max levels reached + ancestry
-- show greyed-out reincarnate button for unlocked classes when level < 10
-- rework the UI for aptitudes in the klass view. I think bars would be nicer (and colored, since they'll all be on the same scale)
 - three label colors for buffs. One for HA, one for all other passives, and one for temporary buffs.
 - A good argument for refactoring the current "last outcome" display into some kind of scrolling ticker: I like the idea of a spell that just gives you some random SP. But it seems important to show the player somewhere how many SP they got in which skills. Where would that be currently? Doesn't make sense to tie to action completion. I'm sure there are going to be other cases like this.
+- +1 animation for player level. Better yet: a different animation from skill level. What if the old level just sort of fell to the side and down? That could be kinda funny.
+- Across the board, need to work on number formatting. May end up with some super-duper-big numbers eventually - should have a way of dealing with that using scientific notation or whatever. Also, should probably do that classic incremental game thing of giving the option of abbreviations, scientific notation, or whatever else.
+- Look into restyling the skill view in the player component.
+    - takes up too much vertical space
+    - numbers aren't vertically aligned
+    - aptitude numbers not nicely aligned, and won't transition gracefully to large values.
+    - consider scrunching like the apt view in class component?
 
 USABILITY
 =========

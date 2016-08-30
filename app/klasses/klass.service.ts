@@ -13,7 +13,9 @@ export interface LiveKlass extends Klass {
 
 @Injectable()
 export class KlassService {
-
+    /** The class that will show initially in the 'porthole' when navigating
+    to the classes view. **/
+    public focalKlass : LiveKlass;
     starterKlass = "Peasant";
     private klassMap : {[name:string] : LiveKlass};
     private unlockCheckInterval = 5 * 1000;
@@ -32,6 +34,8 @@ export class KlassService {
         Observable.timer(0, this.unlockCheckInterval).subscribe( () => {
             this.checkUnlocks();
         });
+
+        this.focalKlass = this.klassMap[this.starterKlass];
     }
 
     get allKlasses() : LiveKlass[] {
