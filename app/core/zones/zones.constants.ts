@@ -50,11 +50,12 @@ zones:
         name: 'Flower Fields',
         description: 'Rows upon rows of pretty flowers',
         actions: [
-            {vb: 'plant', obj: 'some __X', opts:FLOWERS, skills: S.Farming},
+            {vb: 'plant', obj: 'some __X', opts:FLOWERS, skills: S.Farming,
+            difficulty:PLUS(3)},
             {vb: 'pick', obj: 'a bouquet of __X', opts:FLOWERS, skills: [S.Farming, S.Charm]},
-            {vb: 'tiptoe', obj: 'through the tulips', skills: S.Stealth, bonusLevel:1},
+            {vb: 'tiptoe', obj: 'through the tulips', skills: S.Stealth, bonusLevel:.5},
         ],
-        difficulty: 5,
+        difficulty: 4,
     },
 
 ]},
