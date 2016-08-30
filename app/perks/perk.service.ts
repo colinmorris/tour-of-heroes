@@ -77,7 +77,6 @@ export class PerkService implements IPerkService {
     (The timer-based solution is kind of a dumb hack. Should probably listen
     for an event fired when the app component is done loading. Or something.) **/
     addPerkForKlass(klass: string, defer=false) {
-        console.log(`Adding a perk for ${klass}`);
         /** TODO: this is very brittle. At the very least, should iterate through
         all known classes on initialization and assert that their corresponding
         perk exists. **/
