@@ -8,6 +8,10 @@ import { AppComponent } from './shared/app.component';
 import { routing } from './shared/app.routes';
 
 import { SpellsComponent } from './perks/spells.component';
+import { HomeComponent } from './shared/home.component';
+import { KlassesComponent } from './klasses/klasses.component';
+import { StatsComponent } from './stats/stats.component';
+import { DebugComponent } from './shared/debug.component';
 
 @NgModule({
     imports: [BrowserModule, FormsModule,
@@ -15,7 +19,8 @@ import { SpellsComponent } from './perks/spells.component';
         routing
     ],
     declarations: [AppComponent,
-        SpellsComponent
+        SpellsComponent, HomeComponent, KlassesComponent, StatsComponent,
+        DebugComponent,
     ],
     bootstrap: [AppComponent]
 })

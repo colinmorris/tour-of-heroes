@@ -60,13 +60,13 @@ import { Component, Input,
     template: `
     <div>
     <template [ngIf]="base == buffed">
-        <span *ngIf="toast" class="stat" @baseValue="base">{{base}}</span>
+        <span *ngIf="toast" class="stat" [@baseValue]="base">{{base}}</span>
         <span *ngIf="!toast" class="stat">{{base}}</span>
     </template>
     <template [ngIf]="base != buffed">
         <span class="stat buffed"
             title="{{base | number:'1.1-2'}} + {{buffed-base | number:'1.1-2'}}">
-            <span *ngIf="toast" @baseValue="base">
+            <span *ngIf="toast" [@baseValue]="base">
             {{buffed | number:'1.1-1'}}
             </span>
             <span *ngIf="!toast">
@@ -75,7 +75,7 @@ import { Component, Input,
         </span>
     </template>
     <span *ngIf="toast" class="toast"
-        @baseValueToast="base"
+        [@baseValueToast]="base"
         >+1</span>
     </div>
     `
