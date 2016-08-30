@@ -12,6 +12,7 @@ export const GLOBALS = {
 
     reincarnationMinLevel: 10,
     zoneLevelingMinLevel: 25,
+    difficultyBonusPerZoneLevel: 20,
 
     /** One of 'exp' or 'lin'.
     Determines whether ancestry bonus grows linearly or exponentially. **/

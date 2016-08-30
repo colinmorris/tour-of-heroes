@@ -9,7 +9,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { Zones } from './zones.service';
 import { Zone, ActionOutcome, LiveZoneAction,
-    levelUpZone
+    levelUpZone, XpFormulas
  } from '../core/index';
 import { ActionService, PostActionInfo } from '../actions/action.service';
 import { PlayerService } from '../player/player.service';
@@ -83,9 +83,27 @@ import { GLOBALS } from '../globals';
         </div>
 
         <div *ngIf="!currentAction">
-            <p>{{zone.description}}</p>
+            {{zone.description}}
+
             <div *ngIf="PS.canLevelZones() || cheatMode">
-                <button (click)="levelZone()">Level up...</button>
+                <a class="btn"
+                    (click)="levelUpExpanded = !levelUpExpanded"
+                >
+                Zone Level: {{zone.level}}
+                <span class="glyphicon glyphicon-chevron-down"></span>
+                </a>
+
+                <div *ngIf="levelUpExpanded">
+                    <p>Leveling up will significantly increase the difficulty of this
+                    zone. The minimum skill level to avoid slowdown will increase by
+                    about {{masteryIncreasePerZoneLevel()}}. But the number of skill
+                    points awarded will increase as well.</p>
+                    <p>Costs <b>1 Zone Improvement Token</b> (have: {{Stats.ziTokens}})
+                    and requires level {{plevelToLevelZone()}}.</p>
+                    <button class="btn"
+                    [class.disabled]="!canLevelZone()"
+                    (click)="levelZone()">Level up</button>
+                </div>
             </div>
         </div>
     </div>
@@ -102,7 +120,7 @@ import { GLOBALS } from '../globals';
 })
 
 export class ZoneComponent implements OnInit, OnDestroy, OnChanges {
-
+    levelUpExpanded = false;
     @Input() zone : Zone;
     currentAction: LiveZoneAction;
     lastOutcome: ActionOutcome;
@@ -137,10 +155,25 @@ export class ZoneComponent implements OnInit, OnDestroy, OnChanges {
         this.loaded = true;
     }
 
+    canLevelZone() {
+        return this.Stats.ziTokens > 0 && this.PS.player.level >= this.plevelToLevelZone();
+    }
+
+    plevelToLevelZone() {
+        /** TODO: The fact that zone.difficulty isn't updated when level
+        is increased is probably a bug. **/
+        return this.zone.difficulty +
+            ((this.zone.level + 1) * GLOBALS.difficultyBonusPerZoneLevel);
+    }
+
     ngOnDestroy() {
         if (this.actionsub) {
             this.actionsub.unsubscribe();
         }
+    }
+
+    masteryIncreasePerZoneLevel() {
+        return Math.ceil(GLOBALS.difficultyBonusPerZoneLevel * XpFormulas.benchmarkSkillLevelForPlevel(1));
     }
 
     // this kind of sucks. Would like it if we could just create a new component
@@ -179,10 +212,10 @@ export class ZoneComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     levelZone() {
-        // TODO: Token stuff
         let level = this.zone.level + 1;
         levelUpZone(this.zone, level);
         this.Stats.leveledZone(this.zone.name, level);
+        this.Stats.ziTokens -= 1;
     }
 
     select() {

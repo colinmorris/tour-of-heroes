@@ -15,7 +15,6 @@ import { ZoneAction } from './zoneaction.interface';
 import { VerbalZoneAction } from './zoneaction';
 import { Verb, verbLookup } from './verb';
 
-let difficulty_bonus_per_zone_level = 20;
 
 export function levelUpZone(zone: Zone, toLevel: number) {
     var z: ZoneData;
@@ -42,7 +41,7 @@ export function levelUpZone(zone: Zone, toLevel: number) {
 }
 
 function leveledZoneDifficulty(zone: ZoneData, level: number) : number {
-    return zone.difficulty + (level * difficulty_bonus_per_zone_level);
+    return zone.difficulty + (level * GLOBALS.difficultyBonusPerZoneLevel);
 }
 
 export function loadSuperZones(zoneLevels: {[zoneName:string]: number}) : SuperZone[] {

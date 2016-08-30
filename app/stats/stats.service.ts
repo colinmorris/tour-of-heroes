@@ -201,6 +201,9 @@ export class StatsService implements IStatsService {
     get ziTokens() : number {
         return this.stats.current.ziTokens;
     }
+    set ziTokens(n: number) {
+        this.stats.current.ziTokens = n;
+    }
 
 
 }
