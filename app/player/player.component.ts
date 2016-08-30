@@ -67,11 +67,14 @@ import { Player } from './player.interface';
             <li class="list-group-item">
             <div class="row">
                 <div class="col-xs-4 col-xs-offset-2">
-                    <b>Level</b>
+                    <b
+    title="Skill level. Raise these to take on more difficulty zones and raise your player level.">
+                    Level</b>
                 </div>
 
                 <div class="col-xs-4 col-xs-offset-2">
-                    <b>Aptitude</b>
+                    <b title="Skill gains are multiplied by this"
+                    >Aptitude</b>
                 </div>
             </div>
             </li>
