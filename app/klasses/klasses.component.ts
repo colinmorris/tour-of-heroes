@@ -52,8 +52,14 @@ import { GLOBALS } from '../globals';
         .apt-row div {
             max-height: 32px;
         }
+        .stats-panel {
+            margin-top: 15px;
+        }
         `
     ],
+    /** TODO: This template is huuuge. Split into subcomponents and/or move
+    to a separate file.
+    **/
     /** Modal code taken from this SO answer: http://stackoverflow.com/a/37402577/262271
     TODO: Definitely consider component-izing at some point. Probably useful elsewhere.
     https://toddmotto.com/transclusion-in-angular-2-with-ng-content
@@ -187,14 +193,26 @@ import { GLOBALS } from '../globals';
             </div>
         </div>
     </div>
-    <p>{{KS.nUnlocked}} / {{KS.nKlasses}} classes unlocked</p>
-    <p>TODO: Sum of levels, toggle to show max level inline with cell title</p>
+
+    <div class="panel panel-default stats-panel">
+    <div class="panel-body">
+    <div class="row">
+    <div class="col-xs-3 col-xs-offset-3">
+        <p>{{KS.nUnlocked}} / {{KS.nKlasses}} classes unlocked</p>
+    </div>
+    <div class="col-xs-3">
+        <input type="checkbox" [(ngModel)]="showMaxLevelsInline">
+        <span>Show max levels</span>
+    </div>
+    </div></div></div>
 </div>
 
 </div>
     `
 })
 export class KlassesComponent {
+    /** TODO: This should probably be sticky. **/
+    showMaxLevelsInline = false;
     reincarnating: boolean = false;
     reincMinLevel = GLOBALS.reincarnationMinLevel;
     selected: LiveKlass;
@@ -216,7 +234,14 @@ export class KlassesComponent {
     }
 
     displayName(klass: LiveKlass) {
-        return klass.unlocked ? klass.name : "???";
+        if (!klass.unlocked) {
+            return '???';
+        }
+        let name = klass.name;
+        if (this.showMaxLevelsInline) {
+            name += ` (${this.Stats.playerLevel(klass.name)})`;
+        }
+        return name;
     }
 
     // Bleh, hack

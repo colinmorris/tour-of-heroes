@@ -8,7 +8,7 @@ export const GLOBALS = {
     let's try something more extreme, and double every 2 levels,
     2^(1/2) = 1.41421
     **/
-    skillLevelExpPointCostBase: 1.41421,
+    skillLevelExpPointCostBase: 1.1487,
 
     reincarnationMinLevel: 10,
     zoneLevelingMinLevel: 25,
