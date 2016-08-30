@@ -48,6 +48,9 @@ export function loadSuperZones(zoneLevels: {[zoneName:string]: number}) : SuperZ
     let superzones: SuperZone[] = [];
     let id = 0;
     for (let superzone of SUPERZONEDATA) {
+        if (superzone.cheat && !GLOBALS.cheatMode) {
+            continue;
+        }
         let zones: Zone[] = new Array<Zone>();
         for (let zoneData of superzone.zones) {
             let z: Zone = zoneFromJSON(zoneData, id++, superzone.name,

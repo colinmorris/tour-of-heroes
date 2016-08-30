@@ -107,4 +107,6 @@ export interface SuperZoneData {
     name: string;
     minLevel: number;
     zones: ZoneData[];
+    // If true, only show this SZ when "cheatMode" is on
+    cheat?: boolean;
 }

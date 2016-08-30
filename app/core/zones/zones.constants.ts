@@ -46,15 +46,6 @@ zones:
         ],
         difficulty: 3,
     },
-    // {
-    //     name: 'Cheatzone',
-    //     description: 'Cheatz',
-    //     actions: [
-    //         {vb: 'cheat', obj: 'the game', skills: [S.Farming, S.Riding, S.Charm, S.Stealth, S.Piety],
-    //             gains: PLUS(CHEAT_POINTS)}
-    //         ],
-    //     difficulty: 0,
-    // },
     {
         name: 'Flower Fields',
         description: 'Rows upon rows of pretty flowers',
@@ -283,6 +274,7 @@ zones: [
 {
 name: 'Cheatz',
 minLevel: 999,
+cheat: true,
 zones: [
     {
         name: 'Cheat 1',
