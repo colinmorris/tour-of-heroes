@@ -45,6 +45,7 @@ MECHANICS
 =========
 +?- zone leveling
     - one important aspect of this is to make sure the difficulty jumps between levels are quite high. This should help discourage the behavior of just focusing on one or two zones and leveling them to the exclusion of all others.
+    - maybe leveling up a zone should unlock the 'oneshot' actions in that zone?
 - item drops
 - bonus zones
 
@@ -52,7 +53,7 @@ BUGS
 ====
 +- have seen at least one instance where an action got 'stuck' (but was able to finish it by clicking). That's a little scary. I have a fear that my code is crawling with race conditions.
 +- fill in descriptions of spells/perks
-- fix spurious +1 toasts on component reload
+- skill icons should be green if slowdown rounds down to 0%.
 
 IDEAS
 ======
@@ -64,6 +65,7 @@ IDEAS
 
 UI
 ==
+- reduce top/bottom padding between aptitude bars in klass view
 - forward/back arrows in the classes view 'porthole'
 - nice navbar
 +- spells should be more 'at hand'

@@ -6,6 +6,7 @@ import { PerkService } from '../perks/perk.service';
 import { PlayerService } from '../player/player.service';
 import { LiveKlass, KlassService } from './klass.service';
 import { StatsService } from '../stats/stats.service';
+import { Zones } from '../zones/zones.service';
 
 import { SkillComponent } from '../shared/skill.component';
 import { MultiplierPipe } from '../shared/multiplier.pipe';
@@ -191,6 +192,7 @@ export class KlassesComponent {
         private AS: ActionService,
         private Perks: PerkService,
         private Stats: StatsService,
+        private ZS: Zones,
         private router: Router
     ) {
     }
@@ -253,6 +255,7 @@ export class KlassesComponent {
         this.Stats.setLevel(this.PS.player.level, this.PS.player.klass);
         this.Stats.reincarnated();
 
+        this.ZS.reloadZones();
         this.Perks.resetAllPerks();
         this.PS.reincarnate(this.selected.name);
         this.router.navigate(['/']);

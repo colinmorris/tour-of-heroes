@@ -20,7 +20,12 @@ export class Zones {
     constructor(
         private Stats: StatsService
     ) {
-        this.superzones = loadSuperZones(Stats.stats.current.zoneLevels);
+        this.reloadZones();
         this.focalZone = this.superzones[0].zones[0];
+    }
+
+    reloadZones() {
+        // todo: having stats public is dumb
+        this.superzones = loadSuperZones(this.Stats.stats.current.zoneLevels);
     }
 }
