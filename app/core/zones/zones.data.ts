@@ -83,7 +83,7 @@ function setProbabilities(actions: ActionData[]) {
             freeWeight += a.weight;
         }
     }
-    console.assert(reservedWeight < 1);
+    console.assert(reservedWeight <= 1);
     // How much to scale free weights by
     let scaleFactor = (1-reservedWeight) / freeWeight;
     for (let action of actions) {

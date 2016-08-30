@@ -39,6 +39,18 @@ import { GLOBALS } from '../globals';
         .progress {
             /* Match the size of skill icons */
             height: 32px;
+            /* Rounded corners create weird lacunae when the bars are packed together */
+            border-radius: 0px;
+        }
+        .apt-row {
+            margin-top: 0px;
+            margin-bottom: 0px;
+            height: 32px;
+            padding-top: 0px;
+            padding-bottom: 0px;
+        }
+        .apt-row div {
+            max-height: 32px;
         }
         `
     ],
@@ -117,7 +129,7 @@ import { GLOBALS } from '../globals';
 
     <h3><span class="label label-default">Aptitudes</span></h3>
     <div class="apts">
-        <div class="row"
+        <div class="row apt-row"
             *ngFor="let pair of aptitudePairs(selected)">
             <template ngFor let-apt [ngForOf]="pair">
                 <div class="col-xs-1">
