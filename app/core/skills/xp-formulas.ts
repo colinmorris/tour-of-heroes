@@ -29,8 +29,8 @@ export namespace XpFormulas {
         let k be a reasonable benchmark skill level for our player level (say,
             the skill level of all our skills if we distributed all SP evenly to
             reach this level.)
-        we know that reaching skill level k requires SkillUp(k) ~= S^k skill points
-        let standardSpServing = G^k;
+        we know that reaching skill level k requires SkillUp(k) ~= 10*S^k skill points
+        let standardSpServing = 10*G^k;
 
         I did the monster math, and this would give
             standardSpServing = SkillUp(k) * exp(k * log(G/S))
@@ -47,17 +47,24 @@ export namespace XpFormulas {
             where x=k, or x=k^2, or something.
         )
         **/
-        let G = GLOBALS.skillLevelExpPointCostBase / 1.1;
         let k = benchmarkSkillLevelForPlevel(plevel);
+        return standardSpServingForSkillLevel(k);
+
+    }
+
+    /** If skill X is level Y, what's a 'reasonable' number of skill points to
+    give to X (e.g. for an action that trains X and has a mastery level around Y).
+    **/
+    export function standardSpServingForSkillLevel(level: number) {
         /** A couple nitty gritty details not specified above:
         - G = S/e probably is too harsh. Let's start with S/1.1
-        - SkillUp(k) is actually 10 * S^k
         - we probably want to peg this to, say, SkillUp(k)/5. So in the
           limiting case of small K, or equal G and S, we're looking at ~25
           actions to gain a level (rather than 1)
         **/
-        return Math.pow(G, k) * GLOBALS.skillLevelBaseCost / 5;
-
+        let G = GLOBALS.skillLevelExpPointCostBase / 1.1;
+        return Math.pow(G, level) * GLOBALS.skillLevelBaseCost
+                / GLOBALS.benchmarkActionsPerSkillLevel;
     }
 
     export function benchmarkSkillLevelForPlevel(plevel: number) {

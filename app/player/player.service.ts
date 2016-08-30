@@ -14,7 +14,7 @@ import { GLOBALS } from '../globals';
 
 import {
     SkillMap,
-    mostlyUniformSkillMap
+    mostlyUniformSkillMap, zeroSkillMap
 } from '../core/index';
 
 type KlassType = string;
@@ -124,6 +124,11 @@ export class PlayerService implements IPlayerService {
 
     trainSkills(basePoints: SkillMap) : SkillMap {
         return this._player.applySkillPoints(basePoints);
+    }
+    trainSkill(skill: SkillType, basePoints: number) : SkillMap {
+        let sp = zeroSkillMap();
+        sp[skill] = basePoints;
+        return this.trainSkills(sp);
     }
 
     reincarnate(klass: KlassType) {

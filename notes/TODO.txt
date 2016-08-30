@@ -26,6 +26,7 @@ BALANCE
     - Another option: make the slowdown curve kind of S-shaped.
 - the Bat King is great. You should do more stuff like that in lower level zones.
 - balancing zone difficulty: kind of want to hit a sweet spot where some zones are too hard when first unlocked, but most zones are sort of boringly easy around the time you're about to unlock the next batch.
++- Consider adding some kind of table in the debug view showing SP/level, SP/action, and their ratio for different values of level (and adjusted by various levels of HA buff). Should be fairly easy to make, and would really help balancing.
 
 TECHNICAL
 =========
@@ -85,6 +86,7 @@ UI
 - show greyed-out reincarnate button for unlocked classes when level < 10
 - rework the UI for aptitudes in the klass view. I think bars would be nicer (and colored, since they'll all be on the same scale)
 - three label colors for buffs. One for HA, one for all other passives, and one for temporary buffs.
+- A good argument for refactoring the current "last outcome" display into some kind of scrolling ticker: I like the idea of a spell that just gives you some random SP. But it seems important to show the player somewhere how many SP they got in which skills. Where would that be currently? Doesn't make sense to tie to action completion. I'm sure there are going to be other cases like this.
 
 USABILITY
 =========

@@ -1,3 +1,4 @@
+import { SkillType } from './skills/skilltype.enum';
 
 export function randomChoice<T>(arr:Array<T>) : T {
     console.assert(arr.length > 0);
@@ -7,4 +8,8 @@ export function randomChoice<T>(arr:Array<T>) : T {
 
 export function formatPct(num: number, decimalPlaces=0) : string {
     return (num*100).toFixed(decimalPlaces) + '%';
+}
+
+export function randomSkill() : SkillType {
+    return Math.floor(Math.random() * SkillType.MAX);
 }

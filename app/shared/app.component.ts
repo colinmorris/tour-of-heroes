@@ -65,7 +65,6 @@ export class AppComponent implements OnInit {
     ngOnInit() {
         if (GLOBALS.autoSave) {
             Observable.interval(GLOBALS.autoSaveIntervalMs).subscribe( () => {
-                console.log("Auto-saving");
                 this.serials.save();
             });
         }

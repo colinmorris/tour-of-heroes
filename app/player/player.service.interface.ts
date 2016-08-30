@@ -15,4 +15,6 @@ export interface IPlayerService {
     debuffAptitudes(by: SkillMap);
     buffSkillLevels(by: SkillMap);
     buffSkillLevel(skill: SkillType, by: number);
+
+    trainSkill(skill: SkillType, basePoints: number);
 }

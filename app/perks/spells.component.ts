@@ -15,7 +15,7 @@ import { Spell, Buff, Passive } from './perk.interface';
     template: `
     <div *ngFor="let spell of spells">
         <button class="btn btn-warning"
-        [title]="spell.description"
+        [title]="spellTitleText(spell)"
         [class.disabled]="spell.remainingCooldown > 0"
         (click)="cast(spell)"
         >{{spell.name}} {{cooldownString(spell)}}</button>
@@ -28,6 +28,11 @@ export class SpellsComponent {
         private Stats: StatsService
     ) {
 
+    }
+
+    spellTitleText(spell: Spell) {
+        return `${spell.description}
+(cooldown=${spell.cooldown}s)`;
     }
 
     cooldownString(spell: Spell) {

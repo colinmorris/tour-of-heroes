@@ -1,7 +1,11 @@
 import { AbstractSpell, AbstractBuffingSpell } from '../perk';
-import { LiveZoneAction, ProtoActionOutcome } from '../../core/index';
+import { LiveZoneAction, ProtoActionOutcome,
+    randomSkill, SkillType,
+    XpFormulas
+ } from '../../core/index';
 import { di_tokens } from '../../shared/di-tokens';
 import { IActionService } from '../../actions/action.service.interface';
+import { IPlayerService } from '../../player/player.service.interface';
 
 // Helpers to save some keystrokes
 abstract class ActionServiceSpell extends AbstractSpell {
@@ -58,23 +62,23 @@ export class BerserkerPerk extends AbstractBuffingSpell {
     buffDuration = 20;
 }
 
-/** TODO XXX: Haha, I accidentally wrote the same spell twice. I guess the Shaman
-    one wins, since it's a lot more parsimonious. **/
 export class ScholarPerk extends AbstractSpell {
-    static sname = "Concentrate";
-    cooldown = 60;
-    static spMultiplier = 3.0;
-    static sdescription = `Increase the SP gains from the current action by
-        ${100*(1+ScholarPerk.spMultiplier)}%`;
-    diTokens = [di_tokens.actionservice];
-    onCast(AS: IActionService) {
-        let action: LiveZoneAction = AS.currentAction;
-        if (!action || !action.active) {
-            return false;
-        }
-        AS.protoActionOutcomeSubject.take(1).subscribe( (proto: ProtoActionOutcome) => {
-            proto.spMultiplier += ScholarPerk.spMultiplier;
-        });
+    static sname = "Research";
+    cooldown = 300;
+    static sdescription = `Instantly gain a large number of skill points in a random skill`;
+    diTokens = [di_tokens.playerservice];
+    onCast(PS: IPlayerService) {
+        let skill: SkillType = randomSkill();
+        let standard = XpFormulas.standardSpServingForSkillLevel(
+            PS.player.skills[skill].baseLevel
+        );
+        /** Let's make it nice and swingy. Anywhere between 1 standard serving
+        to 32 times **/
+        let exponent = Math.random() * 5;
+        let sp = Math.pow(2, exponent) * standard;
+        console.log(`Research spell training ${SkillType[skill]} by ${sp} points
+            standard=${standard}, exponent=${exponent}`);
+        PS.trainSkill(skill, sp);
         return true;
     }
 }
