@@ -29,12 +29,13 @@ import { GLOBALS } from '../globals';
     template: `
     <simple-notifications></simple-notifications>
     <div class="container">
-    <nav>
-        <a [routerLink]="['/']">Home</a>
-        <a [routerLink]="['/classes']">Classes</a>
-        <a [routerLink]="['/stats']">Stats</a>
-        <a [routerLink]="['/debug']" *ngIf="cheatMode">Debug</a>
-    </nav>
+    <ul class="nav nav-pills">
+        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+            <a [routerLink]="['/']">Home</a></li>
+        <li [routerLinkActive]="['active']"><a [routerLink]="['/classes']">Classes</a></li>
+        <li [routerLinkActive]="['active']"><a [routerLink]="['/stats']">Stats</a></li>
+        <li [routerLinkActive]="['active']"><a [routerLink]="['/debug']" *ngIf="cheatMode">Debug</a></li>
+    </ul>
     <router-outlet></router-outlet>
     <div class="row save">
     <button (click)="serials.save()">Save</button>
