@@ -100,7 +100,7 @@ export class KlassService {
         global style rules for mini/medium/big class icons. **/
         let html = `<div class="row">
         <div class="col-xs-4">
-        <img src="/assets/units/${klass.img}">
+        <img src="assets/units/${klass.img}">
         </div>
         <div class="col-cs-8">
         <p>New class unlocked!</p>
@@ -116,7 +116,7 @@ export class KlassService {
     }
 
     iconForKlass(klass: string) : string {
-        return '/assets/units/' + this.klassMap[klass].img;
+        return 'assets/units/' + this.klassMap[klass].img;
     }
 
 }

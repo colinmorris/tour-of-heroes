@@ -123,7 +123,7 @@ import { GLOBALS } from '../globals';
 <div class="col-xs-4">
 <div *ngIf="selected" class="focal">
     <h2>{{displayName(selected)}}</h2>
-    <img [src]="'/assets/units/' + selected.img"
+    <img [src]="'assets/units/' + selected.img"
         class="big-icon"
         [class.locked]="!selected.unlocked">
 
@@ -178,7 +178,7 @@ import { GLOBALS } from '../globals';
         <div *ngFor="let klass of KS.allKlasses"
             class="col-xs-2"
         >
-            <img [src]="'/assets/units/' + klass.img"
+            <img [src]="'assets/units/' + klass.img"
                 [class.locked]="!klass.unlocked"
                 (click)="selected=klass"
                 >

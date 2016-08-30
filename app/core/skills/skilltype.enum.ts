@@ -36,4 +36,4 @@ export const skill_images: string[] = [
     'unarmed_combat_paw.png',
     'spellcasting.png',
     'invocations.png'
-].map( (fname: string) => '/assets/skills_dcss/' + fname );
+].map( (fname: string) => 'assets/skills_dcss/' + fname );
