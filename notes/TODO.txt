@@ -40,6 +40,7 @@ TECHNICAL
     - http://angularjs.blogspot.ca/2016/08/angular-2-rc5-ngmodules-lazy-loading.html
     - https://angular.io/docs/ts/latest/cookbook/rc4-to-rc5.html
 - ahead of time compilation
+    - also keep seeing this thing about enableProdMode(). Should look into that.
 - consider propagating 'bonus'-ness up. Might be interesting to show it in the UI, and to have it interact with some perks.
 - ability to export to/load from string. Would make testing a lot easier.
 - redo systemjs.config.js to match the new version in the angular2 quickstart
@@ -108,3 +109,5 @@ USABILITY
 - maybe a 'tips' section?
 - for 'on/off' perks, consider indicating in the UI whether they're currently active?
     - and/or: can perks be made more visible in the lastOutcome UI? use buffedstat component for SP gains that are increased by perks? right now perks maybe don't *feel* as impactful as they should.
+- the 'go' buttons in the zone summary view are kinda dumb. Maybe the zone name should just be a link.
+- give toasts on superzone unlock? (at least the first time)

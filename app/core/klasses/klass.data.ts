@@ -9,9 +9,10 @@ let low_skill_lvl = 15;
 let med_skill_lvl = 30;
 let hi_skill_lvl = 75;
 
-let t1_apt = .5;
-let t2_apt = .6;
-let t3_apt = .7;
+let baseline_apt = 1.0;
+let t1_apt = baseline_apt;
+let t2_apt = baseline_apt;
+let t3_apt = baseline_apt;
 
 /** Used to generate simple unlock criteria of the form "reach level X as class Y"
 **/
@@ -36,14 +37,16 @@ export const KLASSES : Klass[] =[
     },
     {
         name: 'Farmer',
-        aptitudes: mostlyUniformSkillMap(t1_apt,
+        aptitudes: mostlyUniformSkillMap(baseline_apt,
                         {
-                            [ST.Farming]: 3.0,
-                            [ST.Survival]: .7,
-                            [ST.Riding]: 1.0,
+                            [ST.Farming]: 2.0,
+                            [ST.Survival]: 1.1,
+                            [ST.Riding]: 1.5,
                             [ST.Combat]: .3,
-                            [ST.Piety]: .7,
-                            [ST.Intellect]: .4
+                            [ST.Piety]: 1.2,
+                            [ST.Intellect]: .4,
+                            [ST.Charm]: .7,
+                            [ST.Stealth]: .8
                         }),
         img: 'peasant.png',
         hint: `Train your Farming skill`,
@@ -54,13 +57,14 @@ export const KLASSES : Klass[] =[
     {
         name: 'Woodsman',
         aptitudes: mostlyUniformSkillMap(t1_apt, {
-            [ST.Survival]: 2.5,
+            [ST.Survival]: 2.0,
             [ST.Farming]: 1.0,
-            [ST.Stealth]: 1.5,
+            [ST.Stealth]: 1.2,
             [ST.Combat]: .7,
-            [ST.Piety]: .6,
-            [ST.Charm]: .4,
-            [ST.Intellect]: .4
+            [ST.Piety]: 1.0,
+            [ST.Charm]: .6,
+            [ST.Riding]: 1.1,
+            [ST.Intellect]: .6
 
         }),
         img: 'woodsman.png',
@@ -72,28 +76,28 @@ export const KLASSES : Klass[] =[
     {
         name: 'Ranger',
         aptitudes: mostlyUniformSkillMap(t2_apt, {
-            [ST.Survival]: 3.0,
-            [ST.Farming]: .4,
-            [ST.Stealth]: 2.0,
-            [ST.Piety]: 0.3,
-            [ST.Charm]: .6,
-            [ST.Intellect]: 1.0,
-            [ST.Combat]: 1.0
+            [ST.Survival]: 2.0,
+            [ST.Farming]: .6,
+            [ST.Stealth]: 1.7,
+            [ST.Piety]: .4,
+            [ST.Charm]: 1.0,
+            [ST.Intellect]: 1.2,
+            [ST.Combat]: 1.1
         }),
         img: 'ranger.png',
-        hint: `Become a level 20 Woodsman`,
+        hint: `Become an experienced Woodsman`,
         criteria: classLevelUnlockFactory("Woodsman", 20),
     },
     {
         name: 'Archer',
         aptitudes: mostlyUniformSkillMap(t2_apt, {
-            [ST.Survival]: 1.0,
+            [ST.Survival]: .9,
             [ST.Farming]: .4,
             [ST.Stealth]: 1.1,
-            [ST.Piety]: 0.6,
-            [ST.Charm]: 1.2,
-            [ST.Intellect]: 1.1,
-            [ST.Combat]: 2.5
+            [ST.Piety]: 1.0,
+            [ST.Charm]: 1.5,
+            [ST.Intellect]: 1.4,
+            [ST.Combat]: 1.8
         }),
         img: 'archer.png',
         hint: `Score lots of crits`,
@@ -103,13 +107,11 @@ export const KLASSES : Klass[] =[
     },
     {
         name: 'Student',
-        aptitudes: mostlyUniformSkillMap(t1_apt, {
-            [ST.Intellect]: 2.5,
-            [ST.Combat]: .3,
-            [ST.Survival]: .3,
-            [ST.Charm]: 1.0,
-            [ST.Stealth]: 1.0,
-            [ST.Riding]: .5,
+        aptitudes: mostlyUniformSkillMap(baseline_apt, {
+            [ST.Intellect]: 1.2,
+            [ST.Combat]: .8,
+            [ST.Survival]: .9,
+            [ST.Charm]: 1.1
         }),
         img: 'mage.png',
         hint: `Live an active life`,
@@ -120,10 +122,12 @@ export const KLASSES : Klass[] =[
     {
         name: 'Assassin',
         aptitudes: mostlyUniformSkillMap(t2_apt, {
-            [ST.Stealth]: 2.5,
-            [ST.Intellect]: 1.1,
-            [ST.Combat]: 1.5,
-            [ST.Piety]: .3
+            [ST.Stealth]: 2.0,
+            [ST.Intellect]: 1.3,
+            [ST.Combat]: 1.3,
+            [ST.Piety]: .4,
+            [ST.Farming]: .7,
+            [ST.Charm]: 1.1
         }),
         img: 'assassin+female.png',
         hint: `Train your Stealth skill`,
@@ -134,11 +138,12 @@ export const KLASSES : Klass[] =[
     {
         name: 'Cleric',
         aptitudes: mostlyUniformSkillMap(t2_apt, {
-            [ST.Piety]: 2.5,
+            [ST.Piety]: 2.2,
             [ST.Combat]: 0.1,
-            [ST.Survival]: 0.5,
-            [ST.Intellect]: 1.3,
-            [ST.Stealth]: 1.2
+            [ST.Survival]: 0.8,
+            [ST.Stealth]: .8,
+            [ST.Riding]: 1.1,
+            [ST.Charm]: 1.2
         }),
         img: 'white-mage.png',
         hint: `Live a life free from violence`,
@@ -149,10 +154,11 @@ export const KLASSES : Klass[] =[
     {
         name: 'Berserker',
         aptitudes: mostlyUniformSkillMap(t1_apt, {
-            [ST.Combat]: 2.6,
-            [ST.Charm]: .6,
+            [ST.Combat]: 2.2,
+            [ST.Charm]: .7,
             [ST.Intellect]: .2,
-            [ST.Stealth]: .5,
+            [ST.Stealth]: .6,
+            [ST.Farming]: .9,
             [ST.Survival]: 1.3
         }),
         img: 'berserker.png',
@@ -166,11 +172,11 @@ export const KLASSES : Klass[] =[
     },
     {
         name: 'Skeleton',
-        aptitudes: mostlyUniformSkillMap(t1_apt+.5, {
-            [ST.Stealth]: .3,
-            [ST.Piety]: .3,
-            [ST.Charm]: .4,
-            [ST.Survival]: 1.8
+        aptitudes: mostlyUniformSkillMap(t1_apt+.1, {
+            [ST.Stealth]: .6,
+            [ST.Piety]: .4,
+            [ST.Charm]: .5,
+            [ST.Survival]: 2.0
         }),
         img: 'skeleton.png',
         hint: `Clickety-clack go the spooky Skeleton bones`,
@@ -182,10 +188,10 @@ export const KLASSES : Klass[] =[
         name: 'Chocobone', // That name was too good not to steal. Thanks Wesnoth.
         aptitudes: mostlyUniformSkillMap(t3_apt, {
             [ST.Stealth]: 0.1,
-            [ST.Riding]: 3.0,
-            [ST.Survival]: 1.5,
-            [ST.Piety]: 0.3,
-            [ST.Combat]: 2.0
+            [ST.Riding]: 2.0,
+            [ST.Survival]: 1.4,
+            [ST.Piety]: 0.4,
+            [ST.Combat]: 1.5
         }),
         img: 'chocobone.png',
         hint: 'Live a life as a Skeleton and a Jouster',
@@ -235,25 +241,25 @@ export const KLASSES : Klass[] =[
     {
         name: 'Scholar',
         aptitudes: mostlyUniformSkillMap(t2_apt, { // copy-paste of student
-            [ST.Intellect]: 2.5,
-            [ST.Combat]: .3,
-            [ST.Survival]: .3,
-            [ST.Charm]: 1.0,
+            [ST.Intellect]: 2.0,
+            [ST.Combat]: .4,
+            [ST.Survival]: .7,
+            [ST.Charm]: 1.3,
             [ST.Stealth]: 1.0,
-            [ST.Riding]: .5,
+            [ST.Riding]: .9,
         }),
         img: 'red-mage.png',
-        hint: `Reach level 20 as a Student`,
+        hint: `Become an experienced Student`,
         criteria: classLevelUnlockFactory("Student", 20),
     },
     {
         name: 'Blob',
-        aptitudes: mostlyUniformSkillMap(t2_apt, {
+        aptitudes: mostlyUniformSkillMap(t2_apt+.2, {
             [ST.Riding]: .3,
             [ST.Charm]: .1,
-            [ST.Combat]: 1.2,
+            [ST.Combat]: 1.3,
             [ST.Stealth]: 1.5,
-            [ST.Survival]: 1.8
+            [ST.Survival]: 2.0
         }),
         img: 'mudcrawler.png',
         hint: 'Complete a reeeeeeallly slow action',
@@ -267,10 +273,10 @@ export const KLASSES : Klass[] =[
             [ST.Farming]: 1.0,
             [ST.Intellect]: 1.7,
             [ST.Piety]: 1.7,
-            [ST.Stealth]: 1.0,
-            [ST.Survival]: 1.1,
-            [ST.Riding]: .6,
-            [ST.Combat]: .7
+            [ST.Stealth]: 1.2,
+            [ST.Survival]: 1.5,
+            [ST.Riding]: .9,
+            [ST.Combat]: .8
         }),
         img: 'shaman.png',
         hint: 'Reincarnate many times',
@@ -282,13 +288,13 @@ export const KLASSES : Klass[] =[
         name: 'Juggler', // TODO: Perk
         aptitudes: mostlyUniformSkillMap(t2_apt, {
             [ST.Farming]: 1.0,
-            [ST.Intellect]: 1.5,
-            [ST.Piety]: 1.1,
-            [ST.Stealth]: 1.4,
-            [ST.Survival]: 0.7,
-            [ST.Riding]: .8,
+            [ST.Intellect]: 1.3,
+            [ST.Piety]: 1.0,
+            [ST.Stealth]: 1.0,
+            [ST.Survival]: 0.8,
+            [ST.Riding]: 1.3,
             [ST.Combat]: .5,
-            [ST.Charm]: 2.5
+            [ST.Charm]: 2.2
         }),
         img: 'juggler.png',
         hint: 'Grab three eggs in a row',
@@ -299,10 +305,11 @@ export const KLASSES : Klass[] =[
     {
         name: 'Horseman',
         aptitudes: mostlyUniformSkillMap(t1_apt, {
-            [ST.Riding]: 2.5,
-            [ST.Combat]: 0.9,
-            [ST.Stealth]: 0.4,
-            [ST.Survival]: 0.8
+            [ST.Riding]: 2.2,
+            [ST.Combat]: 1.3,
+            [ST.Stealth]: 0.5,
+            [ST.Intellect]: .8,
+            [ST.Survival]: 1.0
         }),
         img: 'horseman.png',
         hint: `Show great stability`,
