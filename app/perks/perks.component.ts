@@ -13,7 +13,9 @@ import { Spell, Buff, Passive } from './perk.interface';
             <div *ngFor="let buff of buffs">
                 <a title="{{buff.description}}">
                     {{buff.name}}
-                    <span *ngIf="buff.remainingTime">({{buff.remainingTime/1000}})
+                    <span *ngIf="buff.remainingTime">(
+                        {{buff.remainingTime/1000 | number:'1.0-0'}}
+                    )
                     </span>
                 </a>
             </div>

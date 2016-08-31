@@ -21,6 +21,10 @@ export class Zones {
         private Stats: StatsService
     ) {
         this.reloadZones();
+        this.resetFocalZone();
+    }
+
+    resetFocalZone() {
         this.focalZone = this.superzones[0].zones[0];
     }
 

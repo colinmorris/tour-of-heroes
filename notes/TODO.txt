@@ -54,6 +54,7 @@ BUGS
 ====
 +- have seen at least one instance where an action got 'stuck' (but was able to finish it by clicking). That's a little scary. I have a fear that my code is crawling with race conditions.
 - skill icons should be green if slowdown rounds down to 0%.
+- title text not showing up when hovering on buffed skill level
 
 IDEAS
 ======
@@ -66,6 +67,7 @@ IDEAS
 
 UI
 ==
+- make checkbox in classes component bootstrappy
 - the colors for skill difficulty (in zone summary) and apts (class view) are fugly. We can do better.
 - forward/back arrows in the classes view 'porthole'
     - ooh, and keyboard navigation
