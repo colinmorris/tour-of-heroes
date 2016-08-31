@@ -3,7 +3,6 @@ import { Observable } from 'rxjs/Observable';
 import { NotificationsService } from 'angular2-notifications';
 
 import { KlassService } from '../klasses/klass.service';
-import { PerkService } from '../perks/perk.service';
 import { StatsService } from '../stats/stats.service';
 import { SerializationService } from '../shared/serialization.service';
 
@@ -28,7 +27,6 @@ export class PlayerService implements IPlayerService {
 
     constructor(
         private klasses: KlassService,
-        private perks: PerkService,
         private stats: StatsService,
         private Toasts: NotificationsService,
         private serials: SerializationService
@@ -41,7 +39,7 @@ export class PlayerService implements IPlayerService {
             console.log("Starting fresh");
             player = this.startingPlayer();
         }
-        this.setPlayer(player, true);
+        this.setPlayer(player);
 
         serials.saveSignaller.subscribe( () => {
             serials.savePlayer(this.toJSON());
@@ -59,7 +57,7 @@ export class PlayerService implements IPlayerService {
     }
 
     // Called on service init and on reincarnation.
-    private setPlayer(player: LivePlayer, defer=false) {
+    private setPlayer(player: LivePlayer) {
         this._player = player;
         this.playerLevel$ = this._player.level$.asObservable();
         this.playerLevel$.subscribe( (lvl) => {
@@ -84,8 +82,6 @@ export class PlayerService implements IPlayerService {
                 );
             }
         });
-        this.perks.addPerkForKlass(this.player.klass, defer);
-        this.perks.addAncestryPerk(defer);
     }
 
     toJSON() : RawPlayer {

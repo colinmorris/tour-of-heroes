@@ -1,6 +1,7 @@
 import { Injector, Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
+import { PlayerService } from '../player/player.service';
 import { ancestryBonusForLevel, ancestryBonus } from '../core/index';
 import { IStatsService } from '../stats/stats.service.interface';
 import { IPerkService } from './perk.service.interface';
@@ -19,9 +20,20 @@ export class PerkService implements IPerkService {
     private passives: {[name:string]: AbstractPassive};
     private spells: {[name:string]: AbstractSpell};
     constructor(
+        private PS: PlayerService,
         private injector: Injector
     ) {
         this.resetAllPerks();
+        this.addPerkForKlass(PS.player.klass, true);
+        this.addAncestryPerk(true);
+    }
+
+    onReincarnate() {
+        this.resetAllPerks();
+    }
+    postReincarnate() {
+        this.addPerkForKlass(this.PS.player.klass);
+        this.addAncestryPerk();
     }
 
     resetAllPerks() {

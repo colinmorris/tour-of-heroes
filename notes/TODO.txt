@@ -19,6 +19,8 @@ BALANCE
 - extra perks (other classes) as fn of max lvl with current class (or even just current lvl). Maybe one extra perk at level 100, then 200, etc.
 - bonus gains for zones that train multiple skills (right now I think this happens for individual *actions* that train multiple skills, but not across zones)
 +?- it's annoying that if my skill level in X is such that all X actions are red, there's not really anything I can do about it, other than grin and bear it. Maybe this is a good argument for cross-skill bootstrapping for multi-skill actions (i.e. really good combat skill should offset some of my bad stealth skill in a combat/stealth zone).
+    *** yeah, I think this is important. I think it'd be good if you could offset slowdown penalty by overcompensating with a different skill, or just by raising your plvl sufficiently. Could make path through zones more strategic and less linear. Would also maybe help make leveling up feel more immediately impactful.
+    - maybe compare mastery level to focal skill lvl + some fraction of plvl (or, equiv. total slvls). This would probably require some significant reworking of XP formulas.
 - Seems like ancestry bonus is basically just a linear multiplier on your progress speed throughout your lifetime. It follows that...
     - if we want high level zones to only be tractable with a high ancestry bonus (and/or more advanced classes), then lower level zones will be blazingly fast when those conditions are met. Is this a problem? Maybe not.
     - what if ancestry bonus was an aptitude multiplier *per player level*?
@@ -42,6 +44,7 @@ TECHNICAL
 - ability to export to/load from string. Would make testing a lot easier.
 - redo systemjs.config.js to match the new version in the angular2 quickstart
 - from profiling, it seems like jquery is getting called somewhere? how'd that happened? Dependency of the notifications/modals library?
+- it would really help testing if there was a quick way to change some of the stuff in GLOBALS (cheatMode and autoSave, primarily), without a recompile/refresh. Maybe in the debug view (problematic since its visibility is now conditioned on cheatMode), or in the console.
 
 MECHANICS
 =========
@@ -58,6 +61,8 @@ BUGS
 - title text not showing up when hovering on buffed skill level
 - saw an instance of a skill going to -10 after reincarnation because of a fruity cleanup phase
 - based on the wording of the unlock hint, it feels like a bug that Scholar isn't unlocked immediately when you hit level 20 as a student (rather than when you reincarnate)
+- Can scum by refreshing to reset cooldowns. Bleh. Anyone who does this gets the punishment of tedium that they deserve.
+    - also, since there's no explicit save button, and autosave is only every 30s, this doesn't work out all that well
 
 IDEAS
 ======

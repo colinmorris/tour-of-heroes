@@ -1,6 +1,7 @@
 import { mostlyUniformSkillMap, uniformSkillMap, SkillType as ST } from '../skills/index';
 import { IStatsService } from '../../stats/stats.service.interface';
-import { Klass } from './klass.interface';
+import { IPlayerService } from '../../player/player.service.interface';
+import { Klass, UnlockCriteria } from './klass.interface';
 import { Stat, NamedUnlock as NU } from '../stats/index';
 import { OneShotAction } from '../zones/index';
 
@@ -11,6 +12,17 @@ let hi_skill_lvl = 75;
 let t1_apt = .5;
 let t2_apt = .6;
 let t3_apt = .7;
+
+/** Used to generate simple unlock criteria of the form "reach level X as class Y"
+**/
+function classLevelUnlockFactory(klass: string, level: number) : UnlockCriteria {
+    return (s: IStatsService, PS: IPlayerService) => {
+        if (PS.player.klass == klass) {
+            return PS.player.level / level;
+        }
+        return false;
+    }
+}
 
 // TODO: Specify perks here
 export const KLASSES : Klass[] =[
@@ -70,9 +82,7 @@ export const KLASSES : Klass[] =[
         }),
         img: 'ranger.png',
         hint: `Become a level 20 Woodsman`,
-        criteria: (s: IStatsService) => {
-            return s.playerLevel('Woodsman') / 20;
-        }
+        criteria: classLevelUnlockFactory("Woodsman", 20),
     },
     {
         name: 'Archer',
@@ -178,9 +188,6 @@ export const KLASSES : Klass[] =[
             [ST.Combat]: 2.0
         }),
         img: 'chocobone.png',
-        /** TODO: Maybe the unlock criteria should be having *reincarnated* as
-        each of those classes? As it is, this unlock will always be right on
-        the tail of another one. Would be nice to space out those dopamine hits. **/
         hint: 'Live a life as a Skeleton and a Jouster',
         criteria: (s: IStatsService) => {
             return (s.playerLevel('Skeleton') > 1)
@@ -222,7 +229,7 @@ export const KLASSES : Klass[] =[
         img: 'pikeman.png',
         hint: `Practice in the Colloseum`,
         criteria: (s: IStatsService) => {
-            return s.lifetimeSumActionsTaken('Colloseum') / 50;
+            return s.lifetimeSumActionsTaken('Colloseum') / 100;
         }
     },
     {
@@ -237,9 +244,7 @@ export const KLASSES : Klass[] =[
         }),
         img: 'red-mage.png',
         hint: `Reach level 20 as a Student`,
-        criteria: (s: IStatsService) => {
-            return s.playerLevel('Student') / 20;
-        }
+        criteria: classLevelUnlockFactory("Student", 20),
     },
     {
         name: 'Blob',

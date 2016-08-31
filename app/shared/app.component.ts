@@ -79,6 +79,9 @@ export class AppComponent implements OnInit {
             Observable.interval(GLOBALS.autoSaveIntervalMs).subscribe( () => {
                 this.serials.save();
             });
+            /** TODO: This kinda sucks. Quick hack. Should probably have its
+            own timer. **/
+            this.KS.checkUnlocks(this.PS);
         }
 
         if (!this.Stats.unlocked(NamedUnlock.ReincarnationAvailableHelp)) {

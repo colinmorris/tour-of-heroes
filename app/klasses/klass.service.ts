@@ -5,6 +5,7 @@ import { NotificationsService } from 'angular2-notifications';
 
 import { SkillMap, Klass, KLASSES } from '../core/index';
 import { StatsService } from '../stats/stats.service';
+import { IPlayerService } from '../player/player.service.interface';
 
 export interface LiveKlass extends Klass {
     unlocked: boolean;
@@ -18,7 +19,6 @@ export class KlassService {
     public focalKlass : LiveKlass;
     starterKlass = "Peasant";
     private klassMap : {[name:string] : LiveKlass};
-    private unlockCheckInterval = 5 * 1000;
 
     constructor(
         private stats: StatsService,
@@ -30,10 +30,6 @@ export class KlassService {
             k.unlocked = stats.classUnlocked(k.name);
             this.klassMap[klass.name] = k;
         }
-        // Set up unlock checks
-        Observable.timer(0, this.unlockCheckInterval).subscribe( () => {
-            this.checkUnlocks();
-        });
 
         this.focalKlass = this.klassMap[this.starterKlass];
     }
@@ -57,7 +53,7 @@ export class KlassService {
         return n;
     }
 
-    private checkUnlocks() {
+    checkUnlocks(PS: IPlayerService) {
         /** TODO: This is too spammy to log. But just cause it's out of sight,
         doesn't mean it's out of mind. Should return to this at some point and
         review perf implications, and whether there's a more elegant way to do
@@ -74,7 +70,7 @@ export class KlassService {
                 **/
                 continue;
             }
-            let unlockScore = klass.criteria(this.stats);
+            let unlockScore = klass.criteria(this.stats, PS);
             var didUnlock: boolean;
             if (typeof unlockScore == 'number') {
                 if (isNaN(<number>unlockScore)) {

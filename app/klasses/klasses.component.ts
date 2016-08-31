@@ -296,8 +296,9 @@ export class KlassesComponent {
 
         this.ZS.reloadZones();
         this.ZS.resetFocalZone();
-        this.Perks.resetAllPerks();
+        this.Perks.onReincarnate();
         this.PS.reincarnate(this.KS.focalKlass.name);
+        this.Perks.postReincarnate();
         this.router.navigate(['/']);
     }
 }
