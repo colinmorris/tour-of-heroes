@@ -61,7 +61,7 @@ export const GLOBALS = {
     dropRate: .1,
 
     // Useful for testing. Can reinc into any class regardless of unlock status.
-    cheatMode: false,
+    cheatMode: true,
 
     // This should probably be tagged on to save blobs
     version: "0.0.1"

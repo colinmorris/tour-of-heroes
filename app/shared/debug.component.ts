@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { GLOBALS } from '../globals';
 import { StatsService } from '../stats/stats.service';
+import { SerializationService } from './serialization.service';
 import { XpFormulas as XP,
 ancestryBonus } from '../core/index';
 
@@ -41,18 +42,41 @@ ancestryBonus } from '../core/index';
 
     </table>
 
+    <button (click)="statsString=!statsString">Stats JSON</button>
+    <div *ngIf="statsString">
+        <code>{{statsJson()}}</code>
+    </div>
+    <textarea [(ngModel)]="stringToLoad"></textarea>
+    <button (click)="loadFromString()">Load</button>
     </div>
     `,
 })
 export class DebugComponent {
+    stringToLoad;
+    statsString = false;
     nClasses = 0;
     levelPerClass = 10;
     maxSkillLvl = 50;
     cheatMode = GLOBALS.cheatMode;
     constructor(
-        private Stats: StatsService
+        private Stats: StatsService,
+        private Cereal: SerializationService
     ) {
 
+    }
+
+    loadFromString() {
+        if (!this.stringToLoad) {
+            console.warn("Nothing to load");
+            return;
+        }
+        this.Cereal.loadFromString(this.stringToLoad);
+        location.reload();
+    }
+
+    statsJson() {
+        //return JSON.stringify(this.Stats.stats);
+        return this.Cereal.exportToString();
     }
 
     ancestryBonus() {

@@ -15,6 +15,7 @@ import { HomeComponent } from './shared/home.component';
 import { KlassesComponent } from './klasses/klasses.component';
 import { StatsComponent } from './stats/stats.component';
 import { DebugComponent } from './shared/debug.component';
+import { AboutComponent } from './shared/about.component';
 
 @NgModule({
     imports: [BrowserModule, FormsModule,
@@ -24,7 +25,7 @@ import { DebugComponent } from './shared/debug.component';
     ],
     declarations: [AppComponent,
         SpellsComponent, HomeComponent, KlassesComponent, StatsComponent,
-        DebugComponent,
+        DebugComponent, AboutComponent
     ],
     bootstrap: [AppComponent]
 })
