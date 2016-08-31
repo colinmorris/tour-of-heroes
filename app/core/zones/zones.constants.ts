@@ -44,6 +44,8 @@ zones:
         description: 'A place with horses',
         actions: [
             {vb: "ride", obj: "a steed", skills: S.Riding, weight: .5, difficulty:PLUS(-1)},
+            {vb: "drive", obj: "a plough", skills: [S.Riding, S.Farming],
+                weight: 1, difficulty:PLUS(-1)},
             {vb: "bale", obj: "some hay", skills: S.Farming, weight: .5}
         ],
         difficulty: 3,

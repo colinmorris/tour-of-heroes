@@ -5,6 +5,7 @@ import { HomeComponent } from './home.component';
 import { KlassesComponent } from '../klasses/klasses.component';
 import { StatsComponent } from '../stats/stats.component';
 import { DebugComponent } from './debug.component';
+import { AboutComponent } from './about.component';
 
 const routes : Routes = [
     {
@@ -19,6 +20,10 @@ const routes : Routes = [
     {
         path: 'stats',
         component: StatsComponent
+    },
+    {
+        path: 'about',
+        component: AboutComponent
     },
     {
         path: 'debug',

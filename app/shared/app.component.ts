@@ -39,10 +39,11 @@ import { NamedUnlock } from '../core/index';
             <a [routerLink]="['/']">Home</a></li>
         <li [routerLinkActive]="['active']"><a [routerLink]="['/classes']">Classes</a></li>
         <li [routerLinkActive]="['active']"><a [routerLink]="['/stats']">Stats</a></li>
+        <li [routerLinkActive]="['active']"><a [routerLink]="['/about']">About</a></li>
         <li [routerLinkActive]="['active']"><a [routerLink]="['/debug']" *ngIf="cheatMode">Debug</a></li>
     </ul>
     <router-outlet></router-outlet>
-    <div class="row save">
+    <div class="row save" *ngIf="cheatMode">
     <button (click)="serials.save()">Save</button>
     <button (click)="serials.clearSave()">Clear Save</button>
     </div>

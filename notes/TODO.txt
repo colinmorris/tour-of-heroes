@@ -57,6 +57,7 @@ BUGS
 - skill icons should be green if slowdown rounds down to 0%.
 - title text not showing up when hovering on buffed skill level
 - saw an instance of a skill going to -10 after reincarnation because of a fruity cleanup phase
+- based on the wording of the unlock hint, it feels like a bug that Scholar isn't unlocked immediately when you hit level 20 as a student (rather than when you reincarnate)
 
 IDEAS
 ======

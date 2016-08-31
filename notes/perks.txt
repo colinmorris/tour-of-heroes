@@ -34,4 +34,4 @@
 - increase likelihood of some particular rare/oneshot action.
 - reach level 20/50/etc.
 - spell: buff a random skill level temporarily
-
+    - buff lowest skill level temporarily
