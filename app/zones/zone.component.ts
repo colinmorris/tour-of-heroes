@@ -145,6 +145,8 @@ export class ZoneComponent implements OnInit, OnDestroy, OnChanges {
                     if (post.nextAction.active) {
                         this.currentAction = post.nextAction;
                     } else {
+                        /** TODO: This seems to be correlated with spurious
+                        lastOutcome strings **/
                         console.log("Action was DoA");
                     }
                     console.assert(post.nextAction.zid == this.zone.zid);
@@ -204,6 +206,10 @@ export class ZoneComponent implements OnInit, OnDestroy, OnChanges {
         // TODO: Throttle these to thwart evil auto-clickers
         let skip = 500;
         let buffedSkip = skip * this.PS.player.meta.clickMultiplier;
+        if (Math.random() < this.PS.player.meta.clickCritRate) {
+            buffedSkip *= this.PS.player.meta.clickCritMultiplier;
+            console.log("Critical click!");
+        }
         if (buffedSkip != skip) {
             console.log(`Click power buffed from ${skip} to ${buffedSkip}`);
         }

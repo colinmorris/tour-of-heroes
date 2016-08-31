@@ -34,6 +34,8 @@ zones:
                 skills: S.Survival, weight: .8},
             {vb: "ax", obj:"a __X", opts:["rat", "rabid deer", "badger", "spider"],
                 skills: S.Combat, weight: .2},
+            {vb: "free", obj:"the woodsman from a trap", oneShot:OS.WoodsmanFreed,
+                bonusLevel:2, skills:S.Survival}
         ],
         difficulty: 1,
     },
@@ -51,7 +53,7 @@ zones:
         description: 'Rows upon rows of pretty flowers',
         actions: [
             {vb: 'plant', obj: 'some __X', opts:FLOWERS, skills: S.Farming,
-            difficulty:PLUS(3)},
+            difficulty:PLUS(9)},
             {vb: 'pick', obj: 'a bouquet of __X', opts:FLOWERS, skills: [S.Farming, S.Charm]},
             {vb: 'tiptoe', obj: 'through the tulips', skills: S.Stealth, bonusLevel:.5},
         ],
@@ -66,22 +68,22 @@ minLevel: 5,
 zones:
 [
     {
-        name: 'General Store',
-        description: 'A place to steal',
-        actions: [
-            {vb: "nick", obj: "a knicknack", skills: S.Stealth},
-            {vb: "nick", obj: "an antique", skills: S.Stealth, bonusLevel: 1},
-            {vb: "nick", obj: "a priceless artifact", skills: S.Stealth, bonusLevel: 2},
-        ],
-        difficulty: 4
-    },
-    {
         name: 'Chapel',
         description: 'A place of worship',
         actions: [
             {vb: "pray", obj:"", skills: S.Piety},
         ],
-        difficulty: 5,
+        difficulty: 4,
+    },
+    {
+        name: 'General Store',
+        description: 'A generally good place to steal',
+        actions: [
+            {vb: "nick", obj: "a knicknack", skills: S.Stealth},
+            {vb: "nick", obj: "an antique", skills: S.Stealth, bonusLevel: 1},
+            {vb: "nick", obj: "a priceless artifact", skills: S.Stealth, bonusLevel: 2},
+        ],
+        difficulty: 7
     },
     {
         name: 'Tavern',
@@ -90,7 +92,7 @@ zones:
             {vb: "dance", obj: "a jig", skills: S.Charm, weight: 1},
             {vb: "fight", obj: "a drunken patron", skills: S.Combat, weight: 1},
         ],
-        difficulty: 7,
+        difficulty: 10,
     },
     {
         name: 'Tournament',
@@ -108,7 +110,7 @@ zones:
             skills: [S.Riding, S.Charm], bonusLevel:3,
             unlocks: NamedUnlock.JoustingChampion, oneShot: OS.TournamentFinals},
         ],
-        difficulty: 8,
+        difficulty: 12,
     }
 
 
@@ -198,7 +200,8 @@ zones: [
             opts:["radish", "turnip", "parsley", "carrot", "pumpkin"],
             skills:S.Farming},
             {vb: "pluck", obj:"a weed", skills:S.Farming},
-            {vb: "chat", obj:"with the head gardener", skills:[S.Farming, S.Charm]}
+            {vb: "chat", obj:"with the head gardener", skills:[S.Farming, S.Charm],
+            bonusLevel: 1.5}
         ],
         difficulty: 23,
     },
@@ -223,7 +226,7 @@ zones: [
             {vb: "proselytize", obj:"", skills:[S.Piety, S.Charm]},
             {vb: "harmonize", obj:"", skills:[S.Charm]},
         ],
-        difficulty: 26,
+        difficulty: 28,
     }
 ]
 },
@@ -255,7 +258,7 @@ zones: [
         actions: [
             {vb: "climb", obj:"", skills: S.Survival, weight:1.0},
             {vb: "sneak", obj: "an egg out of the nest", skills: S.Stealth, weight: .2},
-            {vb: "ride", obj: "a great gryphon", skills: S.Riding, bonusLevel:1},
+            {vb: "ride", obj: "a great gryphon", skills: S.Riding, bonusLevel:1.5},
         ],
         difficulty: 33,
     },
@@ -263,11 +266,22 @@ zones: [
         name: 'Ancient Ruins',
         description: 'Ruins left by an ancient civilization',
         actions: [
-            {vb: "disarm", obj: "a booby trap", skills: S.Stealth},
+            {vb: "disarm", obj: "a booby trap", skills: S.Survival},
             {vb: "decode", obj: "some ancient glyphs", skills: S.Intellect},
+            {vb: "deface", obj: "an altar to a pagan god", skills: S.Piety,
+                bonusLevel:1}
         ],
         difficulty: 36,
     },
+    {
+        name: 'Goblin Outpost',
+        description: 'Smells awful',
+        actions: [
+            {vb: "slay", obj: "a goblin", skills: S.Combat},
+            {vb: "slay", obj: "a goblin lieutenant", skills: S.Combat, bonusLevel:1},
+        ],
+        difficulty: 38,
+    }
 
 ]
 },

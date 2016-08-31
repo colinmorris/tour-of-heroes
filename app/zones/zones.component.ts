@@ -33,7 +33,7 @@ interface SuperzonePane {
         [class.active]="activePane==pane"
         [class.locked]="!pane.unlocked"
          >
-            <a (click)="setActivePane(pane)"
+            <a (click)="activePane=pane"
             [title]="pane.unlockDescription"
             >{{pane.name}}</a>
         </li>
@@ -49,13 +49,16 @@ interface SuperzonePane {
                 <div class="row">
                     <div class="col-xs-3">Zone</div>
                     <div class="col-xs-4">Skills</div>
-                    <div class="col-xs-2">Slowdown</div>
+                    <div class="col-xs-2"
+                    title="If your skill levels are too low, actions will take longer"
+                    >Slowdown</div>
                     <div class="col-xs-3"></div>
                 </div>
                 </li>
 
                 <li *ngFor="let zone of pane.zones" class="list-group-item">
-                    <zone-summary [zone]="zone">
+                    <zone-summary [zone]="zone"
+                    [locked]="!pane.unlocked">
                     </zone-summary>
                 </li>
             </ul>
@@ -92,14 +95,6 @@ export class ZonesComponent implements OnInit {
                     unlockCondition(this.PS.player.level)
             }
         });
-    }
-
-    setActivePane(pane: SuperzonePane) {
-        if (pane.unlocked || GLOBALS.cheatMode) {
-            this.activePane = pane;
-        } else {
-            console.warn(`${pane.name} is locked!`);
-        }
     }
 
 }

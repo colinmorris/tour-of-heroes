@@ -1,4 +1,4 @@
-import { SkillType, Stat, NamedUnlock } from '../core/index';
+import { SkillType, Stat, NamedUnlock, OneShotAction } from '../core/index';
 
 export interface IStatsService {
     // TODO: clarify semantix
@@ -6,6 +6,7 @@ export interface IStatsService {
     lifetimeSum(s: Stat) : number;
     classUnlocked(klass: string) : boolean;
     unlocked(u: NamedUnlock) : boolean;
+    performedOneShot(oneshot: OneShotAction) : boolean;
 
     playerLevel(klass: string) : number;
     maxLevelPerKlass() : {[klass:string] : number};

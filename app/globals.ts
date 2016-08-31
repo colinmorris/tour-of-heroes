@@ -19,8 +19,9 @@ export const GLOBALS = {
     i.e. 2^(1/5) = 1.1487
     let's try something more extreme, and double every 2 levels,
     2^(1/2) = 1.41421
+    2^(1/3) = 1.2599
     **/
-    skillLevelExpPointCostBase: 1.1487,
+    skillLevelExpPointCostBase: 1.2599,
     // Every 3 levels of difference leads to a doubling of time.
     // TODO: Maybe this needs to grow faster than SP/skill level, otherwise
     // it will never make sense to "Warm up" for a high level zone in a lower
@@ -28,7 +29,7 @@ export const GLOBALS = {
     // Actually, the above may not be true. Definitely need to think about this
     // some more. Seems important that there exists some non-zero slowdown value
     // below which a zone starts becoming more efficient than a lower-level fullspeed zone.
-    inexperiencePenaltyBase: 1.2599,
+    inexperiencePenaltyBase: 1.41421,//1.2599,
 
     reincarnationMinLevel: 10,
     zoneLevelingMinLevel: 25,
@@ -49,7 +50,7 @@ export const GLOBALS = {
     // code is therefore pretty prone to breaking out of version compat issues
     loadSaves: true,
 
-    autoSave: false,
+    autoSave: true,
     autoSaveIntervalMs: 60*1000,
 
     actionBarUpdateInterval: 300,
@@ -60,7 +61,7 @@ export const GLOBALS = {
     dropRate: .1,
 
     // Useful for testing. Can reinc into any class regardless of unlock status.
-    cheatMode: true,
+    cheatMode: false,
 
     // This should probably be tagged on to save blobs
     version: "0.0.1"

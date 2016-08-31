@@ -2,6 +2,7 @@ import { mostlyUniformSkillMap, uniformSkillMap, SkillType as ST } from '../skil
 import { IStatsService } from '../../stats/stats.service.interface';
 import { Klass } from './klass.interface';
 import { Stat, NamedUnlock as NU } from '../stats/index';
+import { OneShotAction } from '../zones/index';
 
 let low_skill_lvl = 15;
 let med_skill_lvl = 30;
@@ -51,9 +52,9 @@ export const KLASSES : Klass[] =[
 
         }),
         img: 'woodsman.png',
-        hint: 'Spend time in the woods',
+        hint: 'Last seen in the woods. Feared missing.',
         criteria: (s: IStatsService) => {
-            return s.lifetimeSumActionsTaken('Woody Woods') / 400;
+            return s.performedOneShot(OneShotAction.WoodsmanFreed);
         }
     },
     {
@@ -145,7 +146,7 @@ export const KLASSES : Klass[] =[
             [ST.Survival]: 1.3
         }),
         img: 'berserker.png',
-        hint: `Train your combat skill`,
+        hint: `Live a life full of violence`,
         criteria: (s: IStatsService) => {
             /** TODO: Maybe criteria should be something like complete X actions
             in Y seconds? **/

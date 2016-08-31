@@ -12,6 +12,7 @@ MISC/TRIAGE
     - (and have some default - either the current class, or whatever was viewed last)
 +- add a 'retreat' button next to 'Stop' that ends the current action (giving no benefits) and starts a new one. I don't think it's a bad behavior to enable.
 - Restore character name thing? Maybe just prompt for a name at the very beginning and use that throughout?
+- add ability to specify post-action text in ActionData
 
 BALANCE
 =======
@@ -62,6 +63,7 @@ IDEAS
 - associate a color with each skill?
 - class homages to other games (hack, FFT, disgaea)
 - 'second-tier' classes (with branching options, like Wesnoth, Fire Emblem, etc.)
+- add some 'dud' actions - ones with very low difficulty/SP-gains compared to others in the zone
 
 UI
 ==

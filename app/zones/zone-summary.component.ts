@@ -39,7 +39,10 @@ import { SkillComponent } from '../shared/skill.component';
 
     <div class="col-xs-3">
     <button *ngIf="zones.focalZone.zid != zone.zid"
-        class="btn" (click)="explore()">Go</button>
+        class="btn"
+        [class.disabled]="locked"
+        (click)="explore()">
+        {{buttonText()}}</button>
     <h4 *ngIf="zones.focalZone.zid == zone.zid">
         <span class="label label-success">
         You are here
@@ -53,12 +56,20 @@ import { SkillComponent } from '../shared/skill.component';
 export class ZoneSummaryComponent {
     ST = SkillType;
     @Input() zone: Zone;
+    /** TODO: Maybe if this zone/superzone hasn't been unlocked yet in any
+    lifetime, the zone/sz names should just show as "???" 
+    **/
+    @Input() locked: boolean;
 
     constructor(
         private router: Router,
         private zones: Zones,
         private PS: PlayerService
     ) {
+    }
+
+    buttonText() {
+        return this.locked ? "Locked" : "Go";
     }
 
     nameString(zone: Zone) {

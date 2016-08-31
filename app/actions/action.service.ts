@@ -147,6 +147,9 @@ export class ActionService implements IActionService {
         if (action.unlocks) {
             this.stats.unlock(action.unlocks);
         }
+        if (action.oneshot) {
+            this.stats.setOneShot(action.oneshot);
+        }
         // I can already tell this is going to turn into a fucking monster
         // of a method
         if (this.currentAction.slowdown > 10.0) {

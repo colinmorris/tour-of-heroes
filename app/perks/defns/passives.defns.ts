@@ -96,7 +96,7 @@ export class AncestryPerk extends AbstractPassive {
     private multiplier : number;
     private appliedBuffs: SkillMap;
     get description() {
-        return `Base aptitudes multiplied by ${formatPct(this.multiplier)}`;
+        return `Base aptitudes increased by ${formatPct(this.multiplier)}`;
     }
     static sdescription = `Base aptitudes increased according to max level attained for each class`;
     onCast(SS: IStatsService, PS: IPlayerService) : boolean {
