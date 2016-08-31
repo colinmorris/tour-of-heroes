@@ -64,6 +64,7 @@ IDEAS
 - class homages to other games (hack, FFT, disgaea)
 - 'second-tier' classes (with branching options, like Wesnoth, Fire Emblem, etc.)
 - add some 'dud' actions - ones with very low difficulty/SP-gains compared to others in the zone
+- ability to specify actions that only appear at some minimum zone level.
 
 UI
 ==
@@ -76,6 +77,7 @@ UI
 +?- there's a weird bug where like 5% of the time the progress bar doesn't reset to 0, but uses a long transition
 - add a nice CSS transition to progress bar when clicked
 - zone difficulty UI should probably incorporate cleric perk
+    - buffedstatcomponent
 - klass component: make icons in grid clickable
     - done, but they should also have clickable cursors
 - color action bars by inexp. penalty?
@@ -95,3 +97,6 @@ UI
 USABILITY
 =========
 - might actually be a good idea to make locked superzones expandable, just without the "go" buttons. Would help with planning ahead. Maybe only after it's been unlocked once in a previous lifetime?
+- maybe a 'tips' section?
+- for 'on/off' perks, consider indicating in the UI whether they're currently active?
+    - and/or: can perks be made more visible in the lastOutcome UI? use buffedstat component for SP gains that are increased by perks? right now perks maybe don't *feel* as impactful as they should.

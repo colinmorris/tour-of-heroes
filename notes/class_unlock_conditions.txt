@@ -29,3 +29,4 @@ Examples of unlock conditions to plan for:
 - complete an action having a slowdown of over 1000%
 - reincarnate within X minutes
 - reincarnate at level X
+- level X zones

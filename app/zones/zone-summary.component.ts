@@ -8,6 +8,9 @@ import { Zones } from './zones.service';
 
 import { SkillComponent } from '../shared/skill.component';
 
+/** TODO: XXX: This is a performance hog. Consider doing some caching,
+or even push-based change-detection.
+**/
 @Component({
     selector: 'zone-summary',
     directives: [ ROUTER_DIRECTIVES, SkillComponent ],
@@ -57,7 +60,7 @@ export class ZoneSummaryComponent {
     ST = SkillType;
     @Input() zone: Zone;
     /** TODO: Maybe if this zone/superzone hasn't been unlocked yet in any
-    lifetime, the zone/sz names should just show as "???" 
+    lifetime, the zone/sz names should just show as "???"
     **/
     @Input() locked: boolean;
 
