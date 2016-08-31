@@ -136,7 +136,8 @@ function zamFromJSON(
     let difficulty = surrogateDifficulty ? surrogateDifficulty : parentZone.difficulty;
     if (j.difficulty) {
         difficulty = j.difficulty(difficulty);
-    } else if (j.bonusLevel) {
+    }
+    if (j.bonusLevel) {
         // Still experimenting with this
         difficulty = difficulty + Math.ceil(2*j.bonusLevel);
     }

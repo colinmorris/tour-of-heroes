@@ -1,21 +1,21 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy,
+    ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 
-import { Zone, getTruthySkills, SkillType, SkillDifficulty } from '../core/index';
+import { Zone, getTruthySkills, SkillType,
+    SkillDifficulty, ZoneDifficulty } from '../core/index';
 
 import { PlayerService } from '../player/player.service';
 import { Zones } from './zones.service';
 
 import { SkillComponent } from '../shared/skill.component';
 
-/** TODO: XXX: This is a performance hog. Consider doing some caching,
-or even push-based change-detection.
-**/
 @Component({
     selector: 'zone-summary',
     directives: [ ROUTER_DIRECTIVES, SkillComponent ],
     styles: [`
         `],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     template: `
     <div class="row">
 
@@ -41,12 +41,12 @@ or even push-based change-detection.
     </div>
 
     <div class="col-xs-3">
-    <button *ngIf="zones.focalZone.zid != zone.zid"
+    <button *ngIf="!youAreHere"
         class="btn"
         [class.disabled]="locked"
         (click)="explore()">
         {{buttonText()}}</button>
-    <h4 *ngIf="zones.focalZone.zid == zone.zid">
+    <h4 *ngIf="youAreHere">
         <span class="label label-success">
         You are here
         </span>
@@ -56,19 +56,48 @@ or even push-based change-detection.
     </div>
     `
 })
-export class ZoneSummaryComponent {
+export class ZoneSummaryComponent implements OnInit, OnDestroy {
     ST = SkillType;
+    @Input() youAreHere: boolean;
     @Input() zone: Zone;
     /** TODO: Maybe if this zone/superzone hasn't been unlocked yet in any
     lifetime, the zone/sz names should just show as "???"
     **/
     @Input() locked: boolean;
+    private skillsub;
+    zd: ZoneDifficulty;
 
     constructor(
         private router: Router,
         private zones: Zones,
-        private PS: PlayerService
+        private PS: PlayerService,
+        private cd: ChangeDetectorRef
     ) {
+
+    }
+
+    ngOnInit() {
+        /** If we wanted to be really fancy, we could check once which skills
+        this zone involves, and only listen for changes to those skills. But
+        let's not go nuts.
+        **/
+        console.assert(this.skillsub == undefined || this.skillsub.isUnsubscribed);
+        this.skillsub = this.PS.player.skillChange$.subscribe( () => {
+            console.log("Skill change -> updating zone-summary");
+            this.update();
+        });
+        this.zd = this.zone.difficultyPerSkill(this.PS.getSkillLevels());
+    }
+
+    ngOnDestroy() {
+        if (this.skillsub) {
+            this.skillsub.unsubscribe();
+        }
+    }
+
+    update() {
+        this.zd = this.zone.difficultyPerSkill(this.PS.getSkillLevels());
+        this.cd.markForCheck();
     }
 
     buttonText() {
@@ -122,12 +151,12 @@ export class ZoneSummaryComponent {
     }
 
     overallDifficulty() {
-        return this.zone.difficultyPerSkill(this.PS.getSkillLevels()).score;
+        return this.zd.score;
     }
 
     difficulties() {
         let diffs = [];
-        let diffLvls = this.zone.difficultyPerSkill(this.PS.getSkillLevels()).perSkill;
+        let diffLvls = this.zd.perSkill;
         for (let skill of getTruthySkills(diffLvls)) {
             diffs.push({
                 skill: skill,

@@ -1,5 +1,6 @@
 import { Skill, RawSkill } from './skill.interface';
 import { Progressive } from '../shared/progressive.interface';
+import { Subject } from 'rxjs/Subject';
 
 // TODO: move all this junk to core?
 
@@ -26,4 +27,13 @@ export interface Player extends RawPlayer, Progressive {
     bits in service properties, they'd have to be careful to undo their changes
     on reincarnation. **/
     meta: PlayerMetadata;
+
+    /** A dummy subject that broadcasts when there's a 'significant' change to
+    the player's skills, defined as:
+    - a skill going up a level
+    - a skill level being buffed
+    (but not just gaining points, and not changes to apts.)
+    TODO: Is there a more idiomatic way to do this?
+    **/
+    skillChange$: Subject<any>;
 }

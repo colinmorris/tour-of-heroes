@@ -57,7 +57,7 @@ interface SuperzonePane {
                 </li>
 
                 <li *ngFor="let zone of pane.zones" class="list-group-item">
-                    <zone-summary [zone]="zone"
+                    <zone-summary [zone]="zone" [youAreHere]="zones.focalZone==zone"
                     [locked]="!pane.unlocked">
                     </zone-summary>
                 </li>
@@ -75,9 +75,11 @@ export class ZonesComponent implements OnInit {
     constructor(
         private zones: Zones,
         private PS: PlayerService
-    ) {}
-
-    ngOnInit() {
+    ) {
+        /** I keep trying to push logic into ngOnInit, because some part of
+        the tutorial told me to do that, but it always seems to lead to weird,
+        hard-to-understand fuckups, so here we are.
+        **/
         console.assert(this.panes.length == 0);
         for (let superz of this.zones.superzones) {
             this.panes.push({
@@ -95,6 +97,10 @@ export class ZonesComponent implements OnInit {
                     unlockCondition(this.PS.player.level)
             }
         });
+    }
+
+    ngOnInit() {
+
     }
 
 }

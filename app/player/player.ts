@@ -1,4 +1,5 @@
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subject } from 'rxjs/Subject';
 
 import { skillMapFromFactory,
     SkillMapOf,
@@ -15,6 +16,7 @@ import { Player, RawPlayer, PlayerMetadata } from './player.interface'
 
 export class LivePlayer implements Player {
     level$: BehaviorSubject<number>;
+    skillChange$: Subject<any>;
     public meta: PlayerMetadata;
     constructor(
         public name: string,
@@ -32,6 +34,7 @@ export class LivePlayer implements Player {
         this._totalSkillLevels = this.calculateTotalSkills();
         // TODO: Possible to use only the subject, and not even need level ivar?
         this.level$ = new BehaviorSubject<number>(this.level);
+        this.skillChange$ = new Subject<void>();
         this.meta = new PlayerMetadata();
     }
 
@@ -88,6 +91,11 @@ export class LivePlayer implements Player {
     private _totalSkillLevels: number;
     get totalSkillLevels() { return this._totalSkillLevels; }
     set totalSkillLevels(newValue: number) {
+        if (newValue != this._totalSkillLevels) {
+            this.skillChange$.next(0);
+        } else {
+            return;
+        }
         let thresh = this.skillLevelsForNextLevel();
         while (newValue >= thresh) {
             this.level$.next(++this.level);
@@ -125,6 +133,7 @@ export class LivePlayer implements Player {
     }
 
     buffSkillLevels(by: SkillMap) {
+        this.skillChange$.next(0);
         for (let skill of getTruthySkills(by)) {
             this._skills[skill].levelBonus += by[skill];
         }

@@ -101,7 +101,7 @@ import { GLOBALS } from '../globals';
                     <p>Costs <b>1 Zone Improvement Token</b> (have: {{Stats.ziTokens}})
                     and requires level {{plevelToLevelZone()}}.</p>
                     <button class="btn"
-                    [class.disabled]="!canLevelZone()"
+                    [class.disabled]="!canLevelZone() && !cheatMode"
                     (click)="levelZone()">Level up</button>
                 </div>
             </div>
@@ -222,6 +222,11 @@ export class ZoneComponent implements OnInit, OnDestroy, OnChanges {
         levelUpZone(this.zone, level);
         this.Stats.leveledZone(this.zone.name, level);
         this.Stats.ziTokens -= 1;
+        /** TODO: This is a huge hack. Just a quick and dirty way to
+        get the corresponding zone-summary component to perform change
+        detection. Come up with a less fragile approach when/if this
+        zone leveling thing crystalizes. **/
+        this.PS.player.skillChange$.next(0);
     }
 
     select() {

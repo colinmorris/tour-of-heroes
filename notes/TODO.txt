@@ -41,6 +41,7 @@ TECHNICAL
 - consider propagating 'bonus'-ness up. Might be interesting to show it in the UI, and to have it interact with some perks.
 - ability to export to/load from string. Would make testing a lot easier.
 - redo systemjs.config.js to match the new version in the angular2 quickstart
+- from profiling, it seems like jquery is getting called somewhere? how'd that happened? Dependency of the notifications/modals library?
 
 MECHANICS
 =========
@@ -55,6 +56,7 @@ BUGS
 +- have seen at least one instance where an action got 'stuck' (but was able to finish it by clicking). That's a little scary. I have a fear that my code is crawling with race conditions.
 - skill icons should be green if slowdown rounds down to 0%.
 - title text not showing up when hovering on buffed skill level
+- saw an instance of a skill going to -10 after reincarnation because of a fruity cleanup phase
 
 IDEAS
 ======
