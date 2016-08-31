@@ -28,6 +28,7 @@ export abstract class AbstractSpell extends AbstractBonus implements Spell {
 
     private sub: any;
     private cooldownCheckInterval = 1000;
+    private lastTick;
 
     /** Return success/failure **/
     cast() : boolean {
@@ -47,10 +48,14 @@ export abstract class AbstractSpell extends AbstractBonus implements Spell {
 
     goOnCooldown() {
         this.remainingCooldown = this.cooldownMs;
+        this.lastTick = Date.now();
         let cooldownTimer = Observable.interval(this.cooldownCheckInterval);
         this.sub = cooldownTimer.subscribe( (i: number) => {
+            let tick = Date.now();
+            let elapsed = tick - this.lastTick;
+            this.lastTick = tick;
             this.remainingCooldown = Math.max(0,
-                this.remainingCooldown-this.cooldownCheckInterval);
+                this.remainingCooldown-elapsed);
             if (this.remainingCooldown == 0) {
                 this.sub.unsubscribe();
             }
@@ -90,16 +95,21 @@ export abstract class AbstractTimedBuff extends AbstractBuff implements TimedBuf
     duration: number;
     remainingTime = 0;
     private timeCheckInterval = 1000;
+    private lastTick;
     private sub:any;
     apply() : Promise<void> {
         let promise = new Promise<void>( (resolve, reject) => {
             let args = this.injectionArgs();
             this.remainingTime = this.duration * 1000;
+            this.lastTick = Date.now();
             this.onCast(...args);
             // TODO: this pattern is pretty common. Would be nice to refactor it.
             // TODO: Should probably use the take operator too
             this.sub = Observable.interval(this.timeCheckInterval).subscribe( () => {
-                this.remainingTime = Math.max(0, this.remainingTime - this.timeCheckInterval);
+                let tick = Date.now();
+                let elapsed = tick - this.lastTick;
+                this.lastTick = tick;
+                this.remainingTime = Math.max(0, this.remainingTime - elapsed);
                 if (this.remainingTime == 0) {
                     this.sub.unsubscribe();
                     this.cleanUp(...args);

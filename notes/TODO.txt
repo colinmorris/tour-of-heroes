@@ -30,7 +30,6 @@ BALANCE
 
 TECHNICAL
 =========
-- make sure it runs in the background
 - figure out how to write better/more parsimonious CSS. Does angular offer less-like stuff?
 - switch to attributive components?
 +?- profile the thing

@@ -10,6 +10,8 @@ export class RealLiveZoneAction implements LiveZoneAction {
     // I guess this is probably a bad separation of concerns? Meh.
     private tickRate = GLOBALS.actionBarUpdateInterval;
     private killed = false;
+    // Timestamp of the last timer check
+    private lastTick;
     // Observed by the zone component, used to set the progress bar width
     pctProgress$ : Observable<number>;
     private observer: Observer<number>;
@@ -45,13 +47,19 @@ export class RealLiveZoneAction implements LiveZoneAction {
         });
         this.sub = timer.subscribe(
             (i) => {
+                let tick = Date.now();
+                let elapsed = tick - this.lastTick;
+                this.lastTick = tick;
                 // TODO: would probably be a bit nicer to use a setter for this stuff
-                this.remainingTime = Math.max(0, this.remainingTime - this.tickRate);
+                /** Have to do this rather than just subtracting tickRate because
+                of js slowdown for inactive tabs in chrome. **/
+                this.remainingTime = Math.max(0, this.remainingTime - elapsed);
                 if (i % updateEvery == 0 || this.remainingTime == 0) {
                     this.update();
                 }
             }
         );
+        this.lastTick = Date.now();
 
         // One timeout so we can get an observer, another for the DOM to get
         // updated.
