@@ -1,10 +1,12 @@
 import { Verb } from './verb';
-import { SkillType, SkillMap, getTruthySkills } from '../skills/index';
+import { SkillType, SkillMap, getTruthySkills,
+    XpFormulas } from '../skills/index';
 import { ZoneAction, ZoneActionDescription, ActionDelay } from './zoneaction.interface';
 import { randomChoice } from '../utils';
 import { GLOBALS } from '../../globals';
 import { NamedUnlock } from '../stats/index';
 import { OneShotAction } from './action-oneshots.enum';
+import { Player } from '../../player/player.interface';
 
 const ACTION_METAVAR: string = "__X";
 
@@ -23,27 +25,24 @@ export class VerbalZoneAction implements ZoneAction {
 
     }
 
-    delay(skills: SkillMap) : ActionDelay {
-        let inexp = this.inexperiencePenalty(skills);
-        let delay = this.minDelay * inexp;
-        //console.log(`Base delay: ${this.minDelay}; After skill penalty: ${delay}`);
-        return {base: this.minDelay, inexperiencePenalty: inexp};
+    inexperiencePenaltyForSkill(skill: SkillType, player: Player) {
+        let levelAssist = XpFormulas.levelAssist(player.level);
+        let shortfall = Math.max(0, this.mastery -
+            (player.skills[skill].level + levelAssist)
+        );
+        return Math.pow(GLOBALS.inexperiencePenaltyBase, shortfall) - 1;
     }
 
-    // TODO: zzz this sucks
-    inexperiencePenaltyForSkillLevel(skill: SkillType, skillLevel: number) {
-        let shortfall = Math.max(0, this.mastery - skillLevel);
-        return Math.pow(GLOBALS.inexperiencePenaltyBase, shortfall);
-    }
-
-    inexperiencePenalty(skills: SkillMap) : number {
-        let inexperiencePenalty = 1.0;
+    slowdown(player: Player) : number {
+        let levelAssist = XpFormulas.levelAssist(player.level);
+        let inexperiencePenalty = 1;
         for (let s of getTruthySkills(this.skillDeltas)) {
-            //inexperiencePenalty *= VerbalZoneAction.inexperiencePenaltyForSkill(skills[s], this.mastery);
-            let shortfall = Math.max(0, this.mastery - skills[s]);
+            let shortfall = Math.max(0, this.mastery -
+                (player.skills[s].level + levelAssist)
+            );
             inexperiencePenalty *= Math.pow(GLOBALS.inexperiencePenaltyBase, shortfall);
         }
-        return inexperiencePenalty;
+        return inexperiencePenalty - 1;
     }
 
     chooseDescription() : ZoneActionDescription {

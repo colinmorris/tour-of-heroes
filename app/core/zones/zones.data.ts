@@ -151,7 +151,7 @@ function zamFromJSON(
     /** XXX: I feel like I've consistently set difficulties a bit too low, so just
     going to play with a tweak here and see how it feels.
     **/
-    difficulty += 2;
+    difficulty += 0;
 
     // mastery
     let mastery:number = masteryForDifficulty(difficulty);
@@ -184,7 +184,10 @@ function zamFromJSON(
 
 function masteryForDifficulty(diff: number) : number {
     // (maybe rounding should happen upstream?)
-    return Math.ceil(XpFormulas.benchmarkSkillLevelForPlevel(diff));
+    return Math.ceil(
+        XpFormulas.benchmarkSkillLevelForPlevel(diff)
+        + XpFormulas.levelAssist(diff)
+    );
 }
 
 function gainsForDifficulty(diff: number,

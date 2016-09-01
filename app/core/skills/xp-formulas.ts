@@ -74,4 +74,8 @@ export namespace XpFormulas {
         // Let's say a *mostly* virtuous player
         return (plevel*5)/8.0; // I sure hope the set of skills never changes...
     }
+
+    export function levelAssist(plevel: number) : number {
+        return plevel * GLOBALS.levelAssistFraction;
+    }
 }

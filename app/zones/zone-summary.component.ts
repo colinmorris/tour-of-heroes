@@ -35,7 +35,7 @@ import { SkillComponent } from '../shared/skill.component';
 
     <div class="col-xs-2">
     <span class="overall-difficulty"
-          *ngIf="overallDifficulty() > 1">
+    >
           {{penaltyString(overallDifficulty())}}
     </span>
     </div>
@@ -83,10 +83,9 @@ export class ZoneSummaryComponent implements OnInit, OnDestroy {
         **/
         console.assert(this.skillsub == undefined || this.skillsub.isUnsubscribed);
         this.skillsub = this.PS.player.skillChange$.subscribe( () => {
-            console.log("Skill change -> updating zone-summary");
             this.update();
         });
-        this.zd = this.zone.difficultyPerSkill(this.PS.getSkillLevels());
+        this.zd = this.zone.difficultyPerSkill(this.PS.player);
     }
 
     ngOnDestroy() {
@@ -96,7 +95,7 @@ export class ZoneSummaryComponent implements OnInit, OnDestroy {
     }
 
     update() {
-        this.zd = this.zone.difficultyPerSkill(this.PS.getSkillLevels());
+        this.zd = this.zone.difficultyPerSkill(this.PS.player);
         this.cd.markForCheck();
     }
 
@@ -117,11 +116,11 @@ export class ZoneSummaryComponent implements OnInit, OnDestroy {
     }
 
     difficultyColor(diff: number) {
-        if (diff <= 1) {
+        if (diff <= 0.005) {
             return 'lightgreen';
-        } else if (diff <= 1.5){
+        } else if (diff <= .5){
             return 'yellow';
-        } else if (diff <= 3) {
+        } else if (diff <= 2) {
             return 'orange';
         } else {
             return 'maroon';
@@ -130,11 +129,11 @@ export class ZoneSummaryComponent implements OnInit, OnDestroy {
 
     difficultyString(d: any) : string {
         let diffWordFn = (diff) => {
-            if (diff <= 1) {
+            if (diff <= 0.005) {
                 return 'easy';
-            } else if (diff <= 1.5){
+            } else if (diff <= .5){
                 return 'challenging';
-            } else if (diff <= 3) {
+            } else if (diff <= 2) {
                 return 'hard';
             } else {
                 return 'grueling';
@@ -143,11 +142,12 @@ export class ZoneSummaryComponent implements OnInit, OnDestroy {
         let currSkill = this.PS.getSkillLevel(d.skill);
         return `${diffWordFn(d.difficulty)}:
             penalty=${this.penaltyString(d.difficulty)}
-             mastered at level ${d.masteredAt} (currently: ${currSkill})`;
+             mastered at level ${Math.ceil(d.masteredAt)} (currently: ${currSkill})`;
     }
 
     penaltyString(penalty) : string {
-        return ((penalty - 1) * 100).toFixed(0) + '%';
+        let pct = (penalty * 100).toFixed(0);
+        return pct == 0 ? "" : pct+'%';
     }
 
     overallDifficulty() {

@@ -29,6 +29,8 @@ BALANCE
 - the Bat King is great. You should do more stuff like that in lower level zones.
 - balancing zone difficulty: kind of want to hit a sweet spot where some zones are too hard when first unlocked, but most zones are sort of boringly easy around the time you're about to unlock the next batch.
 +- Consider adding some kind of table in the debug view showing SP/level, SP/action, and their ratio for different values of level (and adjusted by various levels of HA buff). Should be fairly easy to make, and would really help balancing.
+- would be interesting to review expected SP gains for each zone. I suspect that zones with bonus actions may have a big advantage (and that high bonus levels might exert a disproportionate influence, despite their low frequency)
+- consider rescaling to 10 skill levels per plvl? Removes some incentive to micro-manage skill bars, and skill ups become twice as frequent. Meaning if you're adventuring in a slowdown zone, you get to see more frequent small decreases in the slowdown %.
 
 TECHNICAL
 =========
@@ -59,12 +61,14 @@ BUGS
 ====
 - minor bug: zone level pane expanding shouldn't be as sticky as it is
 +- have seen at least one instance where an action got 'stuck' (but was able to finish it by clicking). That's a little scary. I have a fear that my code is crawling with race conditions.
-- skill icons should be green if slowdown rounds down to 0%.
 - title text not showing up when hovering on buffed skill level
 - saw an instance of a skill going to -10 after reincarnation because of a fruity cleanup phase
 - based on the wording of the unlock hint, it feels like a bug that Scholar isn't unlocked immediately when you hit level 20 as a student (rather than when you reincarnate)
 - Can scum by refreshing to reset cooldowns. Bleh. Anyone who does this gets the punishment of tedium that they deserve.
     - also, since there's no explicit save button, and autosave is only every 30s, this doesn't work out all that well
+- can you meditate more than once during a really long action and pump up the multiplier? I should check. Though if someone does that, I'd kind of be tempted to just congratulate them on their cleverness.
+    - yeah, looks like this is definitely possible. only scales additively though, and given gated access to high level zones, I'm inclined to leave this in as a sort of easter egg.
+- 'a encyclopedia'
 
 IDEAS
 ======
@@ -76,6 +80,8 @@ IDEAS
 - add some 'dud' actions - ones with very low difficulty/SP-gains compared to others in the zone
 - ability to specify actions that only appear at some minimum zone level.
 - could borrow some thematic flavour from the actual ToH concept (a "staffing agency" for heroes)
+    - what if characters were randomly assigned really mundane white names? e.g. "Karen the level 5 Shaman", "Donald the level 10 Skeleton".
+- might actually be interesting to exercise the ability to change action duration on a per-zone basis. Though this could be confusing (construed as slowdown). Maybe if there are any 'final boss' zones, they should have this - and it should be exaggerated.
 
 UI
 ==
@@ -104,6 +110,8 @@ UI
     - numbers aren't vertically aligned
     - aptitude numbers not nicely aligned, and won't transition gracefully to large values.
     - consider scrunching like the apt view in class component?
+- could be nice to replace use of title text (e.g. for showing elaborations on zone difficulty) with something more 'modern' (and mobile friendly?)
+- zi token toasts should have a timeout (and maybe classes too)
 
 USABILITY
 =========
@@ -115,3 +123,5 @@ USABILITY
 - give toasts on superzone unlock? (at least the first time)
 - ability to sort the skill pane by level/apt/progress would be quite nice. Would help determine which skills are underleveled, for example.
     - not clear whether it should be a one-time reordering, or if skills should continually shift to maintain the sort as they get trained/buffed. The latter could be confusing, and sounds harder to implement, and more risky from a perf pov.
+- indicate in the UI which zone you are in ('You are here') and which zone you're adventuring in. It's easy to forget the latter.
+    - maybe even show a miniature action bar in the summary pane if you're not currently there? that'd be siiiiiiick

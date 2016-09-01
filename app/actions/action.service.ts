@@ -119,18 +119,14 @@ export class ActionService implements IActionService {
 
     // ------------------- ACTION MECHANICS --------------------------
     private getDelay(action: ZoneAction): DelayCalc {
-        let delay = action.delay(this.PS.getSkillLevels());
-        let inexp = 1.0 + (this.inexpMultiplier * (delay.inexperiencePenalty - 1));
-        if (inexp != delay.inexperiencePenalty) {
-            console.log(`Ineptitude penalty adjusted from
-                ${delay.inexperiencePenalty} to ${inexp}.`);
-        }
-        let skillAdjustedDelay = delay.base * inexp;
+        let slowdown = action.slowdown(this.PS.player);
+        slowdown *= this.inexpMultiplier;
+        let skillAdjustedDelay = (slowdown+1) * GLOBALS.defaultBaseZoneDelay;
         let buffedDelay = skillAdjustedDelay / this.actionSpeedMultiplier;
         if (skillAdjustedDelay != buffedDelay) {
-            console.log(`Buffed: ${buffedDelay}`);
+            console.log(`Delay buffed: ${buffedDelay}`);
         }
-        return {delay: buffedDelay, slowdown: delay.inexperiencePenalty};
+        return {delay: buffedDelay, slowdown: slowdown};
     }
 
     private getOutcome(action: ZoneAction, mainDesc: string): ActionOutcome {

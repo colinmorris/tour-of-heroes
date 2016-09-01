@@ -30,6 +30,23 @@ export const GLOBALS = {
     // some more. Seems important that there exists some non-zero slowdown value
     // below which a zone starts becoming more efficient than a lower-level fullspeed zone.
     inexperiencePenaltyBase: 1.41421,//1.2599,
+    /** When checking for slowdown, this proportion of player level will be added
+    to the relevant skill levels, and that sum will be compared to the action
+    mastery. Rationale: makes charting a path through zones more strategic
+    (e.g. I want to train at the Tournament, but my riding skill isn't high
+    enough. Previously: either gotta train riding in the Stables, or take the
+    Tournament slowdown hit. With "level assist": I can decide I don't want
+    to pre-game in the Stables because my farming apt sucks, or the gains aren't
+    high enough, and decide instead to go train other skills for a while until
+    the Tournament turns green).
+
+    TODO: 1/5 might be a bit too high. Basically want this to be high enough
+    that it makes it worthwhile to plan around, defering zones to later. But not
+    so high that it makes adventuring in zones tuned slightly above the player level
+    prohibitive. High values may over-encourage generalization (given that it's
+    already sort of encouraged by the way XP formulas scale)
+    **/
+    levelAssistFraction: .2,
 
     reincarnationMinLevel: 10,
     zoneLevelingMinLevel: 25,
