@@ -152,7 +152,7 @@ export class ActionService implements IActionService {
         }
         // I can already tell this is going to turn into a fucking monster
         // of a method
-        if (this.currentAction.slowdown > 10.0) {
+        if (this.currentAction.slowdown > 100.0) {
             this.stats.unlock(NamedUnlock.SuperSlowAction);
         }
         // Such a hack

@@ -138,8 +138,14 @@ function zamFromJSON(
         difficulty = j.difficulty(difficulty);
     }
     if (j.bonusLevel) {
-        // Still experimenting with this
-        difficulty = difficulty + Math.ceil(2*j.bonusLevel);
+        /** Still experimenting with this. Possible the difflvl per bonusLevel
+        should increase with overall zone difficulty? These still don't really
+        feel "epic" enough. Maybe diff should even scale exponentially with
+        bonusLevel, the way rarity and skill gains do. Let's try it.
+        Given that skill gains scale with 10^bonus, it should still pretty
+        much always be worth it to do these. Probably.
+        **/
+        difficulty = difficulty + Math.ceil(Math.pow(2, j.bonusLevel));
     }
 
     /** XXX: I feel like I've consistently set difficulties a bit too low, so just
