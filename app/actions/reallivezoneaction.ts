@@ -43,10 +43,15 @@ export class RealLiveZoneAction implements LiveZoneAction {
         let timer = Observable.interval(this.tickRate);
         this.remainingTime = duration;
         this.pctProgress$ = Observable.create ( (observer) => {
+            // start at 0
+            observer.next(0);
             this.observer = observer;
         });
         this.sub = timer.subscribe(
             (i) => {
+                if (i == 0) {
+                    this.animationClass = "";
+                }
                 let tick = Date.now();
                 let elapsed = tick - this.lastTick;
                 this.lastTick = tick;
@@ -60,21 +65,12 @@ export class RealLiveZoneAction implements LiveZoneAction {
             }
         );
         this.lastTick = Date.now();
-
-        // One timeout so we can get an observer, another for the DOM to get
-        // updated.
-        setTimeout(()=> {
-            if (this.observer) {
-                this.observer.next(0);
-            }
-            setTimeout(()=> {
-                this.animationClass = "";
-                this.update()
-            }, 0);
-        }, 0);
     }
 
     update() {
+        if (this.animationClass == "reset") {
+            return;
+        }
         if (this.remainingTime == 0) {
             // TODO: is this necessary? probably not, but I'm confused
             this.sub.unsubscribe();
@@ -90,8 +86,17 @@ export class RealLiveZoneAction implements LiveZoneAction {
 
     predictivePctProgress() : number {
         // https://www.youtube.com/watch?v=l2x_XajgoDU
+        /** This is complicated further because we intentionally leave an
+        initial buffer of 200ms (or whatever the transition ms is), during which
+        the bar should stay at 0, to avoid the 'bouncy' effect.
+        So if 200/1000 ms have elapsed (or are going to elapse), we should be
+        at 0%. a predicted remaining time of 400/1000ms should be 25% (200/800)
+        **/
+        let initialDelay = GLOBALS.actionBarUpdateInterval;
         let predRemainingTime = this.remainingTime - GLOBALS.actionBarTransitionMs;
-        return 100 * (this.duration - predRemainingTime) / this.duration;
+        let numerator = Math.max(0,
+            (this.duration - predRemainingTime - initialDelay));
+        return 100 * numerator / (this.duration - initialDelay);
     }
 
     get pctProgress() : number {
@@ -113,7 +118,6 @@ export class RealLiveZoneAction implements LiveZoneAction {
     }
 
     completeEarly() {
-        // this'll be noticed at the next tick (which should make it appear basically instant)
         this.remainingTime = 0;
         this.update();
     }

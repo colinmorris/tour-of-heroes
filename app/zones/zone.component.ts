@@ -4,7 +4,8 @@ import { Inject,
     SimpleChange,
     OnChanges,
     OnInit,
-    OnDestroy } from '@angular/core';
+    OnDestroy,
+ } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { Zones } from './zones.service';
@@ -188,6 +189,9 @@ export class ZoneComponent implements OnInit, OnDestroy, OnChanges {
             .subscribe({
                 next: (post: PostActionInfo) => {
                     if (post.nextAction.active) {
+                        /** TODO: Can we relieve RLZA of the burden of tracking
+                        animation stuff, and take care of it here?
+                        **/
                         this.currentAction = post.nextAction;
                     } else {
                         /** TODO: This seems to be correlated with spurious

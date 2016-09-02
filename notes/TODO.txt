@@ -114,6 +114,7 @@ UI
     - consider scrunching like the apt view in class component?
 - could be nice to replace use of title text (e.g. for showing elaborations on zone difficulty) with something more 'modern' (and mobile friendly?)
 - zi token toasts should have a timeout (and maybe classes too)
+- the fact that actions can complete without the action bar reaching the finish line (because of clicks) is kind of irritating.
 
 USABILITY
 =========

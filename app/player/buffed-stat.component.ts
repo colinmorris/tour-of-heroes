@@ -25,11 +25,8 @@ import { Component, Input,
     definitely be good to have toasts for player level as well.
     **/
     animations: [
-        /** TODO: It's kind of annoying that these animations fire when loading
-        the page. Can maybe fix this by defining some void=>* transitions (Which
-        will maybe take priority cause they have greater specificity?).
-        **/
         trigger('baseValueToast', [
+            // Avoid spurious animations on component init
             transition('void => *',
             []),
             transition('* => *', [

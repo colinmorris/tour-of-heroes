@@ -70,7 +70,8 @@ export const GLOBALS = {
     autoSave: true,
     autoSaveIntervalMs: 60*1000,
 
-    actionBarUpdateInterval: 300,
+    // TODO: make sure this isn't ridiculous from a perf POV
+    actionBarUpdateInterval: 100,
     actionBarTransitionMs: 600,
 
     inventoryCapacity: 5,
