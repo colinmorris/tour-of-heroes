@@ -5,5 +5,7 @@ export enum NamedUnlock {
     ThreeEggs,
     ReincarnationAvailableHelp,
     ZoneLevelingHelp,
+    SpaceTimeConquered,
+    BeatTheGameCongrats,
     MAX
 }

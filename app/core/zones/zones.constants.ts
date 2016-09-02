@@ -290,6 +290,27 @@ zones: [
 },
 
 {
+name: 'Beyond',
+minLevel: 250,
+zones: [
+    {
+        name: 'Crack in Spacetime',
+        description: `Some chronomancers had a teensy accident and may have` +
+        ` created a bit of a singularity-type situation. It'll take a very ` +
+        `seasoned hero to get through this.`,
+        actions: [
+            {vb: 'beat', obj: 'the game', skills:[
+                S.Farming, S.Combat, S.Survival, S.Charm, S.Stealth, S.Riding,
+                S.Intellect, S.Piety],
+                unlocks: NamedUnlock.SpaceTimeConquered
+            }
+        ],
+        difficulty: 500
+    }
+]
+},
+
+{
 name: 'Cheatz',
 minLevel: 999,
 cheat: true,

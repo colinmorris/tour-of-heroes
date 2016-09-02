@@ -78,10 +78,19 @@ export class AppComponent implements OnInit {
         if (GLOBALS.autoSave) {
             Observable.interval(GLOBALS.autoSaveIntervalMs).subscribe( () => {
                 this.serials.save();
+
+                /** TODO: This kinda sucks. Quick hack. Should probably have its
+                own timer. **/
+                this.KS.checkUnlocks(this.PS);
+
+                /** TODO: this also sucks. Really should be an observable for
+                named unlocks. **/
+                if (this.Stats.unlocked(NamedUnlock.SpaceTimeConquered) &&
+                    !this.Stats.unlocked(NamedUnlock.BeatTheGameCongrats) ) {
+                    this.Stats.unlock(NamedUnlock.BeatTheGameCongrats);
+                    this.beatTheGameModal();
+                }
             });
-            /** TODO: This kinda sucks. Quick hack. Should probably have its
-            own timer. **/
-            this.KS.checkUnlocks(this.PS);
         }
 
         this.lvl10sub = this.PS.playerLevel$.subscribe( (lvl) => {
@@ -98,6 +107,23 @@ export class AppComponent implements OnInit {
             }
         });
 
+    }
+
+    beatTheGameModal() {
+        let email = 'colin' + '.' + 'morris' + (1+1) + '@gmail.com' ;
+        this.modal.alert()
+            .size('lg')
+            .showClose(true)
+            .title(`Congratulations`)
+            .body(`<p>You beat the game! That's it for now.</p>
+            <p>There may be more endgame content coming at some point, including
+            prestiging and "dual class" mechanics, so check back later.
+            </p>
+            <p>If you enjoyed the game and have ideas about what you'd like to
+            see added, or balance suggestions, <a href="mailto:${email}">
+            let me know</a>.</p>
+            `)
+            .open();
     }
 
     zoneLevelingModal() {
