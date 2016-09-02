@@ -119,6 +119,13 @@ export abstract class AbstractTimedBuff extends AbstractBuff implements TimedBuf
         });
         return promise;
     }
+    onDestroy() {
+        if (this.sub) {
+            this.sub.unsubscribe();
+        }
+        let args = this.injectionArgs();
+        this.cleanUp(...args);
+    }
     refresh(buff: Buff) {
         /** This would seem to pose a problem for many-flavoured buffs like
         Fruity, but keep in mind that equivalence will be determined by perk
