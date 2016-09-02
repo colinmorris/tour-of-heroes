@@ -252,7 +252,7 @@ zones: [
 
 {
 name: 'Hinterlands',
-minLevel: 100,
+minLevel: 50,
 zones: [
     {
         name: 'Bandit Camp',
@@ -264,7 +264,7 @@ zones: [
             {vb: 'assassinate', obj:"the Chief Bandit",
             skills:[S.Stealth, S.Combat], bonusLevel:3, oneShot:OS.BanditChief},
         ],
-        difficulty: 100,
+        difficulty: 50,
     },
     {
         name: 'Gryphon Nest',
@@ -276,7 +276,7 @@ zones: [
             {vb: "sneak", obj: "a golden egg", skills: S.Stealth, bonusLevel:3,
             oneShot:OS.GoldenEgg},
         ],
-        difficulty: 120,
+        difficulty: 55,
     },
     {
         name: 'Ancient Ruins',
@@ -289,7 +289,7 @@ zones: [
             {vb: "unlock", obj: "the secrets of the Jade McGuffin", skills: S.Intellect,
             bonusLevel:3, oneShot:OS.McMuffin},
         ],
-        difficulty: 130,
+        difficulty: 60,
     },
     {
         name: 'Goblin Outpost',
@@ -300,7 +300,7 @@ zones: [
             {vb: "slay", obj: "the Goblin King", skills: S.Combat, bonusLevel:3,
             oneShot: OS.GoblinKing},
         ],
-        difficulty: 150,
+        difficulty: 65,
     }
 
 ]
@@ -308,7 +308,7 @@ zones: [
 
 {
 name: 'Beyond',
-minLevel: 250,
+minLevel: 99,
 zones: [
     {
         name: 'Crack in Spacetime',
@@ -322,14 +322,14 @@ zones: [
                 unlocks: NamedUnlock.SpaceTimeConquered
             }
         ],
-        difficulty: 500
+        difficulty: 100
     }
 ]
 },
 
 {
 name: 'Cheatz',
-minLevel: 999,
+minLevel: 1,
 cheat: true,
 zones: [
     {
@@ -341,7 +341,7 @@ zones: [
                 S.Intellect, S.Piety
             ], bonusLevel:2}
         ],
-        difficulty: 1,
+        difficulty: -5,
     },
     {
         name: 'Cheat 2',
@@ -352,7 +352,7 @@ zones: [
                 S.Intellect, S.Piety
             ], bonusLevel:3}
         ],
-        difficulty: 1,
+        difficulty: -5,
     },
     {
         name: 'Cheat 4',
@@ -363,7 +363,7 @@ zones: [
                 S.Intellect, S.Piety
             ], bonusLevel:4}
         ],
-        difficulty: 1,
+        difficulty: -5,
     }
 ]
 }

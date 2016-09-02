@@ -27,7 +27,7 @@ class FinalEVerb extends BaseVerb {
 let doubleConsonantVerbs: Set<string> = new Set(["chop", "ham", "chat"]);
 let finalEVerbs: Set<string> = new Set([
     "bale", "dance", "decode", "exorcise", "dodge",
-    "sermonize", "proselytize", "harmonize", "eulogize", "deface", "drive",
+    "sermonize", "proselytize", "harmonize", "eulogize", "deface",
 ]);
 let irregularVerbs: {[base: string] : Verb} = {
     "ride" : {base: "ride", pres: "riding", past: "rode"},
@@ -39,6 +39,7 @@ let irregularVerbs: {[base: string] : Verb} = {
     "free":  {base: "free", pres: "freeing", past:"freed"},
     "steal": {base: "steal", pres: "stealing", past:"stole"},
     "sing": {base: "sing", pres: "singing", past:"sang"},
+    "drive": {base: "drive", pres: "driving", past:"drove"},
 };
 
 export function verbLookup(base: string) : Verb {

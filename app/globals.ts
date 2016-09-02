@@ -74,6 +74,10 @@ export const GLOBALS = {
     actionBarUpdateInterval: 100,
     actionBarTransitionMs: 600,
 
+    /** Check unlocks this often. TODO: this is kind of wasteful. With better
+    use of observables, it wouldn't be necessary to poll like this. **/
+    unlockCheckInterval: 5000,
+
     inventoryCapacity: 5,
 
     dropRate: .1,

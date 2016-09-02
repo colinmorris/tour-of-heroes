@@ -33,7 +33,7 @@ export class StatsService implements IStatsService {
         let stats:StatsData = {
            simpleStats: new Array<StatCell>(),
            unlocks: new Array<boolean>(),
-           klassUnlocks: <{[klass:string] : any}>{},
+           klassUnlocks: <{[klass:string] : any}>{'Peasant': true},
            klassLevels: <{[klass:string] : number}>{},
            skillLevels: uniformSkillMap(0),
            actionStats: <{[zone: string] : StatCell}>{},

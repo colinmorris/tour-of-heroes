@@ -103,8 +103,9 @@ export class ZoneSummaryComponent implements OnInit, OnDestroy {
     }
 
     ngOnChanges() {
-        // I know I added this for a reason, but I can't remember what it was...
-        //this.zd = this.zone.difficultyPerSkill(this.PS.player);
+        /** Need this for use of this component in the "level up" preview view,
+        where the zone may change in place. **/
+        this.zd = this.zone.difficultyPerSkill(this.PS.player);
     }
 
     update() {

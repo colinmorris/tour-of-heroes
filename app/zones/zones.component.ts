@@ -105,7 +105,7 @@ export class ZonesComponent implements OnInit {
     visiblePanes() {
         let vis = [];
         for (let pane of this.panes) {
-            if (pane.unlocked) {
+            if (pane.unlocked || GLOBALS.cheatMode) {
                 vis.push(pane);
             } else {
                 vis.push(pane);

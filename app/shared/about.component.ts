@@ -14,6 +14,7 @@ import { Component } from '@angular/core';
 <h2>Tips</h2>
 
 <ul>
+    <li>You can speed up your current action by clicking the progress bar.</li>
     <li>Certain zones have events which can only occur once per lifetime that award a massive number of skill points. Have you slayed the Bat King yet?</li>
     <li>The "Heroic Ancestry" buff is key to progressing to the late game.</li>
     <li>It generally pays to focus on breadth over depth. Raising two classes to level 50 will give a higher Ancestry bonus than raising one class to level 100.</li>
@@ -23,6 +24,7 @@ import { Component } from '@angular/core';
             <li>However, actions that train multiple skills give more SP than single-skill actions of the same difficulty.</li>
         </ul>
     </li>
+    <li>Slowdown can be reduced by increasing your level, even if you don't train any of the skills involved in that zone.</li>
 </ul>
 
 <h2>Acknowledgements</h2>

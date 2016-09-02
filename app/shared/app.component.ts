@@ -78,20 +78,21 @@ export class AppComponent implements OnInit {
         if (GLOBALS.autoSave) {
             Observable.interval(GLOBALS.autoSaveIntervalMs).subscribe( () => {
                 this.serials.save();
-
-                /** TODO: This kinda sucks. Quick hack. Should probably have its
-                own timer. **/
-                this.KS.checkUnlocks(this.PS);
-
-                /** TODO: this also sucks. Really should be an observable for
-                named unlocks. **/
-                if (this.Stats.unlocked(NamedUnlock.SpaceTimeConquered) &&
-                    !this.Stats.unlocked(NamedUnlock.BeatTheGameCongrats) ) {
-                    this.Stats.unlock(NamedUnlock.BeatTheGameCongrats);
-                    this.beatTheGameModal();
-                }
             });
         }
+
+        Observable.interval(GLOBALS.unlockCheckInterval).subscribe( () => {
+            // TODO: this kinda sucks
+            this.KS.checkUnlocks(this.PS);
+
+            /** TODO: this also sucks. Really should be an observable for
+            named unlocks. **/
+            if (this.Stats.unlocked(NamedUnlock.SpaceTimeConquered) &&
+                !this.Stats.unlocked(NamedUnlock.BeatTheGameCongrats) ) {
+                this.Stats.unlock(NamedUnlock.BeatTheGameCongrats);
+                this.beatTheGameModal();
+            }
+        });
 
         this.lvl10sub = this.PS.playerLevel$.subscribe( (lvl) => {
             if (lvl == GLOBALS.reincarnationMinLevel &&

@@ -25,6 +25,7 @@ BALANCE
 - would be interesting to review expected SP gains for each zone. I suspect that zones with bonus actions may have a big advantage (and that high bonus levels might exert a disproportionate influence, despite their low frequency)
 - consider rescaling to 10 skill levels per plvl? Removes some incentive to micro-manage skill bars, and skill ups become twice as frequent. Meaning if you're adventuring in a slowdown zone, you get to see more frequent small decreases in the slowdown %.
 - add 1 or 2 more superzones with level reqs way out there (and consider pushing back hinterlands too). With the intention that you'll only really be able to reach them by going over leveled-up versions of previous zones.
+- tavern and colloseum are kind of duplicative
 
 TECHNICAL
 =========
@@ -57,6 +58,7 @@ BUGS
 - can you meditate more than once during a really long action and pump up the multiplier? I should check. Though if someone does that, I'd kind of be tempted to just congratulate them on their cleverness.
     - yeah, looks like this is definitely possible. only scales additively though, and given gated access to high level zones, I'm inclined to leave this in as a sort of easter egg.
 - 'a encyclopedia'
+- not that it matters that much, but peasant doubling should probably apply to HA-buffed aptitudes, not base. 
 
 IDEAS
 ======
@@ -70,6 +72,7 @@ IDEAS
 - could borrow some thematic flavour from the actual ToH concept (a "staffing agency" for heroes)
     - what if characters were randomly assigned really mundane white names? e.g. "Karen the level 5 Shaman", "Donald the level 10 Skeleton".
 - might actually be interesting to exercise the ability to change action duration on a per-zone basis. Though this could be confusing (construed as slowdown). Maybe if there are any 'final boss' zones, they should have this - and it should be exaggerated.
+    - ooh, apply this to bonus actions! Still feels like they're not 'epic' enough. But slowdown is so touchy, it can't really be relied on to make a bonus action slower (without being so ridiculously slow that it makes the zone impenetrable).
 
 UI
 ==
@@ -111,3 +114,4 @@ USABILITY
     - not clear whether it should be a one-time reordering, or if skills should continually shift to maintain the sort as they get trained/buffed. The latter could be confusing, and sounds harder to implement, and more risky from a perf pov.
 - indicate in the UI which zone you are in ('You are here') and which zone you're adventuring in. It's easy to forget the latter.
     - maybe even show a miniature action bar in the summary pane if you're not currently there? that'd be siiiiiiick
+- could be nice to show unlock criteria for unlocked classes (for cases where you come back to the game to find that you unlocked class X, but you don't really know how you did it)

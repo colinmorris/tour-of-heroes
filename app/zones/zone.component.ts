@@ -146,7 +146,8 @@ import { GLOBALS } from '../globals';
                     <button class="btn"
                     [class.disabled]="!canLevelZone() && !cheatMode"
                     (click)="levelZone()">Level up</button>
-                    <button class="btn"
+                    <button *ngIf="cheatMode"
+                    class="btn"
                     (click)="delevelZone()">Delevel</button>
 
                 </div>
@@ -223,12 +224,10 @@ export class ZoneComponent implements OnInit, OnDestroy, OnChanges {
         console.assert("zone" in changes);
         this.levelUpExpanded = false;
         if (this.currentAction) {
-            console.log("Zone change. Nulling out current action and last outcome.");
             this.currentAction = undefined;
             this.lastOutcome = undefined;
         } else {
             // possible this is causing a race condition?
-            console.log("Zone change. Grabbing last action");
             this.AS.postActionSubject.take(1).subscribe( {
                 next: (post: PostActionInfo) => {
                     if (post.nextAction.active &&
