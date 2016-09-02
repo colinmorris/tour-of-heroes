@@ -78,7 +78,10 @@ export class PlayerService implements IPlayerService {
                 this.stats.ziTokens++;
                 this.Toasts.info(
                     `Level ${lvl}`,
-                    `Gained a Zone Improvement token`
+                    `Gained a Zone Improvement token`,
+                    {
+                        timeOut: 5000
+                    }
                 );
             }
         });
