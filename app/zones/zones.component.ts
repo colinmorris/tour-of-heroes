@@ -29,7 +29,7 @@ interface SuperzonePane {
     <div>
 
     <ul class="nav nav-tabs">
-        <li *ngFor="let pane of panes"
+        <li *ngFor="let pane of visiblePanes()"
         [class.active]="activePane==pane"
         [class.locked]="!pane.unlocked"
          >
@@ -98,6 +98,21 @@ export class ZonesComponent implements OnInit {
                     unlockCondition(this.PS.player.level)
             }
         });
+    }
+
+    /** Only show unlocked panes plus the *first* locked pane (i.e. the one
+    that will be unlocked next). **/
+    visiblePanes() {
+        let vis = [];
+        for (let pane of this.panes) {
+            if (pane.unlocked) {
+                vis.push(pane);
+            } else {
+                vis.push(pane);
+                break;
+            }
+        }
+        return vis;
     }
 
     ngOnInit() {
