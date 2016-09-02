@@ -84,16 +84,34 @@ export class AppComponent implements OnInit {
             this.KS.checkUnlocks(this.PS);
         }
 
-        if (!this.Stats.unlocked(NamedUnlock.ReincarnationAvailableHelp)) {
-            this.lvl10sub = this.PS.playerLevel$.subscribe( (lvl) => {
-                if (lvl == GLOBALS.reincarnationMinLevel) {
-                    this.reincarnationModal();
-                    this.Stats.unlock(NamedUnlock.ReincarnationAvailableHelp);
-                    this.lvl10sub.unsubscribe();
-                }
-            });
-        }
+        this.lvl10sub = this.PS.playerLevel$.subscribe( (lvl) => {
+            if (lvl == GLOBALS.reincarnationMinLevel &&
+            !this.Stats.unlocked(NamedUnlock.ReincarnationAvailableHelp)) {
+                this.reincarnationModal();
+                this.Stats.unlock(NamedUnlock.ReincarnationAvailableHelp);
+            }
 
+            if (lvl == GLOBALS.zoneLevelingMinLevel &&
+            !this.Stats.unlocked(NamedUnlock.ZoneLevelingHelp)) {
+                this.zoneLevelingModal();
+                this.Stats.unlock(NamedUnlock.ZoneLevelingHelp);
+            }
+        });
+
+    }
+
+    zoneLevelingModal() {
+        this.modal.alert()
+            .size('lg')
+            .showClose(true)
+            .title(`Level ${GLOBALS.zoneLevelingMinLevel}!`)
+            .body(`<p>You've earned a <b>Zone Improvement Token</b>. You'll get
+            one at level 25, and every 5th level after that. You can spend a
+            token to 'level up' a zone, increasing its difficulty and the skill
+            points it awards.</p>
+            <p>You can't take them with you - tokens reset to 0 on reincarnation,
+            so spend them while you can.</p>`)
+            .open();
     }
 
     reincarnationModal() {

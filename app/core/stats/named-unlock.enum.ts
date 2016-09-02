@@ -4,5 +4,6 @@ export enum NamedUnlock {
     SuperSlowAction,
     ThreeEggs,
     ReincarnationAvailableHelp,
+    ZoneLevelingHelp,
     MAX
 }
