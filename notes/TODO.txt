@@ -63,7 +63,6 @@ BUGS
 - minor bug: zone level pane expanding shouldn't be as sticky as it is
 +- have seen at least one instance where an action got 'stuck' (but was able to finish it by clicking). That's a little scary. I have a fear that my code is crawling with race conditions.
 - title text not showing up when hovering on buffed skill level
-- saw an instance of a skill going to -10 after reincarnation because of a fruity cleanup phase
 - based on the wording of the unlock hint, it feels like a bug that Scholar isn't unlocked immediately when you hit level 20 as a student (rather than when you reincarnate)
 - Can scum by refreshing to reset cooldowns. Bleh. Anyone who does this gets the punishment of tedium that they deserve.
     - also, since there's no explicit save button, and autosave is only every 30s, this doesn't work out all that well

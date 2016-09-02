@@ -193,13 +193,10 @@ export class ZoneComponent implements OnInit, OnDestroy, OnChanges {
                         animation stuff, and take care of it here?
                         **/
                         this.currentAction = post.nextAction;
-                    } else {
-                        /** TODO: This seems to be correlated with spurious
-                        lastOutcome strings **/
-                        console.log("Action was DoA");
+                        this.lastOutcome = post.outcome;
                     }
                     console.assert(post.nextAction.zid == this.zone.zid);
-                    this.lastOutcome = post.outcome;
+
                 }
             });
 
