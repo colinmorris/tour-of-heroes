@@ -198,7 +198,7 @@ zones: [
                 skills: [S.Intellect, S.Stealth],
                 skillRatios: {'Intellect': .8, 'Stealth': .2} },
         ],
-        difficulty: 20,
+        difficulty: 22,
     },
     {
         name: 'Botanical Garden',
@@ -212,7 +212,7 @@ zones: [
             {vb: "chat", obj:"with the head gardener", skills:[S.Farming, S.Charm],
             bonusLevel: 1.5}
         ],
-        difficulty: 23,
+        difficulty: 25,
     },
     {
         name: 'Colloseum',
@@ -226,7 +226,7 @@ zones: [
             {vb: "bask", obj:"in the crowd's adoration", skills:S.Charm,
                 bonusLevel:1}
         ],
-        difficulty: 25,
+        difficulty: 28,
     },
     {
         name: 'Cathedral',
@@ -237,7 +237,7 @@ zones: [
             {vb: "harmonize", obj:"", skills:[S.Charm]},
             {vb: "eulogize", obj:"", skills: [S.Piety, S.Charm], bonusLevel:1.5},
         ],
-        difficulty: 28,
+        difficulty: 31,
     }
 ]
 },
