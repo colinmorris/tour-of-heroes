@@ -27,10 +27,10 @@ zones:
     },
     {
         name: 'Woody Woods',
-        description: `A young-growth forest with small trees suitable for amateur
-            lumberjacks. Small critters are known to occasionally attack.`,
+        description: `A small forest where locals go to collect firewood.
+        Watch out for critters.`,
         actions: [
-            {vb: "chop", obj:"a young __X", opts:["oak", "spruce", "pine"],
+            {vb: "chop", obj:"__X", opts:["an oak", "a spruce", "a pine"],
                 skills: S.Survival, weight: .8},
             {vb: "ax", obj:"a __X", opts:["rat", "rabid deer", "badger", "spider"],
                 skills: S.Combat, weight: .2},
@@ -41,18 +41,19 @@ zones:
     },
     {
         name: 'Stables',
-        description: 'A place with horses',
+        description: `If Hercules wasn't too good to clean stables, then neither
+        are you`,
         actions: [
-            {vb: "ride", obj: "a steed", skills: S.Riding, weight: .5, difficulty:PLUS(-1)},
+            {vb: "ride", obj: "a steed", skills: S.Riding, weight: 1, difficulty:PLUS(-1)},
             {vb: "drive", obj: "a plough", skills: [S.Riding, S.Farming],
                 weight: 1, difficulty:PLUS(-1)},
-            {vb: "bale", obj: "some hay", skills: S.Farming, weight: .5}
+            {vb: "bale", obj: "some hay", skills: S.Farming, weight: 1}
         ],
         difficulty: 3,
     },
     {
         name: 'Flower Fields',
-        description: 'Rows upon rows of pretty flowers',
+        description: 'Row upon row of pretty, pretty flowers',
         actions: [
             {vb: 'plant', obj: 'some __X', opts:FLOWERS, skills: S.Farming,
             difficulty:PLUS(9)},
@@ -90,16 +91,18 @@ zones:
     },
     {
         name: 'Tavern',
-        description: 'Get sloshed',
+        description: 'A place of merriment. And occasional brawls.',
         actions: [
             {vb: "dance", obj: "a jig", skills: S.Charm, weight: 1},
+            {vb: "play", obj: "darts", skills: S.Charm, weight: 1},
+            {vb: "sing", obj: "some epic karaoke", skills: S.Charm, bonusLevel:1},
             {vb: "fight", obj: "a drunken patron", skills: S.Combat, weight: 1},
         ],
         difficulty: 10,
     },
     {
         name: 'Tournament',
-        description: 'Win a medal',
+        description: 'A local jousting competition',
         actions: [
             {vb: "joust", obj: "in an exhibition match",
             skills: [S.Riding, S.Charm], weight: 3.0},
@@ -129,7 +132,9 @@ zones: [
         description: 'A grotto where mycologists cultivate mushrooms with curative, poisonous, or psychedelic properties',
         actions: [
             {vb: 'collect', obj: 'a mushroom', skills: [S.Farming, S.Intellect]},
-            {vb: 'concoct', obj: 'a draught', skills: [S.Intellect]}
+            {vb: 'concoct', obj: 'a draught of __X',
+            opts:["sleep", "dizziness", "wart removal", "blindness", "cheer"],
+            skills: [S.Intellect]}
         ],
         difficulty: 14,
     },
@@ -148,7 +153,8 @@ zones: [
     },
     {
         name: 'Bat Cave',
-        description: 'Dumb bats',
+        description: `These bats haven't been doing anyone harm, but I guess you
+        could slaughter them anyways for practice`,
         actions: [
             {vb: 'slay', obj: 'a fruit bat', skills: [S.Combat]},
             {vb: 'slay', obj: 'a vampire bat', skills: [S.Combat], bonusLevel:.5},
@@ -159,7 +165,7 @@ zones: [
     },
     {
         name: 'Haunted Cave',
-        description: "It's haunted, yo",
+        description: "Townsfolk steer clear of this cave. Local legend says that it's spooky.",
         actions: [
             {vb: 'light', obj: 'some incense', skills: S.Piety},
             {vb: 'exorcise', obj: 'a restless spirit', skills: [S.Piety, S.Combat],
@@ -196,7 +202,7 @@ zones: [
     },
     {
         name: 'Botanical Garden',
-        description: 'Plants',
+        description: `A showcase of rare and exotic plants`,
         actions: [
             {vb: "bask", obj:"in the sun", skills:S.Charm, weight:.2},
             {vb: "inspect", obj:"an unusual cultivar of __X",
@@ -210,7 +216,8 @@ zones: [
     },
     {
         name: 'Colloseum',
-        description: "Fight for the crowd's affection.",
+        description: `A violent but popular local spectacle. Successful gladiators
+        are handy with a sword and know how to razzle-dazzle the crowd.`,
         actions: [
             {vb: "fight", obj:"a gladiator", skills: [S.Combat]},
             {vb: "ham", obj:"it up for the crowd", skills: [S.Charm]},
@@ -228,6 +235,7 @@ zones: [
             {vb: "sermonize", obj:"", skills:[S.Piety, S.Charm]},
             {vb: "proselytize", obj:"", skills:[S.Piety, S.Charm]},
             {vb: "harmonize", obj:"", skills:[S.Charm]},
+            {vb: "eulogize", obj:"", skills: [S.Piety, S.Charm], bonusLevel:1.5},
         ],
         difficulty: 28,
     }
@@ -244,16 +252,19 @@ zones: [
 
 {
 name: 'Hinterlands',
-minLevel: 30,
+minLevel: 100,
 zones: [
     {
         name: 'Bandit Camp',
-        description: "bandits",
+        description: `These bandits have been accosting travelers and generally
+        acting like jerks`,
         actions: [
             {vb: 'apprehend', obj:"a bandit", skills:[S.Combat]},
             {vb: 'steal', obj:"stolen goods", skills:[S.Stealth]},
+            {vb: 'assassinate', obj:"the Chief Bandit",
+            skills:[S.Stealth, S.Combat], bonusLevel:3, oneShot:OS.BanditChief},
         ],
-        difficulty: 30,
+        difficulty: 100,
     },
     {
         name: 'Gryphon Nest',
@@ -261,9 +272,11 @@ zones: [
         actions: [
             {vb: "climb", obj:"", skills: S.Survival, weight:1.0},
             {vb: "sneak", obj: "an egg out of the nest", skills: S.Stealth, weight: .2},
-            {vb: "ride", obj: "a great gryphon", skills: S.Riding, bonusLevel:1.5},
+            {vb: "ride", obj: "a great gryphon", skills: S.Riding, bonusLevel:2},
+            {vb: "sneak", obj: "a golden egg", skills: S.Stealth, bonusLevel:3,
+            oneShot:OS.GoldenEgg},
         ],
-        difficulty: 33,
+        difficulty: 120,
     },
     {
         name: 'Ancient Ruins',
@@ -272,9 +285,11 @@ zones: [
             {vb: "disarm", obj: "a booby trap", skills: S.Survival},
             {vb: "decode", obj: "some ancient glyphs", skills: S.Intellect},
             {vb: "deface", obj: "an altar to a pagan god", skills: S.Piety,
-                bonusLevel:1}
+                bonusLevel:1},
+            {vb: "unlock", obj: "the secrets of the Jade McGuffin", skills: S.Intellect,
+            bonusLevel:3, oneShot:OS.McMuffin},
         ],
-        difficulty: 36,
+        difficulty: 130,
     },
     {
         name: 'Goblin Outpost',
@@ -282,8 +297,10 @@ zones: [
         actions: [
             {vb: "slay", obj: "a goblin", skills: S.Combat},
             {vb: "slay", obj: "a goblin lieutenant", skills: S.Combat, bonusLevel:1},
+            {vb: "slay", obj: "the Goblin King", skills: S.Combat, bonusLevel:3,
+            oneShot: OS.GoblinKing},
         ],
-        difficulty: 38,
+        difficulty: 150,
     }
 
 ]

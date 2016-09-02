@@ -103,11 +103,12 @@ export class ZoneSummaryComponent implements OnInit, OnDestroy {
     }
 
     ngOnChanges() {
-        this.zd = this.zone.difficultyPerSkill(this.PS.player);
+        // I know I added this for a reason, but I can't remember what it was...
+        //this.zd = this.zone.difficultyPerSkill(this.PS.player);
     }
 
     update() {
-        //this.zd = this.zone.difficultyPerSkill(this.PS.player);
+        this.zd = this.zone.difficultyPerSkill(this.PS.player);
         this.cd.markForCheck();
     }
 
@@ -155,7 +156,7 @@ export class ZoneSummaryComponent implements OnInit, OnDestroy {
 
     penaltyString(penalty) : string {
         let pct = (penalty * 100).toFixed(0);
-        return pct == 0 ? "" : pct+'%';
+        return pct == "0" ? "" : pct+'%';
     }
 
     overallDifficulty() {
