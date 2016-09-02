@@ -46,7 +46,7 @@ export const GLOBALS = {
     prohibitive. High values may over-encourage generalization (given that it's
     already sort of encouraged by the way XP formulas scale)
     **/
-    levelAssistFraction: .2,
+    levelAssistFraction: .15,
 
     reincarnationMinLevel: 10,
     zoneLevelingMinLevel: 25,
