@@ -175,7 +175,7 @@ export class FarmerPerk extends WatcherPassive {
     diTokens = [di_tokens.actionservice, di_tokens.perkservice];
     static sname = "Frugivore";
     static sdescription = `Chance to eat a piece of fruit after performing a farming action, temporarily boosting the level of a random skill.`;
-    private prob = .07;
+    private prob = .1;
     onCast(AS: IActionService, PS: IPerkService) {
         this.sub = AS.protoActionOutcomeSubject
         .filter( (outcome: ProtoActionOutcome) => {

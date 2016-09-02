@@ -12,7 +12,7 @@ export const GLOBALS = {
         to reality at level 1, and the actual actions/slvl figure will increase
         from there.
     **/
-    benchmarkActionsPerSkillLevel: 5,
+    benchmarkActionsPerSkillLevel: 3,
     /** Going from skill level n to n+1 takes (this^n * skillLevelBaseCost)
     skill points.
     10 for level 1, doubling every 5 levels.
@@ -61,7 +61,7 @@ export const GLOBALS = {
     backgroundSaveFrequency_ms: 1000 * 60,
 
     // The default minimum delay of actions across zones in ms
-    defaultBaseZoneDelay: 2500,
+    defaultBaseZoneDelay: 4000,
 
     // Disabling this for now. Stuff is changing too fast and the serialization
     // code is therefore pretty prone to breaking out of version compat issues
