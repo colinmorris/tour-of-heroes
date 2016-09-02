@@ -29,6 +29,7 @@ BALANCE
 
 TECHNICAL
 =========
+- consider flipping noImplicityAny toggle in tsconfig
 - figure out how to write better/more parsimonious CSS. Does angular offer less-like stuff?
 - switch to attributive components?
 +?- profile the thing
