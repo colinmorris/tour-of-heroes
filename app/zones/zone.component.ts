@@ -108,7 +108,7 @@ import { GLOBALS } from '../globals';
                     <p>Leveling up will significantly increase the difficulty of this
                     zone.</p>
                     <p>Costs <b>1 Zone Improvement Token</b> (have: {{Stats.ziTokens}})
-                    and requires level {{plevelToLevelZone()}}.</p>
+                    </p>
 
                     <!-- TODO: lots of copy-pasting going on here -->
                     <ul class="list-group">
@@ -203,15 +203,7 @@ export class ZoneComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     canLevelZone() {
-        return this.Stats.ziTokens > 0 && this.PS.player.level >= this.plevelToLevelZone();
-    }
-
-    plevelToLevelZone() {
-        /** TODO: The fact that zone.difficulty isn't updated when level
-        is increased is probably a bug. **/
-        return 1;
-        //return this.zone.difficulty +
-        //    ((this.zone.level + 1) * GLOBALS.difficultyBonusPerZoneLevel);
+        return this.Stats.ziTokens > 0;
     }
 
     ngOnDestroy() {
