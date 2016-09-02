@@ -103,6 +103,8 @@ import { GLOBALS } from '../globals';
                     <button class="btn"
                     [class.disabled]="!canLevelZone() && !cheatMode"
                     (click)="levelZone()">Level up</button>
+                    <button class="btn"
+                    (click)="delevelZone()">Delevel</button>
                 </div>
             </div>
         </div>
@@ -164,8 +166,9 @@ export class ZoneComponent implements OnInit, OnDestroy, OnChanges {
     plevelToLevelZone() {
         /** TODO: The fact that zone.difficulty isn't updated when level
         is increased is probably a bug. **/
-        return this.zone.difficulty +
-            ((this.zone.level + 1) * GLOBALS.difficultyBonusPerZoneLevel);
+        return 1;
+        //return this.zone.difficulty +
+        //    ((this.zone.level + 1) * GLOBALS.difficultyBonusPerZoneLevel);
     }
 
     ngOnDestroy() {
@@ -222,6 +225,18 @@ export class ZoneComponent implements OnInit, OnDestroy, OnChanges {
         levelUpZone(this.zone, level);
         this.Stats.leveledZone(this.zone.name, level);
         this.Stats.ziTokens -= 1;
+        /** TODO: This is a huge hack. Just a quick and dirty way to
+        get the corresponding zone-summary component to perform change
+        detection. Come up with a less fragile approach when/if this
+        zone leveling thing crystalizes. **/
+        this.PS.player.skillChange$.next(0);
+    }
+
+    delevelZone() {
+        let level = this.zone.level -1;
+        levelUpZone(this.zone, level);
+        this.Stats.leveledZone(this.zone.name, level);
+        this.Stats.ziTokens += 1;
         /** TODO: This is a huge hack. Just a quick and dirty way to
         get the corresponding zone-summary component to perform change
         detection. Come up with a less fragile approach when/if this

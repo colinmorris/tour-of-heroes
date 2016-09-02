@@ -31,6 +31,7 @@ BALANCE
 +- Consider adding some kind of table in the debug view showing SP/level, SP/action, and their ratio for different values of level (and adjusted by various levels of HA buff). Should be fairly easy to make, and would really help balancing.
 - would be interesting to review expected SP gains for each zone. I suspect that zones with bonus actions may have a big advantage (and that high bonus levels might exert a disproportionate influence, despite their low frequency)
 - consider rescaling to 10 skill levels per plvl? Removes some incentive to micro-manage skill bars, and skill ups become twice as frequent. Meaning if you're adventuring in a slowdown zone, you get to see more frequent small decreases in the slowdown %.
+- add 1 or 2 more superzones with level reqs way out there (and consider pushing back hinterlands too). With the intention that you'll only really be able to reach them by going over leveled-up versions of previous zones.
 
 TECHNICAL
 =========
@@ -87,6 +88,7 @@ UI
 ==
 - make checkbox in classes component bootstrappy
 - the colors for skill difficulty (in zone summary) and apts (class view) are fugly. We can do better.
+    - maybe the green skill icons should just be the default color
 - forward/back arrows in the classes view 'porthole'
     - ooh, and keyboard navigation
 - would also be nice to have keyboard shortcuts for spells
