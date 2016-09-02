@@ -251,7 +251,7 @@ zones: [
         description: "bandits",
         actions: [
             {vb: 'apprehend', obj:"a bandit", skills:[S.Combat]},
-            {vb: 'stealing', obj:"stolen goods", skills:[S.Stealth]},
+            {vb: 'steal', obj:"stolen goods", skills:[S.Stealth]},
         ],
         difficulty: 30,
     },

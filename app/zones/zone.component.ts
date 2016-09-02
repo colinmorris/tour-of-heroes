@@ -9,7 +9,8 @@ import { Observable } from 'rxjs/Observable';
 
 import { Zones } from './zones.service';
 import { Zone, ActionOutcome, LiveZoneAction,
-    levelUpZone, XpFormulas
+    levelUpZone, leveledZone,
+    XpFormulas
  } from '../core/index';
 import { ActionService, PostActionInfo } from '../actions/action.service';
 import { PlayerService } from '../player/player.service';
@@ -40,6 +41,9 @@ import { GLOBALS } from '../globals';
         }
         .previously {
             margin-left: 25px;
+        }
+        .zone-header {
+            font-weight: bold;
         }
         `],
     pipes: [SkillGainsPipe],
@@ -85,28 +89,67 @@ import { GLOBALS } from '../globals';
         <div *ngIf="!currentAction">
             {{zone.description}}
 
-            <div *ngIf="PS.canLevelZones() || cheatMode">
-                <a class="btn"
+            <div *ngIf="PS.canLevelZones() || cheatMode"
+                class="row">
+                <div class="col-xs-9">
+                <div class="panel panel-info">
+                <div class="panel-heading">
+                <h3 class="panel-title">
+                <a
                     (click)="levelUpExpanded = !levelUpExpanded"
                 >
-                Zone Level: {{zone.level}}
+                Level up...
                 <span class="glyphicon glyphicon-chevron-down"></span>
                 </a>
+                </h3>
+                </div>
 
-                <div *ngIf="levelUpExpanded">
+                <div *ngIf="levelUpExpanded" class="panel-body">
                     <p>Leveling up will significantly increase the difficulty of this
-                    zone. The minimum skill level to avoid slowdown will increase by
-                    about {{masteryIncreasePerZoneLevel()}}. But the number of skill
-                    points awarded will increase as well.</p>
+                    zone.</p>
                     <p>Costs <b>1 Zone Improvement Token</b> (have: {{Stats.ziTokens}})
                     and requires level {{plevelToLevelZone()}}.</p>
+
+                    <!-- TODO: lots of copy-pasting going on here -->
+                    <ul class="list-group">
+
+                    <li class="list-group-item zone-header">
+                    <div class="row">
+                        <div class="col-xs-2">Zone</div>
+                        <div class="col-xs-1">Level</div>
+                        <div class="col-xs-4">Skills</div>
+                        <div class="col-xs-2"
+                        title="If your skill levels are too low, actions will take longer"
+                        >Slowdown</div>
+                    </div>
+                    </li>
+
+                    <li class="list-group-item">
+                    <zone-summary [zone]="zone" [live]="false">
+                    </zone-summary>
+                    </li>
+
+                    <li class="list-group-item">
+                    <div class="center-block" [style.width]="50">
+                        <h3><span class="glyphicon glyphicon-arrow-down"></span></h3>
+                    </div>
+                    </li>
+
+                    <li class="list-group-item">
+                    <zone-summary [zone]="leveledZone()" [live]="false">
+                    </zone-summary>
+                    </li>
+
+                    </ul>
+
                     <button class="btn"
                     [class.disabled]="!canLevelZone() && !cheatMode"
                     (click)="levelZone()">Level up</button>
                     <button class="btn"
                     (click)="delevelZone()">Delevel</button>
+
                 </div>
-            </div>
+            </div></div></div>
         </div>
     </div>
 
@@ -185,6 +228,7 @@ export class ZoneComponent implements OnInit, OnDestroy, OnChanges {
     // every time the zone changes
     ngOnChanges(changes: {[propertyName: string]: SimpleChange}) {
         console.assert("zone" in changes);
+        this.levelUpExpanded = false;
         if (this.currentAction) {
             console.log("Zone change. Nulling out current action and last outcome.");
             this.currentAction = undefined;
@@ -230,6 +274,11 @@ export class ZoneComponent implements OnInit, OnDestroy, OnChanges {
         detection. Come up with a less fragile approach when/if this
         zone leveling thing crystalizes. **/
         this.PS.player.skillChange$.next(0);
+    }
+
+    // Return a leveled version of current zone (as a preview - don't actually level it)
+    leveledZone() {
+        return leveledZone(this.zone, this.zone.level+1);
     }
 
     delevelZone() {

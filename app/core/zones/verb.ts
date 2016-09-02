@@ -36,7 +36,8 @@ let irregularVerbs: {[base: string] : Verb} = {
     "tiptoe":{base: "tiptoe", pres: "tiptoeing", past: "tiptoed"},
     "light": {base: "light", pres: "lighting", past: "lit"},
     "swim":  {base: "swim", pres: "swimming", past:"swam"},
-    "free":  {base: "free", pres: "freeing", past:"freed"}
+    "free":  {base: "free", pres: "freeing", past:"freed"},
+    "steal": {base: "steal", pres: "stealing", past:"stole"},
 };
 
 export function verbLookup(base: string) : Verb {

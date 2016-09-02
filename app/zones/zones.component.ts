@@ -47,7 +47,8 @@ interface SuperzonePane {
             <ul *ngIf="activePane==pane" class="list-group">
                 <li class="list-group-item zone-header">
                 <div class="row">
-                    <div class="col-xs-3">Zone</div>
+                    <div class="col-xs-2">Zone</div>
+                    <div class="col-xs-1">Level</div>
                     <div class="col-xs-4">Skills</div>
                     <div class="col-xs-2"
                     title="If your skill levels are too low, actions will take longer"

@@ -40,6 +40,24 @@ export function levelUpZone(zone: Zone, toLevel: number) {
     zone.level = toLevel;
 }
 
+export function leveledZone(zone: Zone, level: number) {
+    var z: ZoneData;
+    // Find the corresponding ZoneData template
+    for (let superz of SUPERZONEDATA) {
+        for (let zd of superz.zones) {
+            if (zd.name == zone.name) {
+                z = zd;
+                break;
+            }
+        }
+        if (z) {
+            break;
+        }
+    }
+    console.assert(z != undefined);
+    return zoneFromJSON(z, -1, "idklol", level);
+}
+
 function leveledZoneDifficulty(zone: ZoneData, level: number) : number {
     return zone.difficulty + (level * GLOBALS.difficultyBonusPerZoneLevel);
 }
@@ -102,7 +120,7 @@ function zoneFromJSON(j: ZoneData, id: number, superzone: string, level: number)
     z.zid = id;
     z.name = j.name;
     z.description = j.description;
-    z.difficulty = j.difficulty;
+    z.difficulty = leveledZoneDifficulty(j, level);
     z.level = level;
     z.actions = new Array<ZoneAction>();
     console.assert(j.actions.length > 0);
@@ -116,6 +134,8 @@ function zoneFromJSON(j: ZoneData, id: number, superzone: string, level: number)
     return z;
 }
 
+/** TODO: surrogateDifficulty thing is a dumb bandaid hack. Need to refactor this.
+**/
 function zamFromJSON(
         j: ActionData,
         parentZone: ZoneData,

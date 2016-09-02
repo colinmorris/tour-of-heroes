@@ -19,8 +19,12 @@ import { SkillComponent } from '../shared/skill.component';
     template: `
     <div class="row">
 
-    <div class="col-xs-3">
+    <div class="col-xs-2">
     <span title="DEBUG: difficulty={{zone.difficulty}}">{{nameString(zone)}}</span>
+    </div>
+
+    <div class="col-xs-1">
+        {{zone.difficulty}}
     </div>
 
     <div class="col-xs-4">
@@ -40,7 +44,7 @@ import { SkillComponent } from '../shared/skill.component';
     </span>
     </div>
 
-    <div class="col-xs-3">
+    <div class="col-xs-3" *ngIf="live">
     <button *ngIf="!youAreHere"
         class="btn"
         [class.disabled]="locked"
@@ -58,7 +62,11 @@ import { SkillComponent } from '../shared/skill.component';
 })
 export class ZoneSummaryComponent implements OnInit, OnDestroy {
     ST = SkillType;
-    @Input() youAreHere: boolean;
+    @Input() youAreHere: boolean = false;
+    /** If we're not live, this becomes non-interactive (i.e. no button to
+    navigate to the zone). Used in previews.
+    **/
+    @Input() live: boolean = true;
     @Input() zone: Zone;
     /** TODO: Maybe if this zone/superzone hasn't been unlocked yet in any
     lifetime, the zone/sz names should just show as "???"
@@ -94,8 +102,12 @@ export class ZoneSummaryComponent implements OnInit, OnDestroy {
         }
     }
 
-    update() {
+    ngOnChanges() {
         this.zd = this.zone.difficultyPerSkill(this.PS.player);
+    }
+
+    update() {
+        //this.zd = this.zone.difficultyPerSkill(this.PS.player);
         this.cd.markForCheck();
     }
 
@@ -104,11 +116,7 @@ export class ZoneSummaryComponent implements OnInit, OnDestroy {
     }
 
     nameString(zone: Zone) {
-        let name = zone.name;
-        if (zone.level > 0) {
-            name += ` (${zone.level})`;
-        }
-        return name;
+        return zone.name;
     }
 
     explore() {
