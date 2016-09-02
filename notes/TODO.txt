@@ -2,14 +2,12 @@ Marking 'alpha-blockers' with +
 
 MISC/TRIAGE
 ===
-- autosave toggle
 - in the interest of including lots of classes, maybe you should 'copy-paste' some perks/req'ts (and make it easy to do so with the class hierarchy). For example, something similar (/identical) to 'Frugivore', but for a different skill? You're already kind of doing this with e.g. horseman and gladiator.
 - I think the buff constructor stuff was actually unnecessary? should probably walk it back? Bleh
 +- figure out hosting/exoprting
 +?- review code TODOs
 - show ancestry buff calculations in stats page
 - classes/farmer style routes
-    - (and have some default - either the current class, or whatever was viewed last)
 +- add a 'retreat' button next to 'Stop' that ends the current action (giving no benefits) and starts a new one. I don't think it's a bad behavior to enable.
 - Restore character name thing? Maybe just prompt for a name at the very beginning and use that throughout?
 - add ability to specify post-action text in ActionData
@@ -18,17 +16,12 @@ BALANCE
 =======
 - extra perks (other classes) as fn of max lvl with current class (or even just current lvl). Maybe one extra perk at level 100, then 200, etc.
 - bonus gains for zones that train multiple skills (right now I think this happens for individual *actions* that train multiple skills, but not across zones)
-+?- it's annoying that if my skill level in X is such that all X actions are red, there's not really anything I can do about it, other than grin and bear it. Maybe this is a good argument for cross-skill bootstrapping for multi-skill actions (i.e. really good combat skill should offset some of my bad stealth skill in a combat/stealth zone).
-    *** yeah, I think this is important. I think it'd be good if you could offset slowdown penalty by overcompensating with a different skill, or just by raising your plvl sufficiently. Could make path through zones more strategic and less linear. Would also maybe help make leveling up feel more immediately impactful.
-    - maybe compare mastery level to focal skill lvl + some fraction of plvl (or, equiv. total slvls). This would probably require some significant reworking of XP formulas.
 - Seems like ancestry bonus is basically just a linear multiplier on your progress speed throughout your lifetime. It follows that...
     - if we want high level zones to only be tractable with a high ancestry bonus (and/or more advanced classes), then lower level zones will be blazingly fast when those conditions are met. Is this a problem? Maybe not.
     - what if ancestry bonus was an aptitude multiplier *per player level*?
-- maybe, like, double base action speed and SP gains across the board? seems like a fair bit of time is spent in green zones, and those actions feel like they blaze by, faster than my hilarious action text can be read.
     - Another option: make the slowdown curve kind of S-shaped.
 - the Bat King is great. You should do more stuff like that in lower level zones.
 - balancing zone difficulty: kind of want to hit a sweet spot where some zones are too hard when first unlocked, but most zones are sort of boringly easy around the time you're about to unlock the next batch.
-+- Consider adding some kind of table in the debug view showing SP/level, SP/action, and their ratio for different values of level (and adjusted by various levels of HA buff). Should be fairly easy to make, and would really help balancing.
 - would be interesting to review expected SP gains for each zone. I suspect that zones with bonus actions may have a big advantage (and that high bonus levels might exert a disproportionate influence, despite their low frequency)
 - consider rescaling to 10 skill levels per plvl? Removes some incentive to micro-manage skill bars, and skill ups become twice as frequent. Meaning if you're adventuring in a slowdown zone, you get to see more frequent small decreases in the slowdown %.
 - add 1 or 2 more superzones with level reqs way out there (and consider pushing back hinterlands too). With the intention that you'll only really be able to reach them by going over leveled-up versions of previous zones.
@@ -45,25 +38,20 @@ TECHNICAL
 - ahead of time compilation
     - also keep seeing this thing about enableProdMode(). Should look into that.
 - consider propagating 'bonus'-ness up. Might be interesting to show it in the UI, and to have it interact with some perks.
-- ability to export to/load from string. Would make testing a lot easier.
 - redo systemjs.config.js to match the new version in the angular2 quickstart
 - from profiling, it seems like jquery is getting called somewhere? how'd that happened? Dependency of the notifications/modals library?
 - it would really help testing if there was a quick way to change some of the stuff in GLOBALS (cheatMode and autoSave, primarily), without a recompile/refresh. Maybe in the debug view (problematic since its visibility is now conditioned on cheatMode), or in the console.
 
 MECHANICS
 =========
-+?- zone leveling
-    - one important aspect of this is to make sure the difficulty jumps between levels are quite high. This should help discourage the behavior of just focusing on one or two zones and leveling them to the exclusion of all others.
-    - maybe leveling up a zone should unlock the 'oneshot' actions in that zone?
+- maybe leveling up a zone should unlock the 'oneshot' actions in that zone?
 - item drops
 - bonus zones
 
 BUGS
 ====
-- minor bug: zone level pane expanding shouldn't be as sticky as it is
 +- have seen at least one instance where an action got 'stuck' (but was able to finish it by clicking). That's a little scary. I have a fear that my code is crawling with race conditions.
 - title text not showing up when hovering on buffed skill level
-- based on the wording of the unlock hint, it feels like a bug that Scholar isn't unlocked immediately when you hit level 20 as a student (rather than when you reincarnate)
 - Can scum by refreshing to reset cooldowns. Bleh. Anyone who does this gets the punishment of tedium that they deserve.
     - also, since there's no explicit save button, and autosave is only every 30s, this doesn't work out all that well
 - can you meditate more than once during a really long action and pump up the multiplier? I should check. Though if someone does that, I'd kind of be tempted to just congratulate them on their cleverness.
@@ -92,7 +80,6 @@ UI
     - ooh, and keyboard navigation
 - would also be nice to have keyboard shortcuts for spells
 +?- distinguish in the UI between a permanently buffed stat and a temp buffed one (light green vs. dark green?)
-+?- there's a weird bug where like 5% of the time the progress bar doesn't reset to 0, but uses a long transition
 - add a nice CSS transition to progress bar when clicked
 - zone difficulty UI should probably incorporate cleric perk
     - buffedstatcomponent
@@ -112,13 +99,10 @@ UI
     - aptitude numbers not nicely aligned, and won't transition gracefully to large values.
     - consider scrunching like the apt view in class component?
 - could be nice to replace use of title text (e.g. for showing elaborations on zone difficulty) with something more 'modern' (and mobile friendly?)
-- zi token toasts should have a timeout (and maybe classes too)
 - the fact that actions can complete without the action bar reaching the finish line (because of clicks) is kind of irritating.
 
 USABILITY
 =========
-- might actually be a good idea to make locked superzones expandable, just without the "go" buttons. Would help with planning ahead. Maybe only after it's been unlocked once in a previous lifetime?
-- maybe a 'tips' section?
 - for 'on/off' perks, consider indicating in the UI whether they're currently active?
     - and/or: can perks be made more visible in the lastOutcome UI? use buffedstat component for SP gains that are increased by perks? right now perks maybe don't *feel* as impactful as they should.
 - the 'go' buttons in the zone summary view are kinda dumb. Maybe the zone name should just be a link.
