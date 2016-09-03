@@ -60,6 +60,7 @@ BUGS
     - yeah, looks like this is definitely possible. only scales additively though, and given gated access to high level zones, I'm inclined to leave this in as a sort of easter egg.
 - 'a encyclopedia'
 - not that it matters that much, but peasant doubling should probably apply to HA-buffed aptitudes, not base. 
+*- locked zones aren't actually
 
 IDEAS
 ======
