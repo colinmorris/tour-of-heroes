@@ -128,6 +128,20 @@ export class ClericPerk extends AbstractPassive {
     }
 }
 
+export class JugglerPerk  extends AbstractPassive {
+    static sname = "Distracting";
+    static buffAmt = 10;
+    static sdescription = `Charm is increased by ${JugglerPerk.buffAmt}`;
+    diTokens = [di_tokens.playerservice];
+
+    onCast(PS: IPlayerService) {
+        PS.buffSkillLevel(SkillType.Charm, 10);
+    }
+    cleanUp() {
+        
+    }
+}
+
 export class BlobPerk extends WatcherPassive {
     static sname = "Sessile";
     static spMultiplier = .5;
