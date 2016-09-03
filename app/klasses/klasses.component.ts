@@ -25,6 +25,7 @@ import { GLOBALS } from '../globals';
         }
         img.locked {
             -webkit-filter: contrast(0);
+            filter: contrast(0);
         }
         ul {
             list-style: none;
