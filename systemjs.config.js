@@ -49,7 +49,8 @@
   ngPackageNames.forEach(setPackageConfig);
   var config = {
     map: map,
-    packages: packages
+    packages: packages,
+    baseURL: '/tour-of-heroes/'
   };
   System.config(config);
 })(this);
