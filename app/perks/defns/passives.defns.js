@@ -152,6 +152,23 @@ var PASSIVES;
         return ClericPerk;
     }(perk_1.AbstractPassive));
     PASSIVES.ClericPerk = ClericPerk;
+    var JugglerPerk = (function (_super) {
+        __extends(JugglerPerk, _super);
+        function JugglerPerk() {
+            _super.apply(this, arguments);
+            this.diTokens = [di_tokens_1.di_tokens.playerservice];
+        }
+        JugglerPerk.prototype.onCast = function (PS) {
+            PS.buffSkillLevel(index_1.SkillType.Charm, 10);
+        };
+        JugglerPerk.prototype.cleanUp = function () {
+        };
+        JugglerPerk.sname = "Distracting";
+        JugglerPerk.buffAmt = 10;
+        JugglerPerk.sdescription = "Charm is increased by " + JugglerPerk.buffAmt;
+        return JugglerPerk;
+    }(perk_1.AbstractPassive));
+    PASSIVES.JugglerPerk = JugglerPerk;
     var BlobPerk = (function (_super) {
         __extends(BlobPerk, _super);
         function BlobPerk() {
