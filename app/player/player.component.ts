@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 
 import { ProgressBarComponent } from '../shared/progressbar.component';
-import { InventoryComponent } from '../items/inventory.component';
 import { PerksComponent } from '../perks/perks.component';
 import { BuffedStatComponent } from './buffed-stat.component';
 import { SkillComponent } from '../shared/skill.component';
@@ -12,7 +11,7 @@ import { Player } from './player.interface';
 
 @Component({
     selector: 'player-pane',
-    directives: [ProgressBarComponent, InventoryComponent, PerksComponent,
+    directives: [ProgressBarComponent, PerksComponent,
         BuffedStatComponent, SkillComponent],
     styles: [
         `

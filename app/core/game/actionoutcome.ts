@@ -1,6 +1,5 @@
 import { SkillMap } from '../skills/index';
 // TODO: This definitely needs to move to core. Violation of organizing principles.
-import { Item } from '../../items/item';
 import { ZoneAction, Zone } from '../zones/index';
 
 // TODO: these should probably be split out into separate files
