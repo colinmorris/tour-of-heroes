@@ -61,6 +61,7 @@ BUGS
 - 'a encyclopedia'
 - not that it matters that much, but peasant doubling should probably apply to HA-buffed aptitudes, not base. 
 *- locked zones aren't actually
+*- start an action, go to Stats/Classes, go back home. Some of the time, the action bar doesn't show up, though the action is still running. If you wait for it to complete, a new action will spontaneously appear.
 
 IDEAS
 ======
