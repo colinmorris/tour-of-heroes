@@ -11,6 +11,7 @@ MISC/TRIAGE
 +- add a 'retreat' button next to 'Stop' that ends the current action (giving no benefits) and starts a new one. I don't think it's a bad behavior to enable.
 - Restore character name thing? Maybe just prompt for a name at the very beginning and use that throughout?
 - add ability to specify post-action text in ActionData
+- stats screen: huge turnips pulled, tournaments won, bat kings slain, etc.
 
 BALANCE
 =======
@@ -61,6 +62,7 @@ BUGS
 - 'a encyclopedia'
 - not that it matters that much, but peasant doubling should probably apply to HA-buffed aptitudes, not base. 
 *- locked zones aren't actually
+    - also, you can level zones indefinitely and put your ziTokens in the negatives. Same issue - button class disabled doesn't prevent clicking.
 *- start an action, go to Stats/Classes, go back home. Some of the time, the action bar doesn't show up, though the action is still running. If you wait for it to complete, a new action will spontaneously appear.
 
 IDEAS
@@ -118,3 +120,4 @@ USABILITY
 - indicate in the UI which zone you are in ('You are here') and which zone you're adventuring in. It's easy to forget the latter.
     - maybe even show a miniature action bar in the summary pane if you're not currently there? that'd be siiiiiiick
 - could be nice to show unlock criteria for unlocked classes (for cases where you come back to the game to find that you unlocked class X, but you don't really know how you did it)
+- maybe don't show aptitudes for locked classes?
