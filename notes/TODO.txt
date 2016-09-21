@@ -4,10 +4,7 @@ MISC/TRIAGE
 ===
 - in the interest of including lots of classes, maybe you should 'copy-paste' some perks/req'ts (and make it easy to do so with the class hierarchy). For example, something similar (/identical) to 'Frugivore', but for a different skill? You're already kind of doing this with e.g. horseman and gladiator.
 - I think the buff constructor stuff was actually unnecessary? should probably walk it back? Bleh
-+- figure out hosting/exoprting
-+?- review code TODOs
 - show ancestry buff calculations in stats page
-- classes/farmer style routes
 +- add a 'retreat' button next to 'Stop' that ends the current action (giving no benefits) and starts a new one. I don't think it's a bad behavior to enable.
 - Restore character name thing? Maybe just prompt for a name at the very beginning and use that throughout?
 - add ability to specify post-action text in ActionData
