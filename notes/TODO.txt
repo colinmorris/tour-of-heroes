@@ -64,6 +64,9 @@ BUGS
 *- locked zones aren't actually
     - also, you can level zones indefinitely and put your ziTokens in the negatives. Same issue - button class disabled doesn't prevent clicking.
 *- start an action, go to Stats/Classes, go back home. Some of the time, the action bar doesn't show up, though the action is still running. If you wait for it to complete, a new action will spontaneously appear.
+- report from redditor: can kill bat king multiple times per lifetime?
+- white skill symbols not visible on yellow ('challenging') background
+
 
 IDEAS
 ======
